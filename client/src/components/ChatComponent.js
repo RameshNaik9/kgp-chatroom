@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import './Chatroom.css';
-
-const socket = io('http://localhost:8080');
+const socket = io(process.env.REACT_APP_SOCKET_URL);
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
 const ChatroomComponent = () => {
     const [message, setMessage] = useState('');
@@ -16,7 +16,7 @@ const ChatroomComponent = () => {
     const userId = localStorage.getItem('userId');
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/messages')
+        axios.get(`${apiBaseUrl}/api/messages`)
             .then(response => {
                 setMessages(response.data);
                 setIsLoading(false);
