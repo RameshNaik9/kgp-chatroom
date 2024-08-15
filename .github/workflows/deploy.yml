@@ -18,29 +18,29 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install frontend dependencies
+      - name: Install client dependencies
         run: |
-          cd frontend
+          cd client
           npm install
 
-      - name: Install backend dependencies
+      - name: Install server dependencies
         run: |
-          cd backend
+          cd server
           npm install
 
-      - name: Build frontend
+      - name: Build client
         env:
           CI: false
         run: |
-          cd frontend
+          cd client
           npm run build
 
       - name: Prepare ReleaseGAA Artifact Structure
         run: |
-          mkdir -p releaseGAA/frontend
-          mkdir -p releaseGAA/backend
-          cp -r frontend/build releaseGAA/frontend/
-          cp -r backend/* releaseGAA/backend/
+          mkdir -p releaseGAA/client
+          mkdir -p releaseGAA/server
+          cp -r client/build releaseGAA/client/
+          cp -r server/* releaseGAA/server/
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
