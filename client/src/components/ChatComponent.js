@@ -146,7 +146,7 @@ const ChatroomComponent = () => {
         <div className={`chatroom-container bg-${theme}`}>
             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
                 <h2 className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2>
-                <div className="d-flex align-items-center">
+                <div className=" fs-6 d-flex align-items-center">
                     <input
                         type="text"
                         className="form-control me-2"
