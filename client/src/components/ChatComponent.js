@@ -138,7 +138,8 @@ const ChatroomComponent = () => {
 
     // Filter messages based on search query
     const filteredMessages = messages.filter(msg =>
-        msg.message.toLowerCase().includes(searchQuery.toLowerCase())
+        msg.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        msg.user.fullName.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
@@ -149,7 +150,7 @@ const ChatroomComponent = () => {
                     <input
                         type="text"
                         className="form-control me-2"
-                        placeholder="Search messages..."
+                        placeholder="Search messages or users..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
