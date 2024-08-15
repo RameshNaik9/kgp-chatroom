@@ -137,8 +137,8 @@ const ChatroomComponent = () => {
     return (
         <div className={`chatroom-container bg-${theme}`}>
             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
-                <h2 className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Chatroom</h2>
-                <button className="btn btn-outline-primary" onClick={toggleTheme}>
+                <h2 className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2>
+                <button className="btn btn-outline-primary" style={{ width: 'auto' }} onClick={toggleTheme}>
                     Switch to {theme === 'light' ? 'Dark' : 'Light'} Theme
                 </button>
             </div>
