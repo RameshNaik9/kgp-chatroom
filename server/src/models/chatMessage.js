@@ -6,7 +6,7 @@ const chatMessageSchema = new mongoose.Schema({
     message: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
     isEdited: { type: Boolean, default: false },
-    replyTo: { type: mongoose.Schema.Types.ObjectId, ref: 'ChatMessage' },
+    replyTo: { type: mongoose.Schema.Types.ObjectId, ref: 'ChatMessage', default: null },
     status: { type: String, default: 'delivered' }, 
 }, { timestamps: true });
 

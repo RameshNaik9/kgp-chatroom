@@ -1,5 +1,5 @@
 .chatroom-container {
-    max-width: 600px;
+    max-width: 550px;
     margin: auto;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -7,6 +7,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    margin-top: 75px;
 }
 
 .messages {
@@ -69,4 +70,62 @@
 
 .blur {
     filter: blur(4px);
+}
+
+.messages {
+    flex: 1;
+    overflow-y: scroll;
+    padding: 1rem;
+    position: relative;
+}
+
+
+.message-box {
+    position: relative;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    word-wrap: break-word;
+    max-width: 50%;
+}
+
+.message-box textarea {
+    width: auto;
+    max-width: 70%;
+    min-width: 50px;
+    word-wrap: break-word;
+}
+
+.message-box .dropdown {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-30%);
+    transform: translateX(25%);
+    margin-left: 0px;
+    z-index: 50;
+}
+
+.message-box .dropdown-menu {
+    position: absolute;
+    min-width: auto;
+    width: auto;
+    z-index: 55;
+}
+
+.message-box.bg-primary {
+    background-color: #007bff;
+}
+
+.message-box.bg-success {
+    background-color: #28a745;
+}
+
+.message-wrapper {
+
+    display: block;
+    width: 1;
+    justify-content: flex-end;
+    position: relative;
 }
