@@ -28,6 +28,12 @@ function Signup() {
                 password,
             });
             if(response){
+                setRollNumber('');
+                setDepartment('');
+                setFullName('');
+                setEmail('');
+                setPassword('');
+                
                 toast.success('Registration Success');
                 navigate('/');
             }else{
