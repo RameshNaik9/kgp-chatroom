@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import './Chatroom.css';
+
 const socket = io(process.env.REACT_APP_SOCKET_URL) || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 
@@ -14,6 +15,7 @@ const ChatroomComponent = () => {
     const [editingMessageId, setEditingMessageId] = useState(null);
     const [newMessageContent, setNewMessageContent] = useState("");
     const [replyToMessage, setReplyToMessage] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
     const messagesEndRef = useRef(null);
 
     const userId = localStorage.getItem('userId');
@@ -134,13 +136,27 @@ const ChatroomComponent = () => {
         }
     };
 
+    // Filter messages based on search query
+    const filteredMessages = messages.filter(msg =>
+        msg.message.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className={`chatroom-container bg-${theme}`}>
             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
-                <h2 className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2>
-                <button className="btn btn-outline-primary" style={{ width: 'auto' }} onClick={toggleTheme}>
-                    Switch to {theme === 'light' ? 'Dark' : 'Light'} Theme
-                </button>
+                {/* <h2 className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2> */}
+                <div className="d-flex align-items-center">
+                    <input
+                        type="text"
+                        className="form-control me-2"
+                        placeholder="Search messages..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <button className="btn btn-outline-primary me-2" style={{ width: 'auto' }} onClick={toggleTheme}>
+                        Switch to {theme === 'light' ? 'Dark' : 'Light'} Theme
+                    </button>
+                </div>
             </div>
             <div className={`overlay ${isConnected ? 'd-none' : 'd-flex'}`}>
                 <div className="overlay-content">
@@ -151,7 +167,7 @@ const ChatroomComponent = () => {
                 </div>
             </div>
             <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} style={{ height: '70vh', overflowY: 'scroll' }}>
-                {messages.map((msg, index) => {
+                {filteredMessages.map((msg, index) => {
                     const isCurrentUser = msg.user._id === userId;
                     const isEditing = editingMessageId === msg._id;
                     return (
@@ -240,7 +256,6 @@ const ChatroomComponent = () => {
                                                         </a>
                                                     </li>
                                                 )}
-                                               
                                             </ul>
                                         </div>
                                     </div>
@@ -287,5 +302,3 @@ const ChatroomComponent = () => {
 }
 
 export default ChatroomComponent;
-
-
