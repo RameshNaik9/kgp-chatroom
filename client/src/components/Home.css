@@ -1,0 +1,62 @@
+.container {
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.col {
+    flex: 1;
+    max-width: 500px; /* Adjust max width as needed */
+    margin: 10px; /* Space between columns */
+}
+
+.text-center {
+    text-align: center;
+    position: relative;
+}
+
+.typing-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    overflow: hidden; /* Ensure that the text is hidden until revealed */
+    white-space: nowrap; /* Keep the text on a single line */
+    border-right: 3px solid #333; /* Cursor effect */
+    animation: typing 6s steps(30, end) infinite, blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    0% { width: 0; }
+    50% { width: 100%; }
+    100% { width: 0; } /* Reset the width to 0 after showing the full text */
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #333; }
+}
+
+.btn {
+    width: 150px; /* Fixed width for buttons */
+    padding: 10px;
+    font-size: 16px;
+}
+
+.card {
+    width: 100%;
+    max-width: 400px; /* Ensure card doesn't get too wide */
+    margin: 0 auto;
+}
+
+.card-body {
+    padding: 20px;
+}
