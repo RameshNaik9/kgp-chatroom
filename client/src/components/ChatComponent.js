@@ -65,13 +65,13 @@ const ChatroomComponent = () => {
             const messageData = {
                 user: userId,
                 message: message,
-                replyTo: replyToMessage?._id || null // Include replyTo in the message data
+                replyTo: replyToMessage?._id || null 
             };
 
             socket.emit("sendMessage", messageData, (response) => {
                 if (response.status === 'ok') {
                     setMessage('');
-                    setReplyToMessage(null); // Clear the reply state after sending the message
+                    setReplyToMessage(null); 
                     scrollToBottom();
                 } else {
                     alert('Message not sent. Please try again.');
@@ -122,7 +122,7 @@ const ChatroomComponent = () => {
     const handleReplyClick = (msg) => {
         setReplyToMessage({ 
            _id: msg._id,
-           fullName: msg.user.fullName, // Include the full name
+           fullName: msg.user.fullName,
            message: msg.message 
         });
     };
@@ -254,7 +254,7 @@ const ChatroomComponent = () => {
         <form onSubmit={handleSendMessage} className="p-3 border-top">
             {replyToMessage && (
                 <div className={`text-muted small p-2 rounded border mb-2 ${theme === "dark" ? "text-light" : "text-dark"}`}>
-                    Replying to: <strong>{replyToMessage.fullName}</strong> - {replyToMessage.message} {/* Show full name */}
+                    Replying to: <strong>{replyToMessage.fullName}</strong> - {replyToMessage.message} 
                     <button
                         className="btn btn-link btn-sm text-danger ms-2"
                         onClick={() => setReplyToMessage(null)}
