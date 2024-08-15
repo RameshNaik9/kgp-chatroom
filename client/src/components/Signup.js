@@ -39,9 +39,23 @@ function Signup() {
             <form onSubmit={handleSignup}>
                 <input
                     type="text"
+                    placeholder="Full Name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
                     placeholder="Roll Number"
                     value={rollNumber}
                     onChange={(e) => setRollNumber(e.target.value)}
+                    required
+                />
+                <input
+                    type="email"
+                    placeholder="Institute Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                 />
                 <input
@@ -49,20 +63,6 @@ function Signup() {
                     placeholder="Department"
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="Full Name"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    required
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     required
                 />
                 <input

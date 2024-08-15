@@ -11,14 +11,14 @@ const Home = () => {
       <div className="row">
         <div className="col">
           <div className="text-center">
-            <h2 className="typing-text">Welcome to Kgp-Chat-Box</h2>
+            <h2 className="typing-text">Welcome to Kgp-Chat-App</h2>
             <p>
-              This is an amazing platform where you can connect and chat with others. Sign in or register to start using the platform and explore all the functionalities we offer.
+              This is an amazing platform where you can connect and chat with Kgpians. Sign in or register to start using the platform and explore all the functionalities we offer.
             </p>
           </div>
         </div>
         <div className="col">
-          <h3 className="mx-5 my-3">Chat Box</h3>
+          <h3 className="mx-5 my-3">Web Chat</h3>
           <button
             className="btn btn-primary mb-2 mx-3"
             onClick={() => setActiveForm("login")}

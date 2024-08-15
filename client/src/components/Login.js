@@ -41,7 +41,7 @@ function Login() {
                 <input
                     type="email"
                     id="email"
-                    placeholder="Email"
+                    placeholder="Institute Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
