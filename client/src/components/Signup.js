@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
+// import './ToastStyles.css';
+
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net'
 
@@ -24,13 +28,14 @@ function Signup() {
                 password,
             });
             if(response){
-                navigate('/login');
+                toast.success('Registration Success');
+                navigate('/');
             }else{
-                alert('Signup failed');
+                toast.error('Signup failed');
             }
         } catch (error) {
             console.error('Signup failed:', error.message);
-            alert('Signup failed.');
+            toast.error('Signup failed.');
         }
     };
 
@@ -72,10 +77,12 @@ function Signup() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Signup</button>
+                <button className='but' type="submit">Signup</button>
             </form>
+            <ToastContainer toastClassName="Toastify__toast--custom" />
         </div>
     );
+
 }
 
 export default Signup;
