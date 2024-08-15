@@ -249,7 +249,7 @@ const ChatroomComponent = () => {
             </div>
             <form onSubmit={handleSendMessage} className="p-3 border-top">
                 {replyToMessage && (
-                    <div className="text-muted small p-2 border rounded bg-light mb-2">
+                    <div className={`text-muted small p-2 rounded border mb-2 ${theme === "dark" ? "text-light" : "text-dark"}`}>
                                             Replying to: {replyToMessage.message}
                     <button
                         className="btn btn-link btn-sm text-danger ms-2"
