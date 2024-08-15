@@ -83,14 +83,14 @@
     border-radius: 5px;
     color: white;
     word-wrap: break-word;
-    max-width: 50%;
-}
-
-.message-box textarea {
+    max-width: 80vw;
+    /* Adjust this value based on your needs */
+    white-space: pre-wrap;
+    /* Corrected the use of quotes */
     width: auto;
-    max-width: 70%;
-    min-width: 50px;
-    word-wrap: break-word;
+    height: auto;
+    box-sizing: border-box;
+    /* Ensure padding is included in the width calculation */
 }
 
 .message-box .dropdown {
@@ -100,7 +100,7 @@
     transform: translateY(-30%);
     transform: translateX(25%);
     margin-left: 0px;
-    z-index: 50;
+    z-index: 55;
 }
 
 .message-box .dropdown-menu {
@@ -118,10 +118,23 @@
     background-color: #28a745;
 }
 
-.message-wrapper {
-
+/* .message-wrapper {
     display: block;
     width: 1;
     justify-content: flex-end;
     position: relative;
+} */
+
+@media (min-width: 768px) {
+    .message-box {
+        max-width: 50vw;
+        /* Adjust this value for mobile */
+    }
+}
+
+@media (min-width: 1024px) {
+    .message-box {
+        max-width: 40vw;
+        /* Further adjust for laptop screens */
+    }
 }
