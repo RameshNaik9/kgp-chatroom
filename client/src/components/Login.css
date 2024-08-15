@@ -20,9 +20,9 @@
     box-sizing: border-box;
 }
 
-/* Style the submit button */
-.login-container button,
-.signup-container button {
+/* Style the submit .but */
+.login-container .but,
+.signup-container .but {
     width: 100%;
     padding: 12px;
     background-color: #007bff;
@@ -34,8 +34,8 @@
     transition: background-color 0.3s ease;
 }
 
-.login-container button:hover,
-.signup-container button:hover {
+.login-container .but:hover,
+.signup-container .but:hover {
     background-color: #0056b3;
 }
 
@@ -49,8 +49,8 @@
 
     .login-container input,
     .signup-container input,
-    .login-container button,
-    .signup-container button {
+    .login-container .but,
+    .signup-container .but {
         font-size: 14px;
         padding: 10px;
     }
@@ -65,8 +65,8 @@
 
     .login-container input,
     .signup-container input,
-    .login-container button,
-    .signup-container button {
+    .login-container .but,
+    .signup-container .but {
         font-size: 12px;
         padding: 8px;
     }

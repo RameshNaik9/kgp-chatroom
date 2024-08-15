@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css';
+// import './ToastStyles.css';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net'
 
@@ -13,7 +16,7 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         if (email.trim() === '' || password.trim() === '') {
-            alert('Please provide both username and password.');
+            toast.error('Please provide both email and password.');
             return;
         }
         try {
@@ -24,16 +27,16 @@ function Login() {
             if(response && response.data.token){
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('userId', response.data.user._id);
+                toast.success('Login successful!');
                 navigate('/chat');
             }else{
-                alert('Invalid username or password. Please try again.');
+                toast.error('Invalid email or password. Please try again.');
             }
         } catch (error) {
             console.error('Login failed:', error.message);
-            alert('Login failed.');
+            toast.error('Invalid Credentials');
         }
     };
-
 
     return (
         <div className="login-container">
@@ -56,8 +59,9 @@ function Login() {
                     required
                     autoComplete="current-password"
                 />
-                <button type="submit">Login</button>
+                <button className='but' type="submit">Login</button>
             </form>
+            <ToastContainer toastClassName="Toastify__toast--custom" />
         </div>
     );
 }
