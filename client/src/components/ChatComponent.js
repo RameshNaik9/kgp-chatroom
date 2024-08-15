@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import './Chatroom.css';
-const socket = io(process.env.REACT_APP_SOCKET_URL) || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net'
-const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net'
+const socket = io(process.env.REACT_APP_SOCKET_URL) || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 
 const ChatroomComponent = () => {
     const [message, setMessage] = useState('');
@@ -15,7 +15,7 @@ const ChatroomComponent = () => {
 
     const userId = localStorage.getItem('userId');
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         axios.get(`${apiBaseUrl}/api/messages`)
             .then(response => {
                 setMessages(response.data);
@@ -50,7 +50,9 @@ const ChatroomComponent = () => {
     }, [isConnected]);
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+        setTimeout(() => {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+        }, 0);
     };
 
     const handleSendMessage = (e) => {

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const http = require('http');
-const path = require('path'); // Import path module
+const path = require('path');
 const cors = require('cors');
 const { Server } = require('socket.io');
 const connectDB = require('./src/db/db');
@@ -49,6 +49,10 @@ io.on('connection', (socket) => {
 // Connect to MongoDB
 connectDB();
 
+// Serve favicon
+app.get('/favicon.ico', (req, res) => {
+    res.sendFile(path.join(buildPath, 'favicon.ico'));
+});
 app.get('/*', (req, res) => {
   res.sendFile('index.html',{ root : buildPath});
 });
