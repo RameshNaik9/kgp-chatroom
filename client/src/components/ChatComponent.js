@@ -145,7 +145,7 @@ const ChatroomComponent = () => {
     return (
         <div className={`chatroom-container bg-${theme}`}>
             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
-                <h2 className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2>
+                <strong><h2 style={{fontSize:'18px',}} className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2></strong>
                 <div className=" fs-6 d-flex align-items-center">
                     <input
                         style={{borderRadius:'20px'}}
@@ -201,13 +201,15 @@ const ChatroomComponent = () => {
                                             onChange={(e) => setNewMessageContent(e.target.value)}
                                         />
                                         <button
-                                            className="btn btn-success"
+                                            style={{backgroundColor:'green'}}
+                                            className="btn2"
                                             onClick={() => handleEditMessageSubmit(msg._id)}
                                         >
                                             Save
                                         </button>
                                         <button
-                                            className="btn btn-secondary ms-2"
+                                            style={{backgroundColor:'grey',width:'135px'}}
+                                            className="btn2 ms-2"
                                             onClick={() => setEditingMessageId(null)}
                                         >
                                             Cancel
