@@ -175,7 +175,7 @@ const ChatroomComponent = () => {
                     <p>Connecting to server...</p>
                 </div>
             </div>
-            <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} style={{ height: '70vh', overflowY: 'scroll' }}>
+            <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} >
                 {filteredMessages.map((msg, index) => {
                     const isCurrentUser = msg.user._id === userId;
                     const isEditing = editingMessageId === msg._id;
@@ -199,13 +199,6 @@ const ChatroomComponent = () => {
                                             className="form-control me-2"
                                             value={newMessageContent}
                                             onChange={(e) => setNewMessageContent(e.target.value)}
-                                            style={{
-                                                width: 'auto',
-                                                maxWidth: '70%',
-                                                minWidth: '50px',
-                                                whiteSpace: 'pre-wrap',
-                                                overflowWrap: 'break-word',
-                                            }}
                                         />
                                         <button
                                             className="btn btn-success"
@@ -223,12 +216,13 @@ const ChatroomComponent = () => {
                                 ) : (
                                     <div
                                         className={`message-box p-2 rounded text-white ${isCurrentUser ? 'bg-primary' : 'bg-success'}`}
-                                        style={{
-                                            wordWrap: 'break-word',
-                                            whiteSpace: 'pre-wrap',
-                                            maxWidth: '90vw',
-                                        }}
-                                    >
+                                        // style={{
+                                        //     wordWrap: 'break-word',
+                                        //     whiteSpace: 'pre-wrap',
+                                        //     maxWidth: '90vw',
+                                        // }}
+                                        >
+                                            <div/>
                                         {msg.message}
                                         <div className="dropdown" style={{ marginRight: 'auto' }}>
                                             <button
