@@ -148,8 +148,9 @@ const ChatroomComponent = () => {
                 <h2 className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2>
                 <div className=" fs-6 d-flex align-items-center">
                     <input
+                        style={{borderRadius:'20px'}}
                         type="text"
-                        className="form-control me-2"
+                        className="form-control me-3"
                         placeholder="Search messages or users..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}

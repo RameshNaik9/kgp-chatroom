@@ -5,7 +5,7 @@ import logo from '../media/iit-kgp-logo.png'
 const Header = () => {
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style={{zIndex:'inherit'}}>
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
             <img className='mx-2' src={logo} alt="KGP Chatroom Logo" style={{ width: '40px', height: '40px' }} />
