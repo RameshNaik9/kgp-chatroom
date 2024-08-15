@@ -1,9 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../media/iit-kgp-logo.png';
-import './Header.css'
+import './Header.css';
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    navigate('/');
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -12,9 +20,7 @@ const Header = () => {
             <img className='mx-2' src={logo} alt="KGP Chatroom Logo" style={{ width: '40px', height: '40px' }} />
             <span>KGP Chatroom</span>
           </Link>
-          <Link to="/" className="btn-container">
-            <button className="btn1 btn-primary">Logout</button>
-          </Link>
+          <button className="btn1 btn-primary" onClick={handleLogout}>Logout</button>
         </div>
       </nav>
     </div>
