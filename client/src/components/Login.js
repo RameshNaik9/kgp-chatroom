@@ -3,6 +3,8 @@ import axios from 'axios';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net'
+
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,7 +17,7 @@ function Login() {
             return;
         }
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/login`, {
+            const response = await axios.post(`${apiBaseUrl}/api/auth/login`, {
                 email,
                 password,
             });

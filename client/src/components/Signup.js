@@ -3,6 +3,8 @@ import axios from 'axios';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net'
+
 function Signup() {
     const [rollNumber, setRollNumber] = useState('');
     const [department, setDepartment] = useState('');
@@ -14,7 +16,7 @@ function Signup() {
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/register`, {
+            const response = await axios.post(`${apiBaseUrl}/api/auth/register`, {
                 rollNumber,
                 department,
                 fullName,
