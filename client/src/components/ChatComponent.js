@@ -83,7 +83,7 @@ const ChatroomComponent = () => {
     };
 
     const toggleTheme = () => {
-        setTheme(theme === 'light' ? 'dark' : 'light');
+        setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
     };
 
     const handleDeleteMessage = (messageId) => {
@@ -144,7 +144,7 @@ const ChatroomComponent = () => {
     return (
         <div className={`chatroom-container bg-${theme}`}>
             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
-                {/* <h2 className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2> */}
+                <h2 className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2>
                 <div className="d-flex align-items-center">
                     <input
                         type="text"
@@ -153,9 +153,16 @@ const ChatroomComponent = () => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
-                    <button className="btn btn-outline-primary me-2" style={{ width: 'auto' }} onClick={toggleTheme}>
-                        Switch to {theme === 'light' ? 'Dark' : 'Light'} Theme
-                    </button>
+                    <div className="form-check form-switch ms-3">
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            role="switch"
+                            id="themeSwitch"
+                            checked={theme === 'dark'}
+                            onChange={toggleTheme}
+                        />
+                    </div>
                 </div>
             </div>
             <div className={`overlay ${isConnected ? 'd-none' : 'd-flex'}`}>
