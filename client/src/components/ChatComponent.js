@@ -124,7 +124,14 @@ const ChatroomComponent = () => {
                         placeholder="Enter your message"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
-                        required
+                    onKeyDown={handleKeyDown}
+                    style={{
+                        width: 'auto',
+                        maxWidth: '70%',
+                        minWidth: '50px',
+                        whiteSpace: 'pre-wrap',
+                        overflowWrap: 'break-word',
+                    }}
                     />
                     <button type="submit" className="btn btn-primary">Send</button>
                 </div>
