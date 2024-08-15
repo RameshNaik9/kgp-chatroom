@@ -303,7 +303,7 @@ const ChatroomComponent = () => {
                         overflowWrap: 'break-word',
                     }}
                 />
-                <button type="submit" className="btn btn-primary">Send</button>
+                <button type="submit" className="btn1">Send</button>
             </div>
         </form>
     </div>
