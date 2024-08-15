@@ -13,7 +13,7 @@ const ChatroomComponent = () => {
     const [theme, setTheme] = useState('light');
     const [editingMessageId, setEditingMessageId] = useState(null);
     const [newMessageContent, setNewMessageContent] = useState("");
-    const [replyToMessage, setReplyToMessage] = useState(null); // New state for reply
+    const [replyToMessage, setReplyToMessage] = useState(null);
     const messagesEndRef = useRef(null);
 
     const userId = localStorage.getItem('userId');
@@ -120,7 +120,11 @@ const ChatroomComponent = () => {
     };
 
     const handleReplyClick = (msg) => {
-        setReplyToMessage(msg); // Set the message being replied to
+        setReplyToMessage({ 
+           _id: msg._id,
+           fullName: msg.user.fullName, // Include the full name
+           message: msg.message 
+        });
     };
 
     const handleKeyDown = (e) => {
@@ -247,10 +251,10 @@ const ChatroomComponent = () => {
                 })}
                 <div ref={messagesEndRef} />
             </div>
-            <form onSubmit={handleSendMessage} className="p-3 border-top">
-                {replyToMessage && (
-                    <div className={`text-muted small p-2 rounded border mb-2 ${theme === "dark" ? "text-light" : "text-dark"}`}>
-                                            Replying to: {replyToMessage.message}
+        <form onSubmit={handleSendMessage} className="p-3 border-top">
+            {replyToMessage && (
+                <div className={`text-muted small p-2 rounded border mb-2 ${theme === "dark" ? "text-light" : "text-dark"}`}>
+                    Replying to: <strong>{replyToMessage.fullName}</strong> - {replyToMessage.message} {/* Show full name */}
                     <button
                         className="btn btn-link btn-sm text-danger ms-2"
                         onClick={() => setReplyToMessage(null)}
@@ -260,10 +264,10 @@ const ChatroomComponent = () => {
                 </div>
             )}
             <div className="input-group">
-                    <input
-                        type="text"
+                <input
+                    type="text"
                     className="form-control"
-                        placeholder="Enter your message"
+                    placeholder="Enter your message"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyDown={handleKeyDown}
@@ -275,7 +279,7 @@ const ChatroomComponent = () => {
                         overflowWrap: 'break-word',
                     }}
                 />
-                    <button type="submit" className="btn btn-primary">Send</button>
+                <button type="submit" className="btn btn-primary">Send</button>
             </div>
         </form>
     </div>
