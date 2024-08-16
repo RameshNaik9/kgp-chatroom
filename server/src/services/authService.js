@@ -1,13 +1,16 @@
-// /src/services/authService.js
 const User = require('../models/User');
 const { hashPassword, comparePassword } = require('../utils/hasher');
 const { generateToken } = require('../helpers/jwtHelper');
 
 exports.registerUser = async (rollNumber, department, fullName, email, password) => {
     // Check if the user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email});
     if (existingUser) {
-        throw new Error('User already exists');
+        throw new Error('Email already exists');
+    }
+    const existingUser1 = await User.findOne({ rollNumber});
+    if (existingUser1) {
+        throw new Error('RollNumber already exists');
     }
 
     // Hash the password
