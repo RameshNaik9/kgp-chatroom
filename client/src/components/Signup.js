@@ -3,8 +3,7 @@ import axios from 'axios';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
-// import './ToastStyles.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net'
 
@@ -26,21 +25,27 @@ function Signup() {
                 email,
                 password,
             });
-            if(response){
+
+            if (response && response.data) {
                 setRollNumber('');
                 setDepartment('');
                 setFullName('');
                 setEmail('');
                 setPassword('');
                 
-                toast.success('Registration Success');
+                toast.success('Registration successful!');
                 navigate('/');
-            }else{
-                toast.error('Signup failed');
+            } else {
+                toast.error('Signup failed. Please try again.');
             }
         } catch (error) {
             console.error('Signup failed:', error.message);
-            toast.error('Signup failed.');
+            
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error); 
+            } else {
+                toast.error('An unexpected error occurred. Please try again.');
+            }
         }
     };
 
