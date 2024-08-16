@@ -6,13 +6,15 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
+
 const Home = () => {
   const [activeForm, setActiveForm] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     const checkServerStatus = () => {
-      axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/health-check`)
+      axios.get(`${apiBaseUrl}/api/health-check`)
         .then(() => {
           if (!isConnected) {
             setIsConnected(true);
