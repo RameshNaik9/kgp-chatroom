@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css';
-// import './ToastStyles.css';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,17 +23,23 @@ function Login() {
                 email,
                 password,
             });
-            if(response && response.data.token){
+
+            if (response && response.data.token) {
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('userId', response.data.user._id);
                 toast.success('Login successful!');
                 navigate('/chat');
-            }else{
+            } else {
                 toast.error('Invalid email or password. Please try again.');
             }
         } catch (error) {
             console.error('Login failed:', error.message);
-            toast.error('Invalid Credentials');
+            
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error); 
+            } else {
+                toast.error('An unexpected error occurred. Please try again.');
+            }
         }
     };
 

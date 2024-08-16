@@ -1,14 +1,13 @@
-// /src/validations/profileValidation.js
 const Joi = require('joi');
 
 // Validation schema for user signup
 const signupValidation = (data) => {
     const schema = Joi.object({
         rollNumber: Joi.string()
-            .pattern(/^[0-9]{2}[A-Z]{2}[0-9]{5}$/) // Example pattern for roll number: 2 digits, 2 letters, 5 digits
+            .pattern(/^[0-9]{2}[A-Z]{2}[0-9]{5}$/)
             .required()
             .messages({
-                'string.pattern.base': 'Roll number must follow the format: 4 digits, 2 letters, 4 digits.',
+                'string.pattern.base': 'Invalid Roll Number',
             }),
         department: Joi.string()
             .min(2)
@@ -29,6 +28,12 @@ const signupValidation = (data) => {
         email: Joi.string()
             .email()
             .required()
+            .custom((value, helpers) => {
+                if (!value.endsWith('@kgpian.iitkgp.ac.in')) {
+                    return helpers.message('Please use your IIT Kharagpur email.');
+                }
+                return value;
+            })
             .messages({
                 'string.email': 'Please provide a valid email address.',
             }),
