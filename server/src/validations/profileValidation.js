@@ -3,20 +3,6 @@ const Joi = require('joi');
 // Validation schema for user signup
 const signupValidation = (data) => {
     const schema = Joi.object({
-        rollNumber: Joi.string()
-            .pattern(/^[0-9]{2}[A-Z]{2}[0-9]{5}$/)
-            .required()
-            .messages({
-                'string.pattern.base': 'Invalid Roll Number',
-            }),
-        department: Joi.string()
-            .min(2)
-            .max(50)
-            .required()
-            .messages({
-                'string.min': 'Department name must be at least 2 characters long.',
-                'string.max': 'Department name must be less than 50 characters long.',
-            }),
         fullName: Joi.string()
             .min(3)
             .max(100)
@@ -25,7 +11,13 @@ const signupValidation = (data) => {
                 'string.min': 'Full name must be at least 3 characters long.',
                 'string.max': 'Full name must be less than 100 characters long.',
             }),
-        email: Joi.string()
+        rollNumber: Joi.string()
+            .pattern(/^[0-9]{2}[A-Z]{2}[0-9A-Z]{5}$/) 
+            .required()
+            .messages({
+                'string.pattern.base': 'Invalid Roll Number',
+            }),
+            email: Joi.string()
             .email()
             .required()
             .custom((value, helpers) => {
@@ -33,6 +25,14 @@ const signupValidation = (data) => {
                     return helpers.message('Please use your IIT Kharagpur email.');
                 }
                 return value;
+            }),
+        department: Joi.string()
+            .min(2)
+            .max(50)
+            .required()
+            .messages({
+                'string.min': 'Department name must be at least 2 characters long.',
+                'string.max': 'Department name must be less than 50 characters long.',
             })
             .messages({
                 'string.email': 'Please provide a valid email address.',
