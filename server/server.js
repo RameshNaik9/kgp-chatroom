@@ -33,6 +33,11 @@ app.use(express.static(path.join(__dirname, 'client', 'build')));
 // Routes
 app.use('/api', routes);
 
+// Health Check Route
+app.get('/api/health-check', (req, res) => {
+    res.status(200).json({ status: 'OK' });
+});
+
 // Error Handling Middleware
 app.use(errorHandler);
 
