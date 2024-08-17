@@ -2,6 +2,8 @@ import React, { useState, useRef, useLayoutEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import './Chatroom.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const socket = io(process.env.REACT_APP_SOCKET_URL) || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
@@ -76,7 +78,7 @@ const ChatroomComponent = () => {
                     setReplyToMessage(null); 
                     scrollToBottom();
                 } else {
-                    alert('Message not sent. Please try again.');
+                    toast.error('Session expired. Login again');
                 }
             });
         }
@@ -93,7 +95,7 @@ const ChatroomComponent = () => {
                     prevMessages.filter((msg) => msg._id !== messageId)
                 );
             } else {
-                alert("Message not deleted. Please try again.");
+                toast.error('Session expired. Login again');
             }
         });
     };
@@ -116,7 +118,7 @@ const ChatroomComponent = () => {
                 setEditingMessageId(null);
                 setNewMessageContent("");
             } else {
-                alert("Message not edited. Please try again.");
+                toast.error('Session expired. Login again');
             }
         });
     };
@@ -144,6 +146,7 @@ const ChatroomComponent = () => {
 
     return (
         <div className={`chatroom-container bg-${theme}`}>
+            <ToastContainer /> 
             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
                 <strong><h2 style={{fontSize:'18px',}} className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2></strong>
                 <div className=" fs-6 d-flex align-items-center">
