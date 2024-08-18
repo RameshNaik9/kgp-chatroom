@@ -41,9 +41,11 @@ const signupValidation = (data) => {
             .min(8)
             .max(128)
             .required()
+            .pattern(new RegExp('^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9])'))
             .messages({
                 'string.min': 'Password must be at least 8 characters long.',
                 'string.max': 'Password must be less than 128 characters long.',
+                'string.pattern.base': 'Keep strong Password',
             }),
     });
 
@@ -63,9 +65,11 @@ const loginValidation = (data) => {
             .min(8)
             .max(128)
             .required()
+            .pattern(new RegExp('^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9])'))
             .messages({
                 'string.min': 'Password must be at least 8 characters long.',
                 'string.max': 'Password must be less than 128 characters long.',
+                'string.pattern.base': 'keep strong Password!',
             }),
     });
 

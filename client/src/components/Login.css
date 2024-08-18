@@ -20,6 +20,27 @@
     box-sizing: border-box;
 }
 
+/* Container for the password input and icon */
+.mb-3 {
+    position: relative;
+    width: 100%;
+}
+
+/* Style the password input to allow space for the icon */
+.mb-3 input[type="password"],
+.mb-3 input[type="text"] {
+    padding-right: 40px; /* Space for the eye icon */
+}
+
+/* Style the icon for toggling password visibility */
+.mb-3 span {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
 /* Style the submit .but */
 .login-container .but,
 .signup-container .but {
