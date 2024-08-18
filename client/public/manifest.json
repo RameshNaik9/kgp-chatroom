@@ -1,6 +1,7 @@
 {
   "short_name": "KGP Chat Room App",
   "name": "KGP Chat Room App",
+  "description": "IIT KHARAHPUR Chatroom App",
   "icons": [
     {
       "src": "favicon.ico",
