@@ -4,6 +4,7 @@ import axios from 'axios';
 import './Chatroom.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import moment from 'moment';
 
 const socket = io(process.env.REACT_APP_SOCKET_URL) || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
@@ -188,7 +189,9 @@ const ChatroomComponent = () => {
                             className={`d-flex flex-column mb-3 ${isCurrentUser ? 'align-items-end' : 'align-items-start'}`}
                         >
                             <div className="small text-muted mb-1">
-                                {msg.user.fullName} {msg.isEdited && <span>(edited)</span>}
+                                {msg.user.fullName} 
+                                {` • ${moment(msg.createdAt).format('hh:mm A')}`}
+                                {msg.isEdited && <span>(edited)</span>}
                             </div>
                             <div className="message-wrapper">
                                 {msg.replyTo && (
