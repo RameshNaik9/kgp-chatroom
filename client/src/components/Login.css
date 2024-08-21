@@ -60,6 +60,25 @@
     background-color: #0056b3;
 }
 
+.mb-2 {
+    position: relative;
+    width: 100%;
+}
+
+.mb-2 input[type="password"],
+.mb-2 input[type="text"] {
+    padding-right: 40px;
+}
+
+
+.mb-2 span {
+    position: absolute;
+    top: 30%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
     .login-container,

@@ -192,11 +192,17 @@ const ChatroomComponent = () => {
                                 {msg.user.fullName} 
                                 {` • ${moment(msg.createdAt).format('hh:mm A')}`}
                                 {msg.isEdited && <span>(edited)</span>}
+                                
+                                {msg.replyTo && msg.replyTo.user && (
+                                    <div className="small text-muted mb-1">
+                                        Replying to: {msg.replyTo.user.fullName}
+                                    </div>
+                                )}
                             </div>
                             <div className="message-wrapper">
                                 {msg.replyTo && (
                                     <div className={`reply-to-wrapper small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
-                                        Replying to: {msg.replyTo.message}
+                                        {msg.replyTo.message}
                                     </div>
                                 )}
                                 {isEditing ? (

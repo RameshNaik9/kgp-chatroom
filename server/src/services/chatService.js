@@ -8,8 +8,15 @@ const saveMessage = async (messageData) => {
 
 const getMessageWithPopulation = async (messageId) => {
     return await ChatMessage.findById(messageId)
-        .populate('user', 'fullName')
-        .populate('replyTo', 'message');
+        .populate('user', 'fullName')  
+        .populate({
+            path: 'replyTo',            
+            populate: {
+                path: 'user',            
+                select: 'fullName'       
+            },
+            select: 'message'           
+        });
 };
 
 const deleteMessage = async (messageId) => {
@@ -22,8 +29,15 @@ const editMessage = async (messageId, newMessage) => {
 
 const getAllMessages = async () => {
     return await ChatMessage.find()
-        .populate('user', 'fullName')
-        .populate('replyTo', 'message');
+        .populate('user', 'fullName') 
+        .populate({
+            path: 'replyTo',            
+            populate: {
+                path: 'user',            
+                select: 'fullName'       
+            },
+            select: 'message'            
+        });
 };
 
 module.exports = {
