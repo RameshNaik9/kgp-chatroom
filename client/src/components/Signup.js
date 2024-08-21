@@ -133,10 +133,11 @@ function Signup() {
                 <span onClick={handleToggle}>
                         <Icon icon={icon} size={25} />
                 </span>
+                 </div>
                 {passwordError && (
                     <p className="password-error mt-1 fs-14" style={{color:'red'}}>{passwordError}</p> // Display error message
                 )}
-                </div>
+               
                 <button className="but" type="submit">Signup</button>
             </form>
             <ToastContainer toastClassName="Toastify__toast--custom" />
