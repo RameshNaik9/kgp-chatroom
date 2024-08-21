@@ -4,6 +4,7 @@ import axios from 'axios';
 import './Chatroom.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import moment from 'moment';
 
 const socket = io(process.env.REACT_APP_SOCKET_URL) || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
@@ -188,11 +189,13 @@ const ChatroomComponent = () => {
                             className={`d-flex flex-column mb-3 ${isCurrentUser ? 'align-items-end' : 'align-items-start'}`}
                         >
                             <div className="small text-muted mb-1">
-                                {msg.user.fullName} {msg.isEdited && <span>(edited)</span>}
+                                {msg.user.fullName} 
+                                {` • ${moment(msg.createdAt).format('hh:mm A')}`}
+                                {msg.isEdited && <span>(edited)</span>}
                             </div>
                             <div className="message-wrapper">
                                 {msg.replyTo && (
-                                    <div className={`small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
+                                    <div className={`reply-to-wrapper small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
                                         Replying to: {msg.replyTo.message}
                                     </div>
                                 )}
@@ -271,28 +274,33 @@ const ChatroomComponent = () => {
             </div>
         <form onSubmit={handleSendMessage} className="p-3 border-top">
             {replyToMessage && (
-                <div className={`text-muted small p-2 rounded border mb-2 d-flex justify-content-between align-items-center ${theme === "dark" ? "text-light" : "text-dark"}`}>
+                <div className={`reply-to-container text-muted small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
                     <span>
                         Replying to: <strong>{replyToMessage.fullName}</strong> - {replyToMessage.message}
                     </span>
-                    <button
-                        className="btn1 btn-sm"
-                        onClick={() => setReplyToMessage(null)}>
-                        Cancel
-                    </button>
+                    <div className="cancel-button">
+                        <button
+                            className="btn1 btn-sm"
+                            onClick={() => setReplyToMessage(null)}>
+                            Cancel
+                        </button>
+                    </div>
                 </div>
-
             )}
-            <div className="input-group"> 
-                <textarea className="form-control" 
-                    placeholder="Enter your message" 
-                    value={message} 
-                    onChange={(e) => setMessage(e.target.value)} 
-                    onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSendMessage(e); } }} 
-                    style={{ resize: "none", height: "auto", overflow: "auto" }} rows={1} /> 
-                <button type="submit" className="btn1 btn-primary" style={{ height: "auto" }}> Send </button> 
+            <div className="input-group">
+                <textarea
+                    className="form-control"
+                    placeholder="Enter your message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSendMessage(e); } }}
+                    style={{ resize: "none", height: "auto", overflow: "auto" }}
+                    rows={1}
+                />
+                <button type="submit" className="btn1 btn-primary" style={{ height: "auto" }}>Send</button>
             </div>
         </form>
+
     </div>
 );
 }

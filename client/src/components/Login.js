@@ -67,7 +67,7 @@ function Login() {
                     required
                     autoComplete="username"
                 />
-                <div className="mb-3">
+                <div className="mb-4">
                     <input
                         type={type}
                         name="password"
