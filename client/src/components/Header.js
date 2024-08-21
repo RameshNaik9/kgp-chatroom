@@ -13,10 +13,10 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <div className="header-class">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div className="container-fluid d-flex justify-content-between align-items-center">
-          <Link to="/" className="d-flex align-items-center text-white text-decoration-none">
+          <Link to="#" className="d-flex align-items-center text-white text-decoration-none">
             <img className='mx-2' src={logo} alt="KGP Chatroom Logo" style={{ width: '40px', height: '40px' }} />
             <span>KGP Chatroom</span>
           </Link>
