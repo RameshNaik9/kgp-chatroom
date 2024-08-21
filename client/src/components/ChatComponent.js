@@ -274,28 +274,33 @@ const ChatroomComponent = () => {
             </div>
         <form onSubmit={handleSendMessage} className="p-3 border-top">
             {replyToMessage && (
-                <div className={`text-muted small p-2 rounded border mb-2 d-flex justify-content-between align-items-center ${theme === "dark" ? "text-light" : "text-dark"}`}>
+                <div className={`reply-to-container text-muted small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
                     <span>
                         Replying to: <strong>{replyToMessage.fullName}</strong> - {replyToMessage.message}
                     </span>
-                    <button
-                        className="btn1 btn-sm"
-                        onClick={() => setReplyToMessage(null)}>
-                        Cancel
-                    </button>
+                    <div className="cancel-button">
+                        <button
+                            className="btn1 btn-sm"
+                            onClick={() => setReplyToMessage(null)}>
+                            Cancel
+                        </button>
+                    </div>
                 </div>
-
             )}
-            <div className="input-group"> 
-                <textarea className="form-control" 
-                    placeholder="Enter your message" 
-                    value={message} 
-                    onChange={(e) => setMessage(e.target.value)} 
-                    onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSendMessage(e); } }} 
-                    style={{ resize: "none", height: "auto", overflow: "auto" }} rows={1} /> 
-                <button type="submit" className="btn1 btn-primary" style={{ height: "auto" }}> Send </button> 
+            <div className="input-group">
+                <textarea
+                    className="form-control"
+                    placeholder="Enter your message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSendMessage(e); } }}
+                    style={{ resize: "none", height: "auto", overflow: "auto" }}
+                    rows={1}
+                />
+                <button type="submit" className="btn1 btn-primary" style={{ height: "auto" }}>Send</button>
             </div>
         </form>
+
     </div>
 );
 }
