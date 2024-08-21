@@ -126,13 +126,35 @@
     cursor: pointer;
 
 }
+.message-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Default alignment to the left */
+    width: 100%;
+}
 
-/* .message-wrapper {
-    display: block;
-    width: 1;
-    justify-content: flex-end;
-    position: relative;
-} */
+.align-items-end .message-wrapper {
+    align-items: flex-end;
+    /* Align to the right for the current user */
+}
+
+.reply-to-wrapper {
+    max-width: 80%;
+    margin-bottom: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    border-radius: 5px;
+    white-space: pre-wrap;
+    text-align: left;
+}
+
+.align-items-end .reply-to-wrapper {
+    align-self: flex-end;
+    /* Align the reply box to the right for the current user */
+    text-align: left;
+}
+
 
 .btn2 {
     width: 150px;

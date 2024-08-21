@@ -195,7 +195,7 @@ const ChatroomComponent = () => {
                             </div>
                             <div className="message-wrapper">
                                 {msg.replyTo && (
-                                    <div className={`small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
+                                    <div className={`reply-to-wrapper small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
                                         Replying to: {msg.replyTo.message}
                                     </div>
                                 )}
