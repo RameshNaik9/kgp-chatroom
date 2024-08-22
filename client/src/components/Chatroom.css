@@ -64,7 +64,7 @@
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 10;
+    z-index: 100;
 }
 
 .overlay-content {
@@ -94,7 +94,7 @@
     /* Ensure padding is included in the width calculation */
 }
 
-.message-box .dropdown {
+/* .message-box .dropdown {
     position: absolute;
     right: -30px;
     top: 50%;
@@ -102,6 +102,18 @@
     transform: translateX(25%);
     margin-left: 0px;
     z-index: 55;
+} */
+
+.dropdown-toggle {
+    position: absolute;
+    top: 0px; 
+    left: 0px; 
+    background: transparent; 
+    border: none; 
+}
+
+.dropdown-item{
+    border-radius: 5px;
 }
 
 .message-box .dropdown-menu {
@@ -128,6 +140,7 @@
 
 }
 .message-wrapper {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
