@@ -230,19 +230,18 @@ const ChatroomComponent = () => {
                                 ) : (
                                     <div
                                         className={`message-box p-2 rounded text-white ${isCurrentUser ? 'bg-primary' : 'bg-success'}`}
-                                        >
-                                            <div/>
+                                    >
                                         {msg.message}
                                         <div className="dropdown" style={{ marginRight: 'auto' }}>
                                             <button
-                                                className="btn dropdown-toggle dropdown-toggle-split p-0 ml"
+                                                className={` dropdown-toggle ${theme === 'dark' ? 'text-light' : 'text-dark'}`}
+                                                type="button"
+                                                id={`dropdownMenuButton-${msg._id}`}
                                                 data-bs-toggle="dropdown"
                                                 aria-expanded="false"
-                                                style={{ border: 'none', background: 'transparent' }}
                                             >
-                                                <span className="visually-hidden">Toggle Dropdown</span>
                                             </button>
-                                            <ul className="dropdown-menu dropdown-menu-end">
+                                            <ul className="dropdown-menu dropdown-menu-end p-0" aria-labelledby={`dropdownMenuButton-${msg._id}`}>
                                                 {isCurrentUser ? (
                                                     <>
                                                         <li>
