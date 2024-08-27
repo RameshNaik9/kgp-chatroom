@@ -4,7 +4,7 @@ const urlsToCache = [
   "/index.html",
   "/manifest.json",
   "/icons/img2.png",
-  "/icons/img-icon.png",
+  "/icons/img1-icon.png",
   "/screenshots/screenshot1.png",
   "/screenshots/screenshot2.png"
   // Add more assets to cache as needed
