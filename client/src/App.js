@@ -1,5 +1,5 @@
 import React from 'react';
-import RoutesConfig from './routes';  // Import the updated RoutesConfig
+import RoutesConfig from './routes';  
 
 function App() {
     return <RoutesConfig />;

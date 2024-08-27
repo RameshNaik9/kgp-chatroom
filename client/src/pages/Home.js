@@ -50,7 +50,7 @@ const Home = () => {
       <div className="row">
         <div className="col">
           <div className="text-center">
-            <h2 className="typing-text">Welcome to Kgp-Chat-App</h2>
+            <h2 className="typing-text">Welcome to Kgp Chat App</h2>
             <p>
               This is an amazing platform where you can connect and chat with Kgpians. Sign in or register to start using the platform and explore all the functionalities we offer.
             </p>
