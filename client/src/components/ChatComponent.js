@@ -5,10 +5,11 @@ import './Chatroom.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment';
+import { useEffect } from 'react';
 
 const socket = io(process.env.REACT_APP_SOCKET_URL) || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
-
+const vapid_public_key=process.env.REACT_APP_VAPID_PUBLIC_KEY || 'BOMBbfvkjUBtjs49boCTJnI11Wec0CG7bp-vyVcvAclcvDfgRg2XMdwrINtOlO-S4SX5UxTiMNwAifpAEJ25wts'
 const ChatroomComponent = () => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
@@ -57,6 +58,96 @@ const ChatroomComponent = () => {
         };
     }, [isConnected]);
 
+// const subscribeUserToPush = async () => {
+//     if ('serviceWorker' in navigator && 'PushManager' in window) {
+//         try {
+//             const registration = await navigator.serviceWorker.ready;
+//             const existingSubscription = await registration.pushManager.getSubscription();
+
+//             if (existingSubscription) {
+//                 console.log('Already subscribed:', existingSubscription);
+
+//                 await axios.post('http://localhost:8080/api/subscribe', {
+//                     ...existingSubscription.toJSON(),
+//                     userId,
+//                 });
+//                 return;
+//             }
+
+//             const subscription = await registration.pushManager.subscribe({
+//                 userVisibleOnly: true,
+//                 applicationServerKey: urlBase64ToUint8Array(process.env.REACT_APP_VAPID_PUBLIC_KEY),
+//             });
+
+//             await axios.post('http://localhost:8080/api/subscribe', {
+//                 ...subscription.toJSON(),
+//                 userId,
+//             });
+
+//             console.log('User is subscribed:', subscription);
+//         } catch (error) {
+//             if (Notification.permission === 'denied') {
+//                 console.warn('Permission for notifications was denied');
+//             } else {
+//                 console.error('Failed to subscribe the user:', error);
+//             }
+//         }
+//     }
+// };
+
+const subscribeUserToPush = async () => {
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+        try {
+            const registration = await navigator.serviceWorker.ready;
+            const existingSubscription = await registration.pushManager.getSubscription();
+
+            if (existingSubscription) {
+                console.log('Already subscribed:', existingSubscription);
+
+                await axios.post(`${apiBaseUrl}/api/subscribe`, {
+                    ...existingSubscription.toJSON(),
+                    userId,
+                });
+                return;
+            }
+
+            const subscription = await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(vapid_public_key),
+            });
+
+            await axios.post(`${apiBaseUrl}/api/subscribe`, {
+                ...subscription.toJSON(),
+                userId,
+            });
+
+            console.log('User is subscribed:', subscription);
+        } catch (error) {
+            if (Notification.permission === 'denied') {
+                console.warn('Permission for notifications was denied');
+            } else {
+                console.error('Failed to subscribe the user:', error);
+            }
+        }
+    }
+};
+
+useEffect(() => {
+    subscribeUserToPush();
+}, []);
+
+const urlBase64ToUint8Array = (base64String) => {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+};
+
     const scrollToBottom = () => {
         setTimeout(() => {
             messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
@@ -73,12 +164,12 @@ const ChatroomComponent = () => {
                 replyTo: replyToMessage?._id || null 
             };
 
+            setMessage('');
+            setReplyToMessage(null); 
+            scrollToBottom();
+
             socket.emit("sendMessage", messageData, (response) => {
-                if (response.status === 'ok') {
-                    setMessage('');
-                    setReplyToMessage(null); 
-                    scrollToBottom();
-                } else {
+                if (response.status !== 'ok') {
                     toast.error('Session expired. Login again');
                 }
             });
