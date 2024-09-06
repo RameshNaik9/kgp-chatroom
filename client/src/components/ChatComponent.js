@@ -150,8 +150,12 @@ const urlBase64ToUint8Array = (base64String) => {
 
     const scrollToBottom = () => {
         setTimeout(() => {
-            messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
-        }, 0);
+            if (messagesEndRef.current) {
+                messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
+            }
+            // Fallback for iOS Safari and Chrome
+            window.scrollTo(0, document.body.scrollHeight);
+        }, 100); // Slight delay to ensure DOM is ready
     };
 
     const handleSendMessage = (e) => {
