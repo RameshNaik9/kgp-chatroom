@@ -40,6 +40,7 @@ function Login() {
             if (response && response.data.token) {
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('userId', response.data.user._id);
+                localStorage.setItem('fullName', response.data.user.fullName);
                 toast.success('Login successful!');
                 navigate('/chat');
             } else {

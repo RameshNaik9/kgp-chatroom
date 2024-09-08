@@ -267,7 +267,7 @@ const urlBase64ToUint8Array = (base64String) => {
                     <div className="spinner-border text-primary" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </div>
-                    <p>Connecting to server...</p>
+                    <p className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`} >Connecting to server...</p>
                 </div>
             </div>
             <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} >
@@ -351,13 +351,30 @@ const urlBase64ToUint8Array = (base64String) => {
                                                         </a>
                                                     </li>
                                                     </>
-                                                ) : (
-                                                    <li>
-                                                        <a className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
-                                                            Reply
-                                                        </a>
-                                                    </li>
+                                                    ) : (
+                                                    <>
+                                                        <li>
+                                                            <a className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
+                                                                Reply
+                                                            </a>
+                                                        </li>
+                                                        {localStorage.getItem('fullName') === 'Admin' && (
+                                                            <li>
+                                                                <a className="dropdown-item" href="#" onClick={() => handleDeleteMessage(msg._id)}>
+                                                                    Delete
+                                                                </a>
+                                                            </li>
+                                                        )}
+                                                    </>
                                                 )}
+
+                                                {/* // ) : (
+                                                //     <li>
+                                                //         <a className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
+                                                //             Reply
+                                                //         </a>
+                                                //     </li>
+                                                // )} */}
                                             </ul>
                                         </div>
                                     </div>

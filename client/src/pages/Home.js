@@ -106,7 +106,7 @@ const Home = () => {
             onClick={() => navigate("/chat")}
             style={{ cursor: "pointer", color: "inherit"}}
           >
-            Web Chat
+            Go to Web Chat
           </h3>
           <button
             className="btn btn-primary mb-2 mx-3"
