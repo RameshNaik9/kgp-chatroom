@@ -10,4 +10,4 @@ const chatMessageSchema = new mongoose.Schema({
     status: { type: String, default: 'delivered' }, 
 }, { timestamps: true });
 
-module.exports = mongoose.model('ChatMessage', chatMessageSchema);
+module.exports = mongoose.models.ChatMessage || mongoose.model('ChatMessage', chatMessageSchema);

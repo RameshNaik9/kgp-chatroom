@@ -1,15 +1,48 @@
 {
-  "short_name": "KGP Chat Room App",
   "name": "KGP Chat Room App",
+  "short_name": "KGP Chat Room App",
+  "description": "KGP Chatroom is a real-time messaging application designed exclusively for IIT Kharagpur students. It allows users to interact, share ideas, and stay connected within the campus community. The app is integrated with ai-based chat bots for academic support of kgp students.",
+  "id": "/",
+  "start_url": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "/icons/kgp-chatroom-brand-logo.png",
+      "sizes": "527x383",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/img1-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/img2.png",
+      "sizes": "225x225",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot1.png",
+      "sizes": "2794x1564",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/screenshot2.png",
+      "sizes": "1650x1240",
+      "type": "image/png"
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+myapp",
+      "url": "/handle-protocol/%s"
+    }
+  ]
 }
