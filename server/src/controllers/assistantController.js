@@ -55,7 +55,7 @@ const sendMessage = async (req, res) => {
     const savedUserMessage = await saveUserMessageService(conversationId, userId, user_message.content);
 
     // Send request to the FastAPI microservice to get the assistant's response
-    const updatedMessage = await getAssistantResponseService(conversationId, savedUserMessage._id, user_message.content);
+    const updatedMessage = await getAssistantResponseService(conversationId, savedUserMessage._id, user_message.content, conversation.chat_profile);
 
     // Customize the response to include chat_title and match the expected format
     const response = {

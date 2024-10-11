@@ -1,6 +1,6 @@
 const Conversation = require('../models/conversation');
 const Message = require('../models/message');
-const axios = require('axios'); // For sending requests to FastAPI
+const axios = require('axios');
 
 // Create a new conversation in the database
 const createConversationInDB = async (userId, chatProfile) => {
@@ -59,15 +59,16 @@ const saveUserMessageService = async (conversationId, userId, userMessageContent
 };
 
 // Get the assistant's response and update the same message document
-const getAssistantResponseService = async (conversationId, messageId, userMessage) => {
+const getAssistantResponseService = async (conversationId, messageId, userMessage, chatProfile) => {
   try {
     // Send request to FastAPI microservice
-    const response = await axios.post('http://localhost:8000/api/assistant-response', {
+    const response = await axios.post('http://127.0.0.1:8000/api/chat/conversation_id', {
       conversation_id: conversationId,
       user_message: userMessage,
+      chat_profile: chatProfile,
     });
 
-    const { assistant_message, response_time } = response.data;
+    const { assistant_response, response_time } = response.data;
 
     // Update the existing message document with the assistant's response
     const updatedMessage = await Message.findOneAndUpdate(
@@ -75,7 +76,7 @@ const getAssistantResponseService = async (conversationId, messageId, userMessag
       {
         $set: {
           assistant_message: {
-            content: assistant_message,
+            content: assistant_response,
             timestamp: new Date(),
           },
           response_time: response_time
