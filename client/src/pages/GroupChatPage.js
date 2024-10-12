@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import ChatroomComponent from '../components/ChatComponent';
 import ChatDrawer from '../components/ChatDrawer';
 
-const GeneralChatroom = () => {
+const GroupChatroom = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const toggleDrawer = () => {
@@ -51,4 +51,4 @@ const GeneralChatroom = () => {
     );
 };
 
-export default GeneralChatroom;
+export default GroupChatroom;

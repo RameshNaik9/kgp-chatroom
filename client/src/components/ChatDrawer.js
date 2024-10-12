@@ -10,11 +10,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import './ChatDrawer.css';
 import { useNavigate } from 'react-router-dom'; 
 const ChatDrawer = ({ toggleDrawer }) => {
-    const chatCategories = ['General', 'Announcements', 'FAQ', 'Support'];
+    const chatCategories = ['Group Chat', 'Career Assistant', 'Acads Assistant', 'Gereral Assistant'];
     const navigate = useNavigate();
     const handleNavigation = (category) => {
-        if (category === 'General') {
-            navigate('/general');  // Navigate to the General chatroom page
+        if (category === 'Group Chat') {
+            navigate('/group-chat');  // Navigate to the General chatroom page
         }
         // Handle other categories as needed
     };
