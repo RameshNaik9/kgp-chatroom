@@ -8,9 +8,16 @@ import ListItemText from '@mui/material/ListItemText';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import './ChatDrawer.css';
-
+import { useNavigate } from 'react-router-dom'; 
 const ChatDrawer = ({ toggleDrawer }) => {
     const chatCategories = ['General', 'Announcements', 'FAQ', 'Support'];
+    const navigate = useNavigate();
+    const handleNavigation = (category) => {
+        if (category === 'General') {
+            navigate('/general');  // Navigate to the General chatroom page
+        }
+        // Handle other categories as needed
+    };
 
     return (
         <Box className="drawer-container" role="presentation">
@@ -25,7 +32,7 @@ const ChatDrawer = ({ toggleDrawer }) => {
                 </ListItem>
                 {chatCategories.map((category) => (
                     <ListItem key={category} disablePadding>
-                        <ListItemButton onClick={toggleDrawer}>
+                        <ListItemButton onClick={() => handleNavigation(category)}>
                             <ListItemText primary={category} sx={{ color: 'black' }} />
                         </ListItemButton>
                     </ListItem>
