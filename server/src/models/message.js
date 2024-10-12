@@ -36,10 +36,10 @@ const MessageSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',  
-    required: function() { return !this.assistant_message; }  // Only required if it's a user message
+    required: function() { return !this.assistant_response; }  // Only required if it's a user message
   },
   user_message: UserMessageSchema, 
-  assistant_message: AssistantMessageSchema,  
+  assistant_response: AssistantMessageSchema,  
   response_time: { type: String },  
   message_type: {
     type: String,

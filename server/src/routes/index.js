@@ -15,7 +15,7 @@ router.get('/messages', chatController.getMessages);
 // Push notification subscription routes
 router.use('/subscribe', notificationRoutes);
 
-// Assistant chat routes (for new conversation)
-router.use('/assistant', assistantRoutes);  // Prefix assistant routes with /assistant
+// Assistant chat routes 
+router.use('/assistant', assistantRoutes); 
 
 module.exports = router;
