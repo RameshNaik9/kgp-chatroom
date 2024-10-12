@@ -301,33 +301,33 @@ const ChatroomComponent = () => {
                                                     {isCurrentUser ? (
                                                         <>
                                                             <li>
-                                                                <a className="dropdown-item" href="#" onClick={() => handleEditMessageClick(msg._id, msg.message)}>
+                                                                <button className="dropdown-item" href="#" onClick={() => handleEditMessageClick(msg._id, msg.message)}>
                                                                     Edit
-                                                                </a>
+                                                                </button>
                                                             </li>
                                                             <li>
-                                                                <a className="dropdown-item" href="#" onClick={() => handleDeleteMessage(msg._id)}>
+                                                                <button className="dropdown-item" href="#" onClick={() => handleDeleteMessage(msg._id)}>
                                                                     Delete
-                                                                </a>
+                                                                </button>
                                                             </li>
                                                             <li>
-                                                            <a className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
+                                                            <button className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
                                                                 Reply
-                                                            </a>
+                                                            </button>
                                                         </li>
                                                         </>
                                                         ) : (
                                                         <>
                                                             <li>
-                                                                <a className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
+                                                                <button className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
                                                                     Reply
-                                                                </a>
+                                                                </button>
                                                             </li>
                                                             {localStorage.getItem('fullName') === 'Admin' && (
                                                                 <li>
-                                                                    <a className="dropdown-item" href="#" onClick={() => handleDeleteMessage(msg._id)}>
+                                                                    <button className="dropdown-item" href="#" onClick={() => handleDeleteMessage(msg._id)}>
                                                                         Delete
-                                                                    </a>
+                                                                    </button>
                                                                 </li>
                                                             )}
                                                         </>
