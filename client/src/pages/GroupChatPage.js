@@ -6,7 +6,7 @@ import ChatroomComponent from '../components/ChatComponent';
 import ChatDrawer from '../components/ChatDrawer';
 
 const GroupChatroom = () => {
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(true);
 
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen);

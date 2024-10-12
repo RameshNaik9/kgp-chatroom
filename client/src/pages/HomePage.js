@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 
 const HomePage = () => {
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(true);
 
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen);
