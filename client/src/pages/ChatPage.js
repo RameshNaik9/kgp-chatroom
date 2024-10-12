@@ -28,10 +28,11 @@ const ChatroomWithSidebar = () => {
                             width: 250,
                             top: '70px',
                             boxSizing: 'border-box',
+                            color:'black',
                         },
                     }}
                 >
-                    <ChatDrawer toggleDrawer={toggleDrawer} />
+                    <ChatDrawer/>
                 </Drawer>
                 <Box
                     component="main"

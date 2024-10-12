@@ -13,7 +13,7 @@ function RoutesConfig() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/chat" element={<ChatPage />} />
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/Home" element={<HomePage />} />
+                <Route path="/home" element={<HomePage />} />
             </Routes>
         </Router>
     );

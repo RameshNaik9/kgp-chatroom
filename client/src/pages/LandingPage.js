@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
+import HomePage from "./HomePage";
 import '../components/LandingPage.css';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -69,7 +70,7 @@ const LandingPage = () => {
         <div className="col">
           <h3
             className="mx-5 my-3"
-            onClick={() => navigate("/chat")}
+            onClick={() => navigate("/home")}
             style={{ cursor: "pointer", color: "inherit"}}
           >
             Go to Web Chat
