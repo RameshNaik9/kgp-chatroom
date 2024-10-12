@@ -3,7 +3,7 @@
     margin: auto;
     border: 1px solid #ddd;
     border-radius: 5px;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -241,3 +241,10 @@
         /* Further adjust for laptop screens */
     }
 }
+/* .date-label {
+    text-align: center;
+    margin: 10px 0;
+    color: #888;
+    font-size: 0.85rem;
+    font-weight: bold;
+} */

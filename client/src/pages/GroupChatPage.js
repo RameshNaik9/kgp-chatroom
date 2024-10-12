@@ -25,10 +25,10 @@ const GroupChatroom = () => {
                         width: 250,
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
-                            width: 250,
-                            top: '67px',
+                            width: 240,
+                            top: '68px',
                             boxSizing: 'border-box',
-                            color:'black',
+                            color:'white',
                         },
                     }}
                 >

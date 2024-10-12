@@ -33,7 +33,7 @@ const ChatDrawer = ({ toggleDrawer }) => {
                 {chatCategories.map((category) => (
                     <ListItem key={category} disablePadding>
                         <ListItemButton onClick={() => handleNavigation(category)}>
-                            <ListItemText primary={category} sx={{ color: 'black' }} />
+                            <ListItemText primary={category} sx={{ color: 'white' }} />
                         </ListItemButton>
                     </ListItem>
                 ))}
