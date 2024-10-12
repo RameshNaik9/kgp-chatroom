@@ -75,7 +75,7 @@ const getAssistantResponseService = async (conversationId, messageId, userMessag
       { _id: messageId },  // Find the message by its _id
       {
         $set: {
-          assistant_message: {
+          assistant_response: {
             content: assistant_response,
             timestamp: new Date(),
           },

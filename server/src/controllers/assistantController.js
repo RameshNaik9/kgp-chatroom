@@ -68,9 +68,9 @@ const sendMessage = async (req, res) => {
         timestamp: updatedMessage.user_message.timestamp,
         message_type: updatedMessage.message_type
       },
-      assistant_message: {
-        content: updatedMessage.assistant_message.content,
-        timestamp: updatedMessage.assistant_message.timestamp,
+      assistant_response: {
+        content: updatedMessage.assistant_response.content,
+        timestamp: updatedMessage.assistant_response.timestamp,
         message_type: updatedMessage.message_type
       }
     };
