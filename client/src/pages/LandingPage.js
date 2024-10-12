@@ -2,55 +2,21 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
-import '../components/Home.css';
+import '../components/LandingPage.css';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 
-const Home = () => {
+const LandingPage = () => {
   const [activeForm, setActiveForm] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const checkServerStatus = () => {
-  //     axios.get(`${apiBaseUrl}/api/health-check`)
-  //       .then(() => {
-  //         if (!isConnected) {
-  //           setIsConnected(true);
-  //           toast.success("Connected to server");
-  //         }
-  //       })
-  //       .catch(() => {
-  //         if (isConnected) {
-  //           setIsConnected(false);
-  //         }
-  //         if (!toast.isActive('connection-toast')) {
-  //           toast.error("Connecting to server...", {
-  //             toastId: 'connection-toast',
-  //             autoClose: 3000,
-  //             onClose: () => {
-  //               setTimeout(checkServerStatus, 1000);
-  //             }
-  //           });
-  //         }
-  //       });
-  //   };
-
-  //   const interval = setInterval(() => {
-  //     checkServerStatus();
-  //   }, 5000);
-
-  //   return () => clearInterval(interval);
-  // }, [isConnected]);
-
    useEffect(() => {
     let intervalId = null;
     let toastId = null;
     let retryToastId = null;
-
     const checkServerStatus = () => {
       axios.get(`${apiBaseUrl}/api/health-check`)
         .then(() => {
@@ -142,4 +108,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LandingPage;

@@ -1,17 +1,53 @@
-// /src/pages/ChatCPage.js
-import React from 'react';
-import ChatComponent from '../components/ChatComponent';
+import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import ChatroomComponent from '../components/ChatComponent';
+import ChatDrawer from '../components/ChatDrawer';
 
-const ChatPage = () => {
+const ChatroomWithSidebar = () => {
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    const toggleDrawer = () => {
+        setDrawerOpen(!drawerOpen);
+    };
+
     return (
-        <div className='h-100'>
-            <Header/>
-            <ChatComponent />
-            <Footer/>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+            <Header toggleDrawer={toggleDrawer} />
+            <div style={{ display: 'flex', flexGrow: 1 }}>
+                <Drawer
+                    anchor="left"
+                    open={drawerOpen}
+                    onClose={toggleDrawer}
+                    variant="persistent"
+                    sx={{
+                        width: 250,
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: 250,
+                            top: '70px',
+                            boxSizing: 'border-box',
+                        },
+                    }}
+                >
+                    <ChatDrawer toggleDrawer={toggleDrawer} />
+                </Drawer>
+                <Box
+                    component="main"
+                    sx={{
+                        flexGrow: 1,
+                        p: 3,
+                        marginLeft: drawerOpen ? '10px' : 0,
+                        marginTop: '64px',
+                        transition: 'margin-left 0.3s',
+                    }}
+                >
+                    <ChatroomComponent />
+                </Box>
+            </div>
         </div>
     );
 };
 
-export default ChatPage;
+export default ChatroomWithSidebar;

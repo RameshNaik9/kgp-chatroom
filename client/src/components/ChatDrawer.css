@@ -1,0 +1,19 @@
+/* ChatDrawer.css */
+.drawer-container {
+    width: 250px;
+    flex-shrink: 0;
+    top: 80px;
+    box-sizing: border-box;
+    background-color: white;
+    color: black; /* Set text color to black */
+}
+
+.list-item-text {
+    color: black; /* Explicitly setting text color for list items */
+}
+
+.drawer-paper {
+    width: 250px; /* Consistent with the container */
+    top: 80px; /* Same as the container's top for alignment */
+    box-sizing: border-box;
+}
