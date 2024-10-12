@@ -93,5 +93,17 @@ const getAssistantResponseService = async (conversationId, messageId, userMessag
 };
 
 
+// Get all messages for a specific conversation
+const getConversationMessages = async (conversationId) => {
+  try {
+    // Fetch all messages for the given conversation_id, sorted by timestamp
+    const messages = await Message.find({ conversation_id: conversationId }).sort({ 'user_message.timestamp': 1 });
+    return messages;
+  } catch (error) {
+    console.error('Error fetching conversation messages:', error);
+    throw new Error('Database operation failed');
+  }
+};
 
-module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService };
+module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService, getConversationMessages };
+

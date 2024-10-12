@@ -11,7 +11,7 @@ const CareerAssistantPage = () => {
     const { conversation_id } = useParams(); // Get conversation_id from URL
     console.log('Conversation ID from URL:', conversation_id); // Add this log for debugging
 
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(true);
 
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen);
