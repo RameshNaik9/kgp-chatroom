@@ -5,6 +5,8 @@ import Signup from './components/Signup';
 import GroupChatPage from './pages/GroupChatPage';
 import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
+import CareerAssistantPage from './pages/CareerAssistantPage'; 
+
 function RoutesConfig() {
     return (
         <Router>
@@ -14,6 +16,8 @@ function RoutesConfig() {
                 <Route path="/group-chat" element={<GroupChatPage />} />
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/home" element={<HomePage />} />
+                <Route path="/career-assistant" element={<CareerAssistantPage />} />
+                <Route path="/career-assistant/:conversation_id" element={<CareerAssistantPage />} />
             </Routes>
         </Router>
     );

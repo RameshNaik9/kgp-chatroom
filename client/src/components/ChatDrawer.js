@@ -5,8 +5,8 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import ListItemIcon from '@mui/material/ListItemIcon';
+// import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+// import ListItemIcon from '@mui/material/ListItemIcon';
 import './ChatDrawer.css';
 import { useNavigate } from 'react-router-dom'; 
 const ChatDrawer = ({ toggleDrawer }) => {
@@ -15,6 +15,9 @@ const ChatDrawer = ({ toggleDrawer }) => {
     const handleNavigation = (category) => {
         if (category === 'Group Chat') {
             navigate('/group-chat');  // Navigate to the General chatroom page
+        }
+        if (category === 'Career Assistant') {
+            navigate('/career-assistant'); // Navigate to career assistant page
         }
         // Handle other categories as needed
     };
