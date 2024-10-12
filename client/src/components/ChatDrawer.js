@@ -23,12 +23,12 @@ const ChatDrawer = ({ toggleDrawer }) => {
         <Box className="drawer-container" role="presentation">
             <List>
                 <ListItem disablePadding>
-                    <ListItemButton onClick={toggleDrawer}>
+                    {/* <ListItemButton onClick={toggleDrawer}>
                         <ListItemIcon>
                             <AddCircleOutlineIcon sx={{ color: 'black' }} />
                         </ListItemIcon>
                         <ListItemText primary="New Chat" sx={{ color: 'black' }} />
-                    </ListItemButton>
+                    </ListItemButton> */}
                 </ListItem>
                 {chatCategories.map((category) => (
                     <ListItem key={category} disablePadding>

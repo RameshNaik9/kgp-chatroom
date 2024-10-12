@@ -26,7 +26,7 @@ const HomePage = () => {
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
                             width: 250,
-                            top: '70px', // Adjust based on your header height
+                            top: '67px', // Adjust based on your header height
                             boxSizing: 'border-box',
                         },
                     }}

@@ -26,7 +26,7 @@ const GroupChatroom = () => {
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
                             width: 250,
-                            top: '70px',
+                            top: '67px',
                             boxSizing: 'border-box',
                             color:'black',
                         },
@@ -40,7 +40,7 @@ const GroupChatroom = () => {
                         flexGrow: 1,
                         p: 3,
                         marginLeft: drawerOpen ? '10px' : 0,
-                        marginTop: '64px',
+                        marginTop: '45px',
                         transition: 'margin-left 0.3s',
                     }}
                 >
