@@ -105,5 +105,18 @@ const getConversationMessages = async (conversationId) => {
   }
 };
 
-module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService, getConversationMessages };
+// Service to fetch all conversations by chat_profile for a specific user
+const getConversationsByProfileService = async (userId, chatProfile) => {
+    try {
+        // Query the database for conversations that match the userId and chat_profile
+        const conversations = await Conversation.find({ user: userId, chat_profile: chatProfile });
+        return conversations;
+    } catch (error) {
+        console.error('Error fetching conversations from the database:', error);
+        throw new Error('Database operation failed');
+    }
+};
+
+
+module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService, getConversationMessages, getConversationsByProfileService };
 

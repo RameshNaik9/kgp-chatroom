@@ -2,6 +2,8 @@ const { createConversationInDB } = require('../services/assistantService');
 const { saveUserMessageService, getAssistantResponseService } = require('../services/assistantService');
 const Conversation = require('../models/conversation');  // Import the Conversation model
 const { getConversationMessages } = require('../services/assistantService');
+const { getConversationsByProfileService } = require('../services/assistantService');
+
 
 
 // Create a new conversation
@@ -123,5 +125,27 @@ const getConversation = async (req, res) => {
   }
 };
 
-module.exports = { createNewConversation, sendMessage, getConversation };
+// Controller to fetch all conversations by chat_profile for a specific user
+const getConversationsByProfile = async (req, res) => {
+    try {
+        const userId = req.user.id; // Extract userId from the authenticated user (from the token)
+        const { chat_profile } = req.query; // Extract chat_profile from query parameters
+
+        // Validate chat_profile
+        if (!['career', 'academics', 'general'].includes(chat_profile)) {
+            return res.status(400).json({ message: 'Invalid chat profile. Must be "career", "academics", or "general".' });
+        }
+
+        // Call the service to get the conversations
+        const conversations = await getConversationsByProfileService(userId, chat_profile);
+
+        return res.status(200).json(conversations);
+    } catch (error) {
+        console.error('Error fetching conversations:', error);
+        return res.status(500).json({ message: 'Internal server error.' });
+    }
+};
+
+
+module.exports = { createNewConversation, sendMessage, getConversation, getConversationsByProfile };
 

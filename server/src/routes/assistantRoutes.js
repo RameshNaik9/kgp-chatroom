@@ -1,5 +1,5 @@
 const express = require('express');
-const { createNewConversation, sendMessage, getConversation } = require('../controllers/assistantController');
+const { createNewConversation, sendMessage, getConversation, getConversationsByProfile } = require('../controllers/assistantController');
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
@@ -12,5 +12,8 @@ router.post('/:conversation_id', authMiddleware, sendMessage);
 
 // New route to get a conversation by conversation_id
 router.get('/conversation/:conversation_id', authMiddleware, getConversation);
+
+// GET route to fetch all conversations by chat_profile for a specific user
+router.get('/conversations', authMiddleware, getConversationsByProfile);
 
 module.exports = router;
