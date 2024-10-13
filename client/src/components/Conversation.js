@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import './Conversation.css'; // Ensure this file contains necessary styles
+import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown for markdown rendering
+import './Conversation.css'; 
 
 const Conversation = () => {
     const { conversation_id } = useParams(); // Get conversation_id from URL
@@ -9,7 +10,7 @@ const Conversation = () => {
     const [loading, setLoading] = useState(false); // Loading state for assistant response
     const [userMessage, setUserMessage] = useState(''); // Message input
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId'); // Assuming you have userId in localStorage
+    const userId = localStorage.getItem('userId'); 
 
     useEffect(() => {
         // Fetch conversation history when the page loads or is refreshed
@@ -39,7 +40,7 @@ const Conversation = () => {
         // Append the user's message immediately to the conversation
         const newMessage = {
             message_id: 'temp-' + new Date().getTime(), // Temporary message ID
-            user: userId, // Identifying this as the user's message
+            user: userId, 
             user_message: { content: userMessage },
             assistant_response: { content: 'Waiting for assistant response...' } // Placeholder for assistant response
         };
@@ -51,15 +52,15 @@ const Conversation = () => {
             // Send the user message to the backend
             const response = await axios.post(
                 `http://localhost:8080/api/assistant/${conversation_id}`,
-                { user_message: { content: userMessage } }, // Send user message as payload
-                { headers: { Authorization: `Bearer ${token}` } } // Attach Bearer token
+                { user_message: { content: userMessage } }, 
+                { headers: { Authorization: `Bearer ${token}` } }
             );
 
             // Replace the placeholder with the actual assistant response
             setMessages((prevMessages) =>
                 prevMessages.map((msg) =>
                     msg.message_id === newMessage.message_id
-                        ? response.data // Replace temporary message with actual response
+                        ? response.data 
                         : msg
                 )
             );
@@ -77,11 +78,12 @@ const Conversation = () => {
                 {messages.map((msg) => (
                     <div key={msg.message_id} className="message-block">
                         <div className="message-item user-message">
-                            {<p>{msg.user_message.content}</p>}
+                            <p>{msg.user_message.content}</p>
                         </div>
                         {msg.assistant_response?.content && (
                             <div className="message-item assistant-message">
-                                <p>{msg.assistant_response.content}</p>
+                                {/* Use ReactMarkdown to render markdown from the assistant response */}
+                                <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
                             </div>
                         )}
                     </div>
