@@ -41,7 +41,7 @@ const CareerAssistantPage = () => {
                 >
                     <ChatDrawer newConversation={newConversation} />
                 </Drawer>
-                <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 20 }}>
+                <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 10 }}>
                     {conversation_id ? <Conversation /> : <Assistant onNewConversation={handleNewConversation} />}
                 </Box>
             </div>

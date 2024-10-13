@@ -106,13 +106,15 @@ const Conversation = () => {
     const getPlaceholderText = () => {
         switch (chatProfile) {
             case 'Career':
-                return `Hi ${fullName}, Ask me anything?`;
+                return `Hi ${fullName}, Confused about CDC Internships or Off campus placements? Drop your questions!`;
             case 'Academics':
-                return `Hi ${fullName}, Any other doubts??`;
+                return `Hi ${fullName}, Load in academics? Need help with details on courses? Shoot your questions!`;
             case 'General':
-                return `Hi ${fullName}, Any other funda you want to know about??`;
+                return `Hi ${fullName}, Any other funda you wanna know?`;
+            case 'Bhaat':
+                return `Hi ${fullName}, What's hot on 2.2??`;
             default:
-                return 'Type your message...';
+                return 'Ask ChatKGP';
         }
     };
 
