@@ -9,15 +9,14 @@ const Conversation = () => {
     const [messages, setMessages] = useState([]); // Store conversation messages
     const [chatTitle, setChatTitle] = useState(''); // Store chat title
     const [chatProfile, setChatProfile] = useState(''); // Store chat profile
+    const [createdAt, setCreatedAt] = useState(''); // Store the conversation start date (createdAt)
     const [loading, setLoading] = useState(false); // Loading state for assistant response
     const [userMessage, setUserMessage] = useState(''); // Message input
     const [error, setError] = useState(''); // Error message state
     const messagesEndRef = useRef(null); // Ref for scrolling to the bottom
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
-    // Personalized greeting based on stored user name
     const fullName = localStorage.getItem('fullName') || 'there';
-    // const placeholderText = `Hi ${fullName}, ask me anything!`;
 
     useEffect(() => {
         // Fetch conversation history and chat profile when the page loads or is refreshed
@@ -29,12 +28,11 @@ const Conversation = () => {
         scrollToBottom();
     }, [messages]);
 
-    // Scroll to the bottom of the messages list
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    // Fetch existing conversation history, chat title, and chat profile from backend
+    // Fetch existing conversation history, chat title, chat profile, and createdAt date from the backend
     const fetchConversationHistory = async () => {
         setLoading(true);
         setError(''); // Clear any existing errors
@@ -46,6 +44,7 @@ const Conversation = () => {
             setMessages(response.data.messages); // Load conversation messages
             setChatTitle(response.data.chat_title); // Set the chat title
             setChatProfile(response.data.chat_profile); // Set the chat profile (Career, Academics, General)
+            setCreatedAt(response.data.createdAt); // Set the createdAt (conversation start date)
         } catch (error) {
             setError('Failed to fetch conversation history');
             console.error('Error fetching conversation history:', error);
@@ -54,32 +53,33 @@ const Conversation = () => {
         }
     };
 
-    // Send user message to assistant in an ongoing conversation
+    const formatDate = (dateString) => {
+        if (!dateString) return ''; // If date is not available, return an empty string
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const parsedDate = new Date(dateString);
+        return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options); // Check if date is valid
+    };
+
     const sendMessage = async () => {
         if (!userMessage.trim()) return; // Avoid sending empty messages
 
-        // Append the user's message immediately to the conversation
         const newMessage = {
-            message_id: 'temp-' + new Date().getTime(), // Temporary message ID
+            message_id: 'temp-' + new Date().getTime(),
             user: userId, 
             user_message: { content: userMessage },
-            assistant_response: null // Placeholder for assistant response
+            assistant_response: null
         };
 
         setMessages((prev) => [...prev, newMessage]);
         setUserMessage(''); // Clear input field after sending
-
-        setLoading(true); // Show loading while assistant response is fetched
+        setLoading(true);
 
         try {
-            // Send the user message to the backend
             const response = await axios.post(
                 `http://localhost:8080/api/assistant/${conversation_id}`,
                 { user_message: { content: userMessage } }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-
-            // Replace the placeholder with the actual assistant response
             setMessages((prevMessages) =>
                 prevMessages.map((msg) =>
                     msg.message_id === newMessage.message_id
@@ -102,7 +102,6 @@ const Conversation = () => {
         }
     };
 
-    // Set placeholder based on chat profile
     const getPlaceholderText = () => {
         switch (chatProfile) {
             case 'Career':
@@ -120,8 +119,13 @@ const Conversation = () => {
 
     return (
         <div className="conversation-container">
-            {/* Display the chat title */}
-            <h2>{chatTitle || 'Conversation'}</h2>
+            <h2>
+                {chatTitle || 'Conversation'}
+                <span className="conversation-date">
+                    {createdAt && ` - ${formatDate(createdAt)}`}
+                </span>
+            </h2>
+
             
             <div className="messages-list">
                 {messages.map((msg) => (
@@ -135,7 +139,7 @@ const Conversation = () => {
                             </div>
                         ) : loading ? (
                             <div className="message-item assistant-message">
-                                <div className="skeleton-loader"></div> {/* Skeleton Loader */}
+                                <div className="skeleton-loader"></div>
                             </div>
                         ) : null}
                     </div>
@@ -150,11 +154,11 @@ const Conversation = () => {
                     type="text" 
                     value={userMessage} 
                     onChange={(e) => setUserMessage(e.target.value)} 
-                    onKeyDown={handleKeyDown} // Listen for Enter key press
-                    placeholder={getPlaceholderText()} // Dynamic placeholder based on chat profile
-                    disabled={loading} // Disable input while loading
+                    onKeyDown={handleKeyDown} 
+                    placeholder={getPlaceholderText()} 
+                    disabled={loading} 
                 />
-                <button onClick={sendMessage} disabled={loading}>Send</button> {/* Disable button while loading */}
+                <button onClick={sendMessage} disabled={loading}>Send</button>
             </div>
         </div>
     );

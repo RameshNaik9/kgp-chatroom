@@ -94,7 +94,7 @@ const getConversation = async (req, res) => {
     try {
         const { conversation_id } = req.params;
 
-        // Fetch the conversation including the chat_profile
+        // Fetch the conversation including the chat_profile and createdAt
         const conversation = await Conversation.findById(conversation_id);
         if (!conversation) {
             return res.status(404).json({ message: 'Conversation not found' });
@@ -122,7 +122,14 @@ const getConversation = async (req, res) => {
             } : null
         }));
 
-        return res.status(200).json({ conversation_id, chat_title: conversation.chat_title, chat_profile: conversation.chat_profile, messages: formattedMessages });
+        // Include the createdAt field in the response
+        return res.status(200).json({
+            conversation_id,
+            chat_title: conversation.chat_title,
+            chat_profile: conversation.chat_profile,
+            createdAt: conversation.createdAt, 
+            messages: formattedMessages
+        });
 
     } catch (error) {
         console.error('Error fetching conversation messages:', error);
