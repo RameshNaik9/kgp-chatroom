@@ -21,7 +21,7 @@ const Assistant = () => {
             // Start a new conversation
             const response = await axios.post(
                 `http://localhost:8080/api/assistant/new-conversation?userId=${userId}`,
-                { chat_profile: 'career' },
+                { chat_profile: 'Career' },
                 {
                     headers: { Authorization: `Bearer ${token}` }
                 }

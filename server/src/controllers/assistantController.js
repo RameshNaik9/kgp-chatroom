@@ -19,8 +19,8 @@ const createNewConversation = async (req, res) => {
     }
 
     // Validate chat profile
-    if (!['career', 'academics', 'general'].includes(chat_profile)) {
-      return res.status(400).json({ message: 'Invalid chat profile. Use "career", "academics", or "general".' });
+    if (!['Career', 'Academics', 'General'].includes(chat_profile)) {
+      return res.status(400).json({ message: 'Invalid chat profile. Use "Career", "Academics", or "General".' });
     }
 
     // Call the service to create the conversation in the database

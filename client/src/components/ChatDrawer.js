@@ -36,9 +36,9 @@ const ChatDrawer = ({ toggleDrawer }) => {
     }, []);
 
     // Filter conversations based on chat_profile
-    const careerConversations = allConversations.filter(conversation => conversation.chat_profile === 'career');
-    const academicsConversations = allConversations.filter(conversation => conversation.chat_profile === 'academics');
-    const generalConversations = allConversations.filter(conversation => conversation.chat_profile === 'general');
+    const careerConversations = allConversations.filter(conversation => conversation.chat_profile === 'Career');
+    const academicsConversations = allConversations.filter(conversation => conversation.chat_profile === 'Academics');
+    const generalConversations = allConversations.filter(conversation => conversation.chat_profile === 'General');
 
     // Toggle menus
     const toggleCareerMenu = () => setIsCareerOpen(!isCareerOpen);

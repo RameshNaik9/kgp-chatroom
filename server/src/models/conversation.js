@@ -32,8 +32,8 @@ const ConversationSchema = new Schema({
   tags: [String],
   chat_profile: {
     type: String,
-    enum: ['career', 'academics', 'general'],
-    default: 'career'
+    enum: ['Career', 'Academics', 'General'],
+    default: 'Career'
   },
   chat_title: {
     type: String,
