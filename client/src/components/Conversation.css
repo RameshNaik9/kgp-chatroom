@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    padding-right: 80px;
+    padding-left: 80px;
 }
 
 .messages-list {
@@ -112,3 +114,20 @@
     font-weight: normal;
     margin-left: 8px;
 }
+
+/* Assistant logo styling */
+.assistant-response-logo {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.assistant-logo {
+    width: 36px;
+    /* Adjust the size similar to ChatGPT */
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    vertical-align: middle;
+}
+
+/* Other existing CSS */

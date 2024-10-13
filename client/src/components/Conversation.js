@@ -2,66 +2,55 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown'; // For markdown rendering
-import './Conversation.css'; 
+import './Conversation.css';
 
 const Conversation = () => {
-    const { conversation_id } = useParams(); // Get conversation_id from URL
-    const [messages, setMessages] = useState([]); // Store conversation messages
-    const [chatTitle, setChatTitle] = useState(''); // Store chat title
-    const [chatProfile, setChatProfile] = useState(''); // Store chat profile
-    const [createdAt, setCreatedAt] = useState(''); // Store the conversation start date (createdAt)
-    const [loading, setLoading] = useState(false); // Loading state for assistant response
-    const [userMessage, setUserMessage] = useState(''); // Message input
-    const [error, setError] = useState(''); // Error message state
-    const messagesEndRef = useRef(null); // Ref for scrolling to the bottom
+    const { conversation_id } = useParams();
+    const [messages, setMessages] = useState([]);
+    const [chatTitle, setChatTitle] = useState('');
+    const [chatProfile, setChatProfile] = useState('');
+    const [createdAt, setCreatedAt] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [userMessage, setUserMessage] = useState('');
+    const [error, setError] = useState('');
+    const messagesEndRef = useRef(null);
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const fullName = localStorage.getItem('fullName') || 'there';
 
     useEffect(() => {
-        // Fetch conversation history and chat profile when the page loads or is refreshed
-        fetchConversationHistory();
-    }, [conversation_id]);
+        const fetchConversationHistory = async () => {
+            setLoading(true);
+            setError(''); // Clear any existing errors
+            try {
+                const response = await axios.get(
+                    `http://localhost:8080/api/assistant/conversation/${conversation_id}`,
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+                setMessages(response.data.messages); // Load conversation messages
+                setChatTitle(response.data.chat_title); // Set the chat title
+                setChatProfile(response.data.chat_profile); // Set the chat profile (Career, Academics, General)
+                setCreatedAt(response.data.createdAt); // Set the createdAt (conversation start date)
+            } catch (error) {
+                setError('Failed to fetch conversation history');
+                console.error('Error fetching conversation history:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    useEffect(() => {
-        // Scroll to the bottom when a new message is added
-        scrollToBottom();
-    }, [messages]);
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    // Fetch existing conversation history, chat title, chat profile, and createdAt date from the backend
-    const fetchConversationHistory = async () => {
-        setLoading(true);
-        setError(''); // Clear any existing errors
-        try {
-            const response = await axios.get(
-                `http://localhost:8080/api/assistant/conversation/${conversation_id}`,
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-            setMessages(response.data.messages); // Load conversation messages
-            setChatTitle(response.data.chat_title); // Set the chat title
-            setChatProfile(response.data.chat_profile); // Set the chat profile (Career, Academics, General)
-            setCreatedAt(response.data.createdAt); // Set the createdAt (conversation start date)
-        } catch (error) {
-            setError('Failed to fetch conversation history');
-            console.error('Error fetching conversation history:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+        fetchConversationHistory(); // Call the function
+    }, [conversation_id, token]); // Dependency array
 
     const formatDate = (dateString) => {
-        if (!dateString) return ''; // If date is not available, return an empty string
+        if (!dateString) return '';
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const parsedDate = new Date(dateString);
-        return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options); // Check if date is valid
+        return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options);
     };
 
     const sendMessage = async () => {
-        if (!userMessage.trim()) return; // Avoid sending empty messages
+        if (!userMessage.trim()) return;
 
         const newMessage = {
             message_id: 'temp-' + new Date().getTime(),
@@ -71,7 +60,7 @@ const Conversation = () => {
         };
 
         setMessages((prev) => [...prev, newMessage]);
-        setUserMessage(''); // Clear input field after sending
+        setUserMessage('');
         setLoading(true);
 
         try {
@@ -95,7 +84,6 @@ const Conversation = () => {
         }
     };
 
-    // Handle Enter key press for sending messages
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             sendMessage();
@@ -117,6 +105,8 @@ const Conversation = () => {
         }
     };
 
+    const assistantLogo = '/icons/img1-icon.png'; // Reference the logo from public folder
+
     return (
         <div className="conversation-container">
             <h2>
@@ -126,7 +116,6 @@ const Conversation = () => {
                 </span>
             </h2>
 
-            
             <div className="messages-list">
                 {messages.map((msg) => (
                     <div key={msg.message_id} className="message-block">
@@ -135,6 +124,10 @@ const Conversation = () => {
                         </div>
                         {msg.assistant_response ? (
                             <div className="message-item assistant-message">
+                                {/* Add assistant logo before response */}
+                                <div className="assistant-response-logo">
+                                    <img src={assistantLogo} alt="Assistant Logo" className="assistant-logo" />
+                                </div>
                                 <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
                             </div>
                         ) : loading ? (
