@@ -68,7 +68,7 @@ const getAssistantResponseService = async (conversationId, messageId, userMessag
       chat_profile: chatProfile,
     });
 
-    const { assistant_response, response_time } = response.data;
+    const { assistant_response, response_time, chat_title } = response.data;
 
     // Update the existing message document with the assistant's response
     const updatedMessage = await Message.findOneAndUpdate(
@@ -85,12 +85,23 @@ const getAssistantResponseService = async (conversationId, messageId, userMessag
       { new: true }  // Return the updated document
     );
 
+    // Check if chat_title is not null. If it is, retain the current chat_title in the database.
+    if (chat_title) {
+      await Conversation.findByIdAndUpdate(
+        conversationId,
+        { $set: { chat_title } },  // Update the chat_title only if it's not null
+        { new: true }
+      );
+    }
+
     return updatedMessage;
   } catch (error) {
     console.error('Error getting assistant response:', error);
     throw new Error('Failed to get assistant response');
   }
 };
+
+
 
 
 // Get all messages for a specific conversation

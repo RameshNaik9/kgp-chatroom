@@ -48,7 +48,7 @@ const sendMessage = async (req, res) => {
       return res.status(400).json({ message: 'User message content is required.' });
     }
 
-    // Fetch the conversation to get the chat_title
+    // Fetch the conversation to get the current chat_title
     const conversation = await Conversation.findById(conversationId);
     if (!conversation) {
       return res.status(404).json({ message: 'Conversation not found' });
@@ -57,15 +57,18 @@ const sendMessage = async (req, res) => {
     // Save the user's message in the messages collection
     const savedUserMessage = await saveUserMessageService(conversationId, userId, user_message.content);
 
-    // Send request to the FastAPI microservice to get the assistant's response
+    // Send request to the FastAPI microservice to get the assistant's response and potentially the chat_title
     const updatedMessage = await getAssistantResponseService(conversationId, savedUserMessage._id, user_message.content, conversation.chat_profile);
+
+    // Fetch the updated conversation (chat_title will be unchanged if FastAPI returned null)
+    const updatedConversation = await Conversation.findById(conversationId);
 
     // Customize the response to include chat_title and match the expected format
     const response = {
       message_id: updatedMessage._id,
       conversation_id: updatedMessage.conversation_id,
       user: updatedMessage.user,
-      chat_title: conversation.chat_title,
+      chat_title: updatedConversation.chat_title,  // Send the stored chat_title (it won't change if null)
       user_message: {
         content: updatedMessage.user_message.content,
         timestamp: updatedMessage.user_message.timestamp,
@@ -91,7 +94,7 @@ const getConversation = async (req, res) => {
   try {
     const { conversation_id } = req.params;
 
-    // Fetch conversation details (optional: if you want to return conversation data)
+    // Fetch conversation details
     const conversation = await Conversation.findById(conversation_id);
     if (!conversation) {
       return res.status(404).json({ message: 'Conversation not found' });
@@ -105,7 +108,7 @@ const getConversation = async (req, res) => {
       message_id: message._id,
       conversation_id: message.conversation_id,
       user: message.user,
-      chat_title: conversation.chat_title,
+      chat_title: conversation.chat_title,  // Include chat_title in each message (or you can include it separately)
       user_message: {
         content: message.user_message.content,
         timestamp: message.user_message.timestamp,
@@ -118,13 +121,14 @@ const getConversation = async (req, res) => {
       } : null
     }));
 
-    return res.status(200).json({ conversation_id: conversation_id, messages: formattedMessages });
+    return res.status(200).json({ conversation_id: conversation_id, chat_title: conversation.chat_title, messages: formattedMessages });
 
   } catch (error) {
     console.error('Error fetching conversation messages:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 // Controller to fetch all conversations for a specific user
 const getAllConversationsForUser = async (req, res) => {
