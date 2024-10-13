@@ -46,3 +46,38 @@
     padding-left: 16px;
     margin-top: 16px;
 }
+
+/* Active Item Background */
+.active-item {
+    background-color: #343a40;
+    /* Change to desired active background color */
+    border-left: 4px solid #17a2b8;
+    /* Add a border to indicate it's selected */
+    font-weight: bold;
+    /* Make the text bold for active items */
+    color: #ffffff;
+    /* Ensure active items have bright, clear text */
+    transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease;
+    /* Smooth transition for better UX */
+}
+
+.active-item:hover {
+    background-color: #495057;
+    /* Change hover effect on active items */
+    color: #f1f1f1;
+    /* Slightly lighter color on hover */
+}
+
+/* Additional styles for when an item is active */
+.active-item .MuiListItemText-root {
+    color: #ffffff;
+    /* Force text color to be white or another bright color */
+    font-weight: bold;
+    /* Make the list item text bold */
+}
+
+/* Style for the icon (if any) when the item is active */
+.active-item .MuiSvgIcon-root {
+    fill: #17a2b8;
+    /* Change the color of any icons (if present) */
+}
