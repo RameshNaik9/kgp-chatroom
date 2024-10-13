@@ -106,11 +106,11 @@ const Conversation = () => {
     const getPlaceholderText = () => {
         switch (chatProfile) {
             case 'Career':
-                return 'Ask me anything?';
+                return `Hi ${fullName}, Ask me anything?`;
             case 'Academics':
-                return 'Any other doubts??';
+                return `Hi ${fullName}, Any other doubts??`;
             case 'General':
-                return 'Any other funda you want to know about??';
+                return `Hi ${fullName}, Any other funda you want to know about??`;
             default:
                 return 'Type your message...';
         }
