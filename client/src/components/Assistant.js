@@ -8,17 +8,17 @@ import './Assistant.css';
 
 const Assistant = () => {
     const [loading, setLoading] = useState(false);
-    const [initialMessage, setInitialMessage] = useState(''); // Save the first message
     const navigate = useNavigate();
 
     const handleSendMessage = async (message) => {
+        if (loading) return; // Prevent multiple sends while loading
         setLoading(true); // Show loading until conversation ID is received
-        setInitialMessage(message); // Save the first message typed
 
         const userId = localStorage.getItem('userId');
         const token = localStorage.getItem('token');
 
         try {
+            // Start a new conversation
             const response = await axios.post(
                 `http://localhost:8080/api/assistant/new-conversation?userId=${userId}`,
                 { chat_profile: 'career' },
@@ -29,12 +29,19 @@ const Assistant = () => {
 
             const { conversation_id } = response.data;
 
-            // Navigate to the conversation page after getting conversation_id
+            // Send the initial message to trigger the assistant response
+            await axios.post(
+                `http://localhost:8080/api/assistant/${conversation_id}`,
+                { user_message: { content: message } }, // Send the initial message as payload
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            // Navigate to the conversation page after getting the response
             navigate(`/career-assistant/${conversation_id}`, { state: { initialMessage: message } });
         } catch (error) {
-            console.error('Error starting new conversation:', error);
+            console.error('Error starting new conversation or sending initial message:', error);
         } finally {
-            setLoading(false); // Hide loading
+            setLoading(false);
         }
     };
 
