@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown for markdown rendering
+import ReactMarkdown from 'react-markdown'; // For markdown rendering
 import './Conversation.css'; 
 
 const Conversation = () => {
@@ -56,11 +56,13 @@ const Conversation = () => {
             message_id: 'temp-' + new Date().getTime(), // Temporary message ID
             user: userId, 
             user_message: { content: userMessage },
-            assistant_response: { content: 'Waiting for assistant response...' } // Placeholder for assistant response
+            assistant_response: null // Placeholder for assistant response
         };
 
         setMessages((prev) => [...prev, newMessage]);
         setUserMessage(''); // Clear input field after sending
+
+        setLoading(true); // Show loading while assistant response is fetched
 
         try {
             // Send the user message to the backend
@@ -95,18 +97,20 @@ const Conversation = () => {
                         <div className="message-item user-message">
                             <p>{msg.user_message.content}</p>
                         </div>
-                        {msg.assistant_response?.content && (
+                        {msg.assistant_response ? (
                             <div className="message-item assistant-message">
-                                {/* Use ReactMarkdown to render markdown from the assistant response */}
                                 <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
                             </div>
-                        )}
+                        ) : loading ? (
+                            <div className="message-item assistant-message">
+                                <div className="skeleton-loader"></div> {/* Skeleton Loader */}
+                            </div>
+                        ) : null}
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
             </div>
 
-            {loading && <p className="loading-spinner">Loading...</p>}
             {error && <p className="error-message">{error}</p>}
 
             <div className="message-input">
