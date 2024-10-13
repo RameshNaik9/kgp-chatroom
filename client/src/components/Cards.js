@@ -11,7 +11,7 @@ const Cards = () => {
     return (
         <div className="cards">
             {recommendations.map((question, index) => (
-                <div key={index} className="card">
+                <div key={index} className="card1">
                     <p>{question}</p>
                 </div>
             ))}
