@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import './MessageBar.css'
 
-const MessageBar = ({ onSend }) => {
+const MessageBar = ({ onSend, loading }) => {
     const [message, setMessage] = useState('');
+    
+    // Personalized greeting based on stored user name
+    const fullName = localStorage.getItem('fullName') || 'there';
+    const placeholderText = `Hi ${fullName}, ask me anything!`;
 
     const handleSendMessage = () => {
         if (message.trim()) {
@@ -14,12 +19,13 @@ const MessageBar = ({ onSend }) => {
         <div className="message-bar">
             <input 
                 type="text" 
-                placeholder="Type your message..." 
+                placeholder={placeholderText} // Dynamic placeholder
                 value={message}
                 onChange={(e) => setMessage(e.target.value)} 
+                disabled={loading} // Disable input during loading
             />
-            <button onClick={handleSendMessage}>
-                <i className="send-icon">Send</i> {/* You can style this icon */}
+            <button onClick={handleSendMessage} disabled={loading}>
+                <i className="send-icon">Send</i> {/* Optional: You can add an icon here */}
             </button>
         </div>
     );

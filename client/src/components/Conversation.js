@@ -119,9 +119,11 @@ const Conversation = () => {
                     value={userMessage} 
                     onChange={(e) => setUserMessage(e.target.value)} 
                     placeholder="Type your message..." 
+                    disabled={loading} // Disable input while loading
                 />
-                <button onClick={sendMessage}>Send</button>
+                <button onClick={sendMessage} disabled={loading}>Send</button> {/* Disable button while loading */}
             </div>
+
         </div>
     );
 };
