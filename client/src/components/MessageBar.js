@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './MessageBar.css'
+import './MessageBar.css';
 
 const MessageBar = ({ onSend, loading }) => {
     const [message, setMessage] = useState('');
@@ -15,6 +15,13 @@ const MessageBar = ({ onSend, loading }) => {
         }
     };
 
+    // Handle Enter key press for sending messages
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            handleSendMessage();
+        }
+    };
+
     return (
         <div className="message-bar">
             <input 
@@ -22,6 +29,7 @@ const MessageBar = ({ onSend, loading }) => {
                 placeholder={placeholderText} // Dynamic placeholder
                 value={message}
                 onChange={(e) => setMessage(e.target.value)} 
+                onKeyDown={handleKeyDown} // Listen for Enter key press
                 disabled={loading} // Disable input during loading
             />
             <button onClick={handleSendMessage} disabled={loading}>

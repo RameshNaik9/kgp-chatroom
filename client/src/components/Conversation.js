@@ -88,6 +88,13 @@ const Conversation = () => {
         }
     };
 
+    // Handle Enter key press for sending messages
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    };
+
     return (
         <div className="conversation-container">
             <h2>Conversation Component</h2>
@@ -118,12 +125,12 @@ const Conversation = () => {
                     type="text" 
                     value={userMessage} 
                     onChange={(e) => setUserMessage(e.target.value)} 
+                    onKeyDown={handleKeyDown} // Listen for Enter key press
                     placeholder="Type your message..." 
                     disabled={loading} // Disable input while loading
                 />
                 <button onClick={sendMessage} disabled={loading}>Send</button> {/* Disable button while loading */}
             </div>
-
         </div>
     );
 };
