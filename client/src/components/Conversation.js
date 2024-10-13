@@ -49,40 +49,110 @@ const Conversation = () => {
         return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options);
     };
 
-    const sendMessage = async () => {
-        if (!userMessage.trim()) return;
+    // const sendMessage = async () => {
+    //     if (!userMessage.trim()) return;
 
-        const newMessage = {
-            message_id: 'temp-' + new Date().getTime(),
-            user: userId, 
-            user_message: { content: userMessage },
-            assistant_response: null
+    //     const newMessage = {
+    //         message_id: 'temp-' + new Date().getTime(),
+    //         user: userId, 
+    //         user_message: { content: userMessage },
+    //         assistant_response: null
+    //     };
+
+    //     setMessages((prev) => [...prev, newMessage]);
+    //     setUserMessage('');
+    //     setLoading(true);
+
+    //     try {
+    //         const response = await axios.post(
+    //             `http://localhost:8080/api/assistant/${conversation_id}`,
+    //             { user_message: { content: userMessage } }, 
+    //             { headers: { Authorization: `Bearer ${token}` } }
+    //         );
+    //         setMessages((prevMessages) =>
+    //             prevMessages.map((msg) =>
+    //                 msg.message_id === newMessage.message_id
+    //                     ? response.data 
+    //                     : msg
+    //             )
+    //         );
+    //     } catch (error) {
+    //         setError('Message sending failed');
+    //         console.error('Error sending message:', error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+const sendMessage = async () => {
+    if (!userMessage.trim()) return;
+
+    const newMessage = {
+        message_id: 'temp-' + new Date().getTime(),
+        user: userId, 
+        user_message: { content: userMessage },
+        assistant_response: null
+    };
+
+    setMessages((prev) => [...prev, newMessage]);
+    setUserMessage('');
+    setLoading(true);
+
+    try {
+        console.log('Sending user message to the backend:', userMessage);
+
+        // Send HTTP request to process the user message (same as before)
+        await axios.post(
+            `http://localhost:8080/api/assistant/${conversation_id}`,
+            { user_message: { content: userMessage } }, 
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        // Now initiate the SSE connection to stream the assistant response
+        // Pass the token as a query parameter
+        const eventSource = new EventSource(`http://localhost:8080/api/assistant/stream-response/${conversation_id}?token=${token}`);
+
+        eventSource.onopen = () => {
+            console.log('SSE connection opened.');
         };
 
-        setMessages((prev) => [...prev, newMessage]);
-        setUserMessage('');
-        setLoading(true);
-
-        try {
-            const response = await axios.post(
-                `http://localhost:8080/api/assistant/${conversation_id}`,
-                { user_message: { content: userMessage } }, 
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-            setMessages((prevMessages) =>
-                prevMessages.map((msg) =>
+        eventSource.onmessage = (event) => {
+            console.log('Received chunk of data:', event.data);
+            setMessages((prevMessages) => {
+                return prevMessages.map((msg) =>
                     msg.message_id === newMessage.message_id
-                        ? response.data 
+                        ? {
+                              ...msg,
+                              assistant_response: {
+                                  content: (msg.assistant_response?.content || '') + event.data  // Append stream data
+                              }
+                          }
                         : msg
-                )
-            );
-        } catch (error) {
-            setError('Message sending failed');
-            console.error('Error sending message:', error);
-        } finally {
+                );
+            });
+
+            // Scroll to the bottom after each new chunk
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        eventSource.onerror = (err) => {
+            console.error('Error in SSE connection:', err);
+            eventSource.close(); // Close the SSE connection on error
+        };
+
+        eventSource.addEventListener('end', () => {
+            console.log('SSE stream ended.');
             setLoading(false);
-        }
-    };
+            eventSource.close();  // Close the SSE connection when done
+        });
+
+    } catch (error) {
+        console.error('Error sending message:', error);
+        setError('Message sending failed');
+        setLoading(false);
+    }
+};
+
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {

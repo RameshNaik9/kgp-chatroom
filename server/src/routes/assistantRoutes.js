@@ -1,5 +1,6 @@
 const express = require('express');
 const { createNewConversation, sendMessage, getConversation, getAllConversationsForUser } = require('../controllers/assistantController');
+const { streamAssistantResponse } = require('../controllers/assistantSSEController'); // Import SSE controller
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
@@ -15,5 +16,8 @@ router.get('/conversation/:conversation_id', authMiddleware, getConversation);
 
 // GET route to fetch all conversations for a specific user
 router.get('/conversations', authMiddleware, getAllConversationsForUser);
+
+// SSE route to stream the assistant's response (uses the updated auth middleware)
+router.get('/stream-response/:conversation_id', authMiddleware, streamAssistantResponse);
 
 module.exports = router;

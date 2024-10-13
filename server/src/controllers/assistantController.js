@@ -81,8 +81,9 @@ const sendMessage = async (req, res) => {
       }
     };
 
-    // Send the formatted response back to the client
-    return res.status(201).json(response);
+    // Instead of sending the response immediately, trigger SSE streaming
+    // Simply return the success status and handle streaming separately
+    return res.status(202).json({ message: 'Message processed. Streaming response via SSE...' });
 
   } catch (error) {
     console.error('Error handling message:', error);
