@@ -1,0 +1,20 @@
+/* ChatDrawer.css */
+.drawer-container {
+    flex-shrink: 0;
+    top: 70px;
+    box-sizing: border-box;
+    background-color: #212529;
+    color: white;
+    overflow: hidden;
+    transition: width 0.3s ease; /* Transition for smooth width adjustment */
+    height:95vh
+}
+
+.drawer-container.open {
+    width: 245px;
+}
+
+.drawer-container.closed {
+    width: 0;
+}
+

@@ -50,4 +50,7 @@ const MessageSchema = new Schema({
   feedback: FeedbackSchema  
 }, { timestamps: true });
 
+// Add index to optimize queries by conversation_id
+MessageSchema.index({ conversation_id: 1 });
+
 module.exports = mongoose.model('Message', MessageSchema);

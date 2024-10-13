@@ -2,8 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import ChatPage from './pages/ChatPage';
-import Home from './pages/Home';
+import GroupChatPage from './pages/GroupChatPage';
+import LandingPage from './pages/LandingPage';
+import HomePage from './pages/HomePage';
+import CareerAssistantPage from './pages/CareerAssistantPage'; 
 
 function RoutesConfig() {
     return (
@@ -11,8 +13,11 @@ function RoutesConfig() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/chat" element={<ChatPage />} />
-                <Route path="/" element={<Home />} />
+                <Route path="/group-chat" element={<GroupChatPage />} />
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/career-assistant" element={<CareerAssistantPage />} />
+                <Route path="/career-assistant/:conversation_id" element={<CareerAssistantPage />} />
             </Routes>
         </Router>
     );

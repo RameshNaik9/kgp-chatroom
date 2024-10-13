@@ -1,0 +1,21 @@
+.conversation-container {
+    padding: 20px;
+    background-color: white;
+}
+
+.messages-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.message-input {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+}

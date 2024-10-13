@@ -15,11 +15,13 @@ async function loadFilter() {
     }
 }
 
+const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
+const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
 // Set VAPID keys
 webpush.setVapidDetails(
     'mailto:your-email@example.com',
-    process.env.VAPID_PUBLIC_KEY,
-    process.env.VAPID_PRIVATE_KEY
+    publicVapidKey,
+    privateVapidKey
 );
 
 const sendPushNotification = async (messageData) => {

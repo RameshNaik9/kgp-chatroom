@@ -1,7 +1,7 @@
 const { createConversationInDB } = require('../services/assistantService');
 const { saveUserMessageService, getAssistantResponseService } = require('../services/assistantService');
 const Conversation = require('../models/conversation');  // Import the Conversation model
-
+const { getConversationMessages } = require('../services/assistantService');
 
 
 // Create a new conversation
@@ -84,4 +84,44 @@ const sendMessage = async (req, res) => {
   }
 };
 
-module.exports = { createNewConversation,sendMessage };
+const getConversation = async (req, res) => {
+  try {
+    const { conversation_id } = req.params;
+
+    // Fetch conversation details (optional: if you want to return conversation data)
+    const conversation = await Conversation.findById(conversation_id);
+    if (!conversation) {
+      return res.status(404).json({ message: 'Conversation not found' });
+    }
+
+    // Fetch all messages for the conversation
+    const messages = await getConversationMessages(conversation_id);
+
+    // Format the response to include conversation info and messages
+    const formattedMessages = messages.map(message => ({
+      message_id: message._id,
+      conversation_id: message.conversation_id,
+      user: message.user,
+      chat_title: conversation.chat_title,
+      user_message: {
+        content: message.user_message.content,
+        timestamp: message.user_message.timestamp,
+        message_type: message.message_type
+      },
+      assistant_response: message.assistant_response ? {
+        content: message.assistant_response.content,
+        timestamp: message.assistant_response.timestamp,
+        message_type: message.message_type
+      } : null
+    }));
+
+    return res.status(200).json({ conversation_id: conversation_id, messages: formattedMessages });
+
+  } catch (error) {
+    console.error('Error fetching conversation messages:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+module.exports = { createNewConversation, sendMessage, getConversation };
+

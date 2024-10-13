@@ -42,7 +42,7 @@ function Login() {
                 localStorage.setItem('userId', response.data.user._id);
                 localStorage.setItem('fullName', response.data.user.fullName);
                 toast.success('Login successful!');
-                navigate('/chat');
+                navigate('/home');
             } else {
                 toast.error('Invalid email or password. Please try again.');
             }
