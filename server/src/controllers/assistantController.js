@@ -91,42 +91,43 @@ const sendMessage = async (req, res) => {
 };
 
 const getConversation = async (req, res) => {
-  try {
-    const { conversation_id } = req.params;
+    try {
+        const { conversation_id } = req.params;
 
-    // Fetch conversation details
-    const conversation = await Conversation.findById(conversation_id);
-    if (!conversation) {
-      return res.status(404).json({ message: 'Conversation not found' });
+        // Fetch the conversation including the chat_profile
+        const conversation = await Conversation.findById(conversation_id);
+        if (!conversation) {
+            return res.status(404).json({ message: 'Conversation not found' });
+        }
+
+        // Fetch all messages for the conversation
+        const messages = await getConversationMessages(conversation_id);
+
+        // Format the response to include conversation info and messages
+        const formattedMessages = messages.map(message => ({
+            message_id: message._id,
+            conversation_id: message.conversation_id,
+            user: message.user,
+            chat_title: conversation.chat_title,
+            chat_profile: conversation.chat_profile, // Include chat_profile in the response
+            user_message: {
+                content: message.user_message.content,
+                timestamp: message.user_message.timestamp,
+                message_type: message.message_type
+            },
+            assistant_response: message.assistant_response ? {
+                content: message.assistant_response.content,
+                timestamp: message.assistant_response.timestamp,
+                message_type: message.message_type
+            } : null
+        }));
+
+        return res.status(200).json({ conversation_id, chat_title: conversation.chat_title, chat_profile: conversation.chat_profile, messages: formattedMessages });
+
+    } catch (error) {
+        console.error('Error fetching conversation messages:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
-
-    // Fetch all messages for the conversation
-    const messages = await getConversationMessages(conversation_id);
-
-    // Format the response to include conversation info and messages
-    const formattedMessages = messages.map(message => ({
-      message_id: message._id,
-      conversation_id: message.conversation_id,
-      user: message.user,
-      chat_title: conversation.chat_title,  // Include chat_title in each message (or you can include it separately)
-      user_message: {
-        content: message.user_message.content,
-        timestamp: message.user_message.timestamp,
-        message_type: message.message_type
-      },
-      assistant_response: message.assistant_response ? {
-        content: message.assistant_response.content,
-        timestamp: message.assistant_response.timestamp,
-        message_type: message.message_type
-      } : null
-    }));
-
-    return res.status(200).json({ conversation_id: conversation_id, chat_title: conversation.chat_title, messages: formattedMessages });
-
-  } catch (error) {
-    console.error('Error fetching conversation messages:', error);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
 };
 
 

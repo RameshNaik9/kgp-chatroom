@@ -8,15 +8,19 @@ const Conversation = () => {
     const { conversation_id } = useParams(); // Get conversation_id from URL
     const [messages, setMessages] = useState([]); // Store conversation messages
     const [chatTitle, setChatTitle] = useState(''); // Store chat title
+    const [chatProfile, setChatProfile] = useState(''); // Store chat profile
     const [loading, setLoading] = useState(false); // Loading state for assistant response
     const [userMessage, setUserMessage] = useState(''); // Message input
     const [error, setError] = useState(''); // Error message state
     const messagesEndRef = useRef(null); // Ref for scrolling to the bottom
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
+    // Personalized greeting based on stored user name
+    const fullName = localStorage.getItem('fullName') || 'there';
+    // const placeholderText = `Hi ${fullName}, ask me anything!`;
 
     useEffect(() => {
-        // Fetch conversation history and chat title when the page loads or is refreshed
+        // Fetch conversation history and chat profile when the page loads or is refreshed
         fetchConversationHistory();
     }, [conversation_id]);
 
@@ -30,7 +34,7 @@ const Conversation = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    // Fetch existing conversation history and chat title from backend
+    // Fetch existing conversation history, chat title, and chat profile from backend
     const fetchConversationHistory = async () => {
         setLoading(true);
         setError(''); // Clear any existing errors
@@ -41,6 +45,7 @@ const Conversation = () => {
             );
             setMessages(response.data.messages); // Load conversation messages
             setChatTitle(response.data.chat_title); // Set the chat title
+            setChatProfile(response.data.chat_profile); // Set the chat profile (Career, Academics, General)
         } catch (error) {
             setError('Failed to fetch conversation history');
             console.error('Error fetching conversation history:', error);
@@ -97,6 +102,20 @@ const Conversation = () => {
         }
     };
 
+    // Set placeholder based on chat profile
+    const getPlaceholderText = () => {
+        switch (chatProfile) {
+            case 'Career':
+                return 'Ask me anything?';
+            case 'Academics':
+                return 'Any other doubts??';
+            case 'General':
+                return 'Any other funda you want to know about??';
+            default:
+                return 'Type your message...';
+        }
+    };
+
     return (
         <div className="conversation-container">
             {/* Display the chat title */}
@@ -130,7 +149,7 @@ const Conversation = () => {
                     value={userMessage} 
                     onChange={(e) => setUserMessage(e.target.value)} 
                     onKeyDown={handleKeyDown} // Listen for Enter key press
-                    placeholder="Type your message..." 
+                    placeholder={getPlaceholderText()} // Dynamic placeholder based on chat profile
                     disabled={loading} // Disable input while loading
                 />
                 <button onClick={sendMessage} disabled={loading}>Send</button> {/* Disable button while loading */}
