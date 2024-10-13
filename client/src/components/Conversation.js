@@ -7,6 +7,7 @@ import './Conversation.css';
 const Conversation = () => {
     const { conversation_id } = useParams(); // Get conversation_id from URL
     const [messages, setMessages] = useState([]); // Store conversation messages
+    const [chatTitle, setChatTitle] = useState(''); // Store chat title
     const [loading, setLoading] = useState(false); // Loading state for assistant response
     const [userMessage, setUserMessage] = useState(''); // Message input
     const [error, setError] = useState(''); // Error message state
@@ -15,7 +16,7 @@ const Conversation = () => {
     const userId = localStorage.getItem('userId');
 
     useEffect(() => {
-        // Fetch conversation history when the page loads or is refreshed
+        // Fetch conversation history and chat title when the page loads or is refreshed
         fetchConversationHistory();
     }, [conversation_id]);
 
@@ -29,7 +30,7 @@ const Conversation = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    // Fetch existing conversation history from backend
+    // Fetch existing conversation history and chat title from backend
     const fetchConversationHistory = async () => {
         setLoading(true);
         setError(''); // Clear any existing errors
@@ -39,6 +40,7 @@ const Conversation = () => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setMessages(response.data.messages); // Load conversation messages
+            setChatTitle(response.data.chat_title); // Set the chat title
         } catch (error) {
             setError('Failed to fetch conversation history');
             console.error('Error fetching conversation history:', error);
@@ -97,7 +99,9 @@ const Conversation = () => {
 
     return (
         <div className="conversation-container">
-            <h2>Conversation Component</h2>
+            {/* Display the chat title */}
+            <h2>{chatTitle || 'Conversation'}</h2>
+            
             <div className="messages-list">
                 {messages.map((msg) => (
                     <div key={msg.message_id} className="message-block">
