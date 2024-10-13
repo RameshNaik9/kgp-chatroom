@@ -124,12 +124,14 @@ const Conversation = () => {
                         </div>
                         {msg.assistant_response ? (
                             <div className="message-item assistant-message">
-                                {/* Add assistant logo before response */}
-                                <div className="assistant-response-logo">
+                                <div className="assistant-response-container">
                                     <img src={assistantLogo} alt="Assistant Logo" className="assistant-logo" />
+                                    <div className="assistant-response-content">
+                                        <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
+                                    </div>
                                 </div>
-                                <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
                             </div>
+
                         ) : loading ? (
                             <div className="message-item assistant-message">
                                 <div className="skeleton-loader"></div>

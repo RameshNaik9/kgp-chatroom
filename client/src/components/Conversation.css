@@ -115,19 +115,27 @@
     margin-left: 8px;
 }
 
-/* Assistant logo styling */
-.assistant-response-logo {
-    display: inline-block;
-    margin-right: 10px;
+/* Flex container for assistant message */
+.assistant-response-container {
+    display: flex;
+    align-items: flex-start;
+    /* Align the content vertically */
 }
 
+/* Assistant logo styling */
 .assistant-logo {
     width: 36px;
-    /* Adjust the size similar to ChatGPT */
     height: 36px;
     border-radius: 50%;
     object-fit: cover;
-    vertical-align: middle;
+    margin-right: 10px;
+    /* Space between logo and response */
 }
 
-/* Other existing CSS */
+/* Styling for the response content */
+.assistant-response-content {
+    flex-grow: 1;
+    /* Allow the response to take up the remaining space */
+    word-wrap: break-word;
+    /* Ensure the text wraps properly */
+}
