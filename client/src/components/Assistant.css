@@ -20,7 +20,7 @@
     width: 23%;
     text-align: center;
     border-radius: 8px;
-    color:black
+    color: black;
 }
 
 .message-bar {
@@ -32,8 +32,17 @@
 .message-bar input {
     flex: 1;
     padding: 10px;
-    border-radius: 4px;
+    border-radius: 20px;
     border: 1px solid #ccc;
+    font-size: 16px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.message-bar input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0px 2px 10px rgba(0, 123, 255, 0.3);
 }
 
 .message-bar button {
@@ -42,6 +51,60 @@
     color: white;
     padding: 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 20px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
+
+.message-bar button:hover {
+    background-color: #0056b3;
+}
+
+/* Loading section with user's initial message and assistant skeleton loader */
+.loading-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+    padding: 20px;
+}
+
+.user-message-right {
+    background-color: rgb(36, 33, 33);
+    padding: 10px;
+    border-radius: 15px;
+    text-align: right;
+    color: white;
+    max-width: 70%;
+}
+
+/* Loading Skeleton */
+.skeleton-loader {
+    width: 100%;
+    max-width: 500px;
+    height: 50px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, rgba(240, 240, 240, 0.7) 25%, rgba(230, 230, 230, 1) 50%, rgba(240, 240, 240, 0.7) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Assistant message styling */
+/* .assistant-message {
+    margin-top: 20px;
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left;
+    color: black;
+} */
