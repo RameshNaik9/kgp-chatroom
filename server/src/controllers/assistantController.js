@@ -37,6 +37,7 @@ const createNewConversation = async (req, res) => {
 
 
 // Send a message in a conversation
+// Send a message in a conversation
 const sendMessage = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -81,15 +82,16 @@ const sendMessage = async (req, res) => {
       }
     };
 
-    // Instead of sending the response immediately, trigger SSE streaming
-    // Simply return the success status and handle streaming separately
-    return res.status(202).json({ message: 'Message processed. Streaming response via SSE...' });
+    // Send the formatted response back to the client
+    return res.status(201).json(response);
 
   } catch (error) {
     console.error('Error handling message:', error);
     return res.status(500).json({ message: 'Internal server error.' });
   }
 };
+
+
 
 const getConversation = async (req, res) => {
     try {
