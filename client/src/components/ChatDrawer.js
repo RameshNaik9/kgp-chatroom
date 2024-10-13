@@ -225,8 +225,8 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Group Chat */}
                 <ListItem disablePadding>
                     <ListItemButton 
-                        onClick={() => handleAssistantClick('group-chat')} // Use the updated function to track Group Chat click
-                        className={selectedAssistant === 'Group' ? 'active-item' : ''}
+                        onClick={() => handleAssistantClick('group-chat')}
+                        className={selectedAssistant === 'Group' ? 'active-item' : ''} // Check if the assistant is selected
                     >
                         <ListItemText primary="Group Chat" sx={{ color: 'white' }} />
                     </ListItemButton>
@@ -236,7 +236,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 <ListItem disablePadding>
                     <ListItemButton
                         onClick={() => handleAssistantClick('career-assistant')}
-                        className={selectedAssistant === 'Career' ? 'active-item' : ''}
+                        className={selectedAssistant === 'Career' ? 'active-item' : ''} // Check if Career Assistant is selected
                     >
                         <ListItemText primary="Career Assistant" sx={{ color: 'white' }} />
                     </ListItemButton>
@@ -246,7 +246,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 <ListItem disablePadding>
                     <ListItemButton
                         onClick={() => handleAssistantClick('academics-assistant')}
-                        className={selectedAssistant === 'Academics' ? 'active-item' : ''}
+                        className={selectedAssistant === 'Academics' ? 'active-item' : ''} // Check if Academics Assistant is selected
                     >
                         <ListItemText primary="Acads Assistant" sx={{ color: 'white' }} />
                     </ListItemButton>
@@ -256,7 +256,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 <ListItem disablePadding>
                     <ListItemButton
                         onClick={() => handleAssistantClick('general-assistant')}
-                        className={selectedAssistant === 'General' ? 'active-item' : ''}
+                        className={selectedAssistant === 'General' ? 'active-item' : ''} // Check if General Assistant is selected
                     >
                         <ListItemText primary="General Assistant" sx={{ color: 'white' }} />
                     </ListItemButton>
@@ -272,7 +272,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                             <ListItem 
                                 key={conversation._id} 
                                 disablePadding 
-                                sx={{ pl: 4 }}
+                                sx={{ pl: 1 }}
                                 className={selectedConversation === conversation._id ? 'active-item' : ''}
                             >
                                 <ListItemButton onClick={() => handleConversationClick(selectedAssistant.toLowerCase() + '-assistant', conversation._id)}>
@@ -291,6 +291,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                     </>
                 )}
             </List>
+
         </Box>
     );
 };

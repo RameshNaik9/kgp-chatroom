@@ -7,8 +7,10 @@
     color: white;
     overflow: hidden;
     transition: width 0.3s ease;
-    height: 95vh;
-    padding-left: 10px;
+    height: 100vh;
+    padding-left: 5px;
+    padding-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
 .drawer-container.open {
@@ -33,7 +35,7 @@
 }
 
 .MuiCollapse-wrapperInner {
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 .drawer-container {
