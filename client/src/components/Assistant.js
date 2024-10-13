@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Assistant.css';
 
-const Assistant = () => {
+const Assistant = ({ onNewConversation }) => {  // Prop to update the drawer
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -30,14 +30,23 @@ const Assistant = () => {
             const { conversation_id } = response.data;
 
             // Send the initial message to trigger the assistant response
-            await axios.post(
+            const assistantResponse = await axios.post(
                 `http://localhost:8080/api/assistant/${conversation_id}`,
                 { user_message: { content: message } }, // Send the initial message as payload
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
+            const { chat_title } = assistantResponse.data;
+
+            // Update the chat drawer dynamically
+            onNewConversation({
+                _id: conversation_id,
+                chat_title,
+                chat_profile: 'Career'
+            });
+
             // Navigate to the conversation page after getting the response
-            navigate(`/career-assistant/${conversation_id}`, { state: { initialMessage: message } });
+            navigate(`/career-assistant/${conversation_id}`);  // This ensures correct navigation
         } catch (error) {
             console.error('Error starting new conversation or sending initial message:', error);
         } finally {

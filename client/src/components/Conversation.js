@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown for markdown rendering
@@ -9,17 +9,30 @@ const Conversation = () => {
     const [messages, setMessages] = useState([]); // Store conversation messages
     const [loading, setLoading] = useState(false); // Loading state for assistant response
     const [userMessage, setUserMessage] = useState(''); // Message input
+    const [error, setError] = useState(''); // Error message state
+    const messagesEndRef = useRef(null); // Ref for scrolling to the bottom
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId'); 
+    const userId = localStorage.getItem('userId');
 
     useEffect(() => {
         // Fetch conversation history when the page loads or is refreshed
         fetchConversationHistory();
     }, [conversation_id]);
 
+    useEffect(() => {
+        // Scroll to the bottom when a new message is added
+        scrollToBottom();
+    }, [messages]);
+
+    // Scroll to the bottom of the messages list
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
     // Fetch existing conversation history from backend
     const fetchConversationHistory = async () => {
         setLoading(true);
+        setError(''); // Clear any existing errors
         try {
             const response = await axios.get(
                 `http://localhost:8080/api/assistant/conversation/${conversation_id}`,
@@ -27,6 +40,7 @@ const Conversation = () => {
             );
             setMessages(response.data.messages); // Load conversation messages
         } catch (error) {
+            setError('Failed to fetch conversation history');
             console.error('Error fetching conversation history:', error);
         } finally {
             setLoading(false);
@@ -65,6 +79,7 @@ const Conversation = () => {
                 )
             );
         } catch (error) {
+            setError('Message sending failed');
             console.error('Error sending message:', error);
         } finally {
             setLoading(false);
@@ -88,9 +103,11 @@ const Conversation = () => {
                         )}
                     </div>
                 ))}
+                <div ref={messagesEndRef} />
             </div>
 
-            {loading && <p>Waiting for assistant response...</p>}
+            {loading && <p className="loading-spinner">Loading...</p>}
+            {error && <p className="error-message">{error}</p>}
 
             <div className="message-input">
                 <input 
