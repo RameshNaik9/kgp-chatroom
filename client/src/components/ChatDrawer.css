@@ -22,7 +22,6 @@
 .MuiListItemButton-root {
     display: flex;
     justify-content: space-between;
-    /* Ensures that text and icon are spaced apart */
 }
 
 .MuiListItemText-root {
@@ -35,25 +34,15 @@
 
 .MuiCollapse-wrapperInner {
     padding-left: 20px;
-    /* Indent the nested conversation items */
 }
 
-/* .message-item {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 5px 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    word-wrap: break-word;
-}
-
-.message-item:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-} */
-
-/* Add scrolling capability inside the drawer */
 .drawer-container {
     overflow-y: auto;
-    /* Enable vertical scrolling */
     overflow-x: hidden;
-    /* Prevent horizontal scrolling */
+}
+
+/* History Section */
+.history-title {
+    padding-left: 16px;
+    margin-top: 16px;
 }

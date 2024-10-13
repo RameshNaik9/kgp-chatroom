@@ -4,19 +4,16 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse'; // For collapsible menu
 import './ChatDrawer.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // To fetch conversations
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'; // Icon for collapsing
+import axios from 'axios';
 
-const ChatDrawer = ({ toggleDrawer, newConversation }) => {  // Accept newConversation prop
+const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const navigate = useNavigate();
-    
+
     const [allConversations, setAllConversations] = useState([]); // Store all conversations
-    const [isCareerOpen, setIsCareerOpen] = useState(false); // Toggle visibility for Career Assistant
-    const [isAcademicsOpen, setIsAcademicsOpen] = useState(false); // Toggle visibility for Academics Assistant
-    const [isGeneralOpen, setIsGeneralOpen] = useState(false); // Toggle visibility for General Assistant
+    const [selectedAssistant, setSelectedAssistant] = useState(''); // Track which assistant is clicked
+    const [showHistory, setShowHistory] = useState(false); // Toggle history visibility
 
     // Fetch all conversations when the component mounts
     useEffect(() => {
@@ -42,111 +39,72 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {  // Accept newConver
         }
     }, [newConversation]);
 
-    // Filter conversations based on chat_profile
-    const careerConversations = allConversations.filter(conversation => conversation.chat_profile === 'Career');
-    const academicsConversations = allConversations.filter(conversation => conversation.chat_profile === 'Academics');
-    const generalConversations = allConversations.filter(conversation => conversation.chat_profile === 'General');
+    // Filter conversations based on selected assistant
+    const filteredConversations = allConversations.filter(conversation => conversation.chat_profile === selectedAssistant);
 
-    // Toggle menus
-    const toggleCareerMenu = () => setIsCareerOpen(!isCareerOpen);
-    const toggleAcademicsMenu = () => setIsAcademicsOpen(!isAcademicsOpen);
-    const toggleGeneralMenu = () => setIsGeneralOpen(!isGeneralOpen);
+    const handleAssistantClick = (category) => {
+        const assistantMap = {
+            'career-assistant': 'Career',
+            'academics-assistant': 'Academics',
+            'general-assistant': 'General'
+        };
 
-    const handleNavigation = (category, conversationId = null) => {
-        if (conversationId) {
-            navigate(`/${category}/${conversationId}`); // Navigate to the selected conversation
-        } else {
-            navigate(`/${category}`); // Navigate to the Assistant page (Career, Academics, General)
-        }
+        const selectedProfile = assistantMap[category];
+        setSelectedAssistant(selectedProfile);
+
+        // Redirect to the assistant page first
+        navigate(`/${category}`);
+
+        // Show the history after redirection
+        setTimeout(() => {
+            setShowHistory(true);
+        }, 200); // 200ms delay to ensure smooth transition after navigation
+    };
+
+    const handleConversationClick = (category, conversationId) => {
+        navigate(`/${category}/${conversationId}`); // Navigate to the selected conversation
     };
 
     return (
         <Box className="drawer-container" role="presentation">
             <List>
-
                 {/* Group Chat */}
                 <ListItem disablePadding>
-                    <ListItemButton onClick={() => handleNavigation('group-chat')}>
+                    <ListItemButton onClick={() => navigate('/group-chat')}>
                         <ListItemText primary="Group Chat" sx={{ color: 'white' }} />
                     </ListItemButton>
                 </ListItem>
 
                 {/* Career Assistant */}
                 <ListItem disablePadding>
-                    <ListItemButton onClick={() => handleNavigation('career-assistant')}>
+                    <ListItemButton onClick={() => handleAssistantClick('career-assistant')}>
                         <ListItemText primary="Career Assistant" sx={{ color: 'white' }} />
                     </ListItemButton>
-                    {/* Toggle Button */}
-                    <ArrowDropDownIcon
-                        onClick={toggleCareerMenu}
-                        sx={{ color: 'white', cursor: 'pointer' }}
-                    />
                 </ListItem>
-                <Collapse in={isCareerOpen} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        {careerConversations.map(conversation => (
-                            <ListItem key={conversation._id} disablePadding sx={{ pl: 4 }}>
-                                <ListItemButton onClick={() => handleNavigation('career-assistant', conversation._id)}>
-                                    <ListItemText 
-                                        primary={conversation.chat_title} 
-                                        sx={{ 
-                                            color: 'white',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis'
-                                        }} 
-                                    />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Collapse>
 
                 {/* Academics Assistant */}
                 <ListItem disablePadding>
-                    <ListItemButton onClick={() => handleNavigation('academics-assistant')}>
+                    <ListItemButton onClick={() => handleAssistantClick('academics-assistant')}>
                         <ListItemText primary="Acads Assistant" sx={{ color: 'white' }} />
                     </ListItemButton>
-                    <ArrowDropDownIcon
-                        onClick={toggleAcademicsMenu}
-                        sx={{ color: 'white', cursor: 'pointer' }}
-                    />
                 </ListItem>
-                <Collapse in={isAcademicsOpen} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        {academicsConversations.map(conversation => (
-                            <ListItem key={conversation._id} disablePadding sx={{ pl: 4 }}>
-                                <ListItemButton onClick={() => handleNavigation('academics-assistant', conversation._id)}>
-                                    <ListItemText 
-                                        primary={conversation.chat_title} 
-                                        sx={{ 
-                                            color: 'white',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis'
-                                        }} 
-                                    />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Collapse>
 
                 {/* General Assistant */}
                 <ListItem disablePadding>
-                    <ListItemButton onClick={() => handleNavigation('general-assistant')}>
+                    <ListItemButton onClick={() => handleAssistantClick('general-assistant')}>
                         <ListItemText primary="General Assistant" sx={{ color: 'white' }} />
                     </ListItemButton>
-                    <ArrowDropDownIcon
-                        onClick={toggleGeneralMenu}
-                        sx={{ color: 'white', cursor: 'pointer' }}
-                    />
                 </ListItem>
-                <Collapse in={isGeneralOpen} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        {generalConversations.map(conversation => (
+
+                {/* History Section */}
+                {showHistory && (
+                    <>
+                        <ListItem disablePadding>
+                            <ListItemText primary="History" sx={{ color: 'white', paddingLeft: '16px', marginTop: '16px' }} />
+                        </ListItem>
+                        {filteredConversations.map(conversation => (
                             <ListItem key={conversation._id} disablePadding sx={{ pl: 4 }}>
-                                <ListItemButton onClick={() => handleNavigation('general-assistant', conversation._id)}>
+                                <ListItemButton onClick={() => handleConversationClick(selectedAssistant.toLowerCase() + '-assistant', conversation._id)}>
                                     <ListItemText 
                                         primary={conversation.chat_title} 
                                         sx={{ 
@@ -159,9 +117,8 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {  // Accept newConver
                                 </ListItemButton>
                             </ListItem>
                         ))}
-                    </List>
-                </Collapse>
-
+                    </>
+                )}
             </List>
         </Box>
     );
