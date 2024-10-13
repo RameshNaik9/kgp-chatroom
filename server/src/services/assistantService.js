@@ -105,11 +105,11 @@ const getConversationMessages = async (conversationId) => {
   }
 };
 
-// Service to fetch all conversations by chat_profile for a specific user
-const getConversationsByProfileService = async (userId, chatProfile) => {
+// Service to fetch all conversations for a specific user
+const getAllConversationsForUserService = async (userId) => {
     try {
-        // Query the database for conversations that match the userId and chat_profile
-        const conversations = await Conversation.find({ user: userId, chat_profile: chatProfile });
+        // Query the database for all conversations that match the userId
+        const conversations = await Conversation.find({ user: userId });
         return conversations;
     } catch (error) {
         console.error('Error fetching conversations from the database:', error);
@@ -118,5 +118,5 @@ const getConversationsByProfileService = async (userId, chatProfile) => {
 };
 
 
-module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService, getConversationMessages, getConversationsByProfileService };
+module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService, getConversationMessages, getAllConversationsForUserService };
 
