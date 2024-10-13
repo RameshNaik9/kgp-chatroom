@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 const Conversation = () => {
     const { conversation_id } = useParams(); // Get conversation_id from URL
     const [messages, setMessages] = useState([]); // Store conversation messages
-    const [loading, setLoading] = useState(false); // Loading state
+    const [loading, setLoading] = useState(false); // Loading state for assistant response
     const [userMessage, setUserMessage] = useState(''); // Message input
     const token = localStorage.getItem('token');
 
@@ -34,28 +34,41 @@ const Conversation = () => {
     const sendMessage = async () => {
         if (!userMessage.trim()) return; // Avoid sending empty messages
 
-        setLoading(true); // Show loading while waiting for assistant response
+        // Append the user's message immediately to the conversation
+        const newMessage = {
+            message_id: 'temp-' + new Date().getTime(), // Temporary message ID
+            user_message: { content: userMessage },
+            assistant_response: { content: 'Waiting for assistant response...' } // Placeholder for assistant response
+        };
+
+        setMessages((prev) => [...prev, newMessage]);
+        setUserMessage(''); // Clear input field after sending
 
         try {
+            // Send the user message to the backend
             const response = await axios.post(
                 `http://localhost:8080/api/assistant/${conversation_id}`,
                 { user_message: { content: userMessage } }, // Send user message as payload
                 { headers: { Authorization: `Bearer ${token}` } } // Attach Bearer token
             );
 
-            // Append the new message to the conversation
-            setMessages((prev) => [...prev, response.data]);
+            // Replace the placeholder with the actual assistant response
+            setMessages((prevMessages) =>
+                prevMessages.map((msg) =>
+                    msg.message_id === newMessage.message_id
+                        ? response.data // Replace temporary message with actual response
+                        : msg
+                )
+            );
         } catch (error) {
             console.error('Error sending message:', error);
         } finally {
-            setLoading(false); // Hide loading after response
-            setUserMessage(''); // Clear input field after sending
+            setLoading(false);
         }
     };
 
     return (
         <div className="conversation-container">
-            <h2>Conversation Component</h2>
             <div className="messages-list">
                 {messages.map((msg) => (
                     <div key={msg.message_id} className="message-item">
