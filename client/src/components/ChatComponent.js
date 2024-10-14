@@ -23,6 +23,9 @@ const ChatroomComponent = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const messagesEndRef = useRef(null);
     const userId = localStorage.getItem('userId');
+    const [profileData, setProfileData] = useState(null);  
+    const [showProfileCard, setShowProfileCard] = useState(false); // State for controlling profile card visibility
+
 
     useLayoutEffect(() => {
         axios.get(`${apiBaseUrl}/api/messages`)
@@ -66,6 +69,18 @@ const ChatroomComponent = () => {
         setTimeout(() => {
             messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
         }, 0);
+    };
+
+    // Fetch user profile data when fullName is clicked
+    const handleFullNameClick = (userId) => {
+        axios.get(`${apiBaseUrl}/api/profile/get-profile-info/${userId}`)
+            .then(response => {
+                setProfileData(response.data);  // Store fetched user data
+                setShowProfileCard(true);  // Show the profile card
+            })
+            .catch(error => {
+                console.error('Error fetching user profile:', error);
+            });
     };
 
     const subscribeUserToPush = async () => {
@@ -195,6 +210,7 @@ const ChatroomComponent = () => {
     );
 
     return (
+        <div>
         <div className={`chatroom-container bg-${theme}`}>
             <ToastContainer /> 
             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
@@ -245,7 +261,13 @@ const ChatroomComponent = () => {
                             )}
                             <div className={`d-flex flex-column mb-3 ${isCurrentUser ? 'align-items-end' : 'align-items-start'}`}>
                                 <div className="small text-muted mb-1">
-                                    {msg.user.fullName} 
+                                    {/* {msg.user.fullName}  */}
+                                    <span 
+                                        style={{ cursor: 'pointer', textDecoration: '' }}
+                                        onClick={() => handleFullNameClick(msg.user._id)}
+                                    >
+                                        {msg.user.fullName}
+                                    </span>
                                     {` • ${moment(msg.createdAt).format('hh:mm A')}`}
                                     {msg.isEdited && <span>(edited)</span>}
                                     
@@ -372,6 +394,32 @@ const ChatroomComponent = () => {
                 </div>
             </form>
 
+        </div>
+        <div>
+            {showProfileCard && profileData && (
+                <div style={{ padding: '20px',zIndex:'9999' }} className="profile-card">
+                    <h5>{profileData.fullName}</h5>
+                    <p> {profileData.email}</p>
+                    <p>{profileData.rollNumber}</p>
+                    <p> {profileData.department} Department</p>
+                    <p><strong>Verified:</strong> {profileData.isVerified ? 'Yes' : 'No'}</p>
+                    <span 
+                        style={{ 
+                            position: 'absolute', 
+                            top: '10px', 
+                            right: '10px', 
+                            cursor: 'pointer', 
+                            fontSize: '20px',
+                            color: 'white'
+                        }} 
+                        onClick={() => setShowProfileCard(false)}
+                        >
+                        &times;
+                    </span>
+                </div>
+            )}
+
+        </div>
         </div>
     );
 };

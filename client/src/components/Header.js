@@ -56,6 +56,7 @@ const Header = ({ toggleDrawer }) => {
     }, [profileOpen]);
 
     return (
+        <div>
         <div className="header-class">
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
                 <div className="container-fluid d-flex justify-content-between align-items-center">
@@ -87,17 +88,33 @@ const Header = ({ toggleDrawer }) => {
                 </div>
             </nav>
 
+        </div>
+        <div>
             {profileOpen && (
-                <Card className="profile-card" ref={profileCardRef}>
+                <div className="profile-card" ref={profileCardRef}>
                     <CardContent>
                         <h5>{fullName}</h5>
                         <p> {email}</p>
                         <p> {rollNumber}</p>
                         <p> {department} Department</p>
                         <p><strong>Verified:</strong> {isVerified ? 'Yes' : 'No'}</p>
+                        <span 
+                            style={{ 
+                                position: 'absolute', 
+                                top: '10px', 
+                                right: '10px', 
+                                cursor: 'pointer', 
+                                fontSize: '20px',
+                                color: 'white'
+                            }} 
+                            onClick={() => setProfileOpen(false)}
+                            >
+                            &times;
+                    </span>
                     </CardContent>
-                </Card>
+                </div>
             )}
+        </div>
         </div>
     );
 };
