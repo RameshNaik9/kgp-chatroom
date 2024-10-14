@@ -505,49 +505,58 @@ const Conversation = () => {
         try {
             console.log('Sending user message to the backend:', userMessage);
 
-            // Send HTTP request to process the user message (same as before)
-            await axios.post(
+            // Send HTTP request to process the user message and get final response
+            const postResponse = await axios.post(
                 `http://localhost:8080/api/assistant/${conversation_id}`,
                 { user_message: { content: userMessage } }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            // Now initiate the SSE connection to stream the assistant response
-            // Pass the token as a query parameter
+            // Start SSE streaming
             const eventSource = new EventSource(`http://localhost:8080/api/assistant/stream-response/${conversation_id}?token=${token}`);
 
-            eventSource.onopen = () => {
-                console.log('SSE connection opened.');
+            eventSource.onmessage = (event) => {
+                if (event.data.trim()) {
+                    setMessages((prevMessages) => {
+                        return prevMessages.map((msg) =>
+                            msg.message_id === newMessage.message_id
+                                ? {
+                                    ...msg,
+                                    assistant_response: {
+                                        content: (msg.assistant_response?.content || '') + event.data + "\n"
+                                    }
+                                }
+                                : msg
+                        );
+                    });
+                }
+                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
             };
 
-            eventSource.onmessage = (event) => {
-                console.log('Received chunk of data:', event.data);
+            eventSource.onerror = (err) => {
+                console.error('Error in SSE connection:', err);
+                eventSource.close(); // Close SSE connection on error
+            };
+
+            eventSource.addEventListener('end', () => {
+                console.log('SSE stream ended.');
+                eventSource.close();  // Close SSE connection when done
+
+                // Replace the streamed response with the final response from the post request
                 setMessages((prevMessages) => {
                     return prevMessages.map((msg) =>
                         msg.message_id === newMessage.message_id
                             ? {
                                 ...msg,
                                 assistant_response: {
-                                    content: (msg.assistant_response?.content || '') + event.data  // Append stream data as received
+                                    content: postResponse.data.assistant_response.content // Replace with final response content
                                 }
                             }
                             : msg
                     );
                 });
 
-                // Scroll to the bottom after each new chunk
-                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-            };
-
-            eventSource.onerror = (err) => {
-                console.error('Error in SSE connection:', err);
-                eventSource.close(); // Close the SSE connection on error
-            };
-
-            eventSource.addEventListener('end', () => {
-                console.log('SSE stream ended.');
-                setLoading(false);
-                eventSource.close();  // Close the SSE connection when done
+                setLoading(false); // Stop the loading state after replacement
             });
 
         } catch (error) {
@@ -556,6 +565,7 @@ const Conversation = () => {
             setLoading(false);
         }
     };
+
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -600,7 +610,7 @@ const Conversation = () => {
                                 <div className="assistant-response-container">
                                     <img src={assistantLogo} alt="Assistant Logo" className="assistant-logo" />
                                     <div className="assistant-response-content">
-                                        {/* Render the assistant message with markdown */}
+                                        {/* Render the assistant message progressively with ReactMarkdown */}
                                         <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
                                     </div>
                                 </div>

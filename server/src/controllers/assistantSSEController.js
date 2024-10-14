@@ -138,14 +138,20 @@ const streamAssistantResponse = async (req, res) => {
         const assistantResponse = message.assistant_response.content;
 
         // Preserve paragraphs and newlines (use double newlines to split paragraphs)
-        const chunks = assistantResponse.split(/\n\n/); // Split by double newlines for paragraphs
+        // const chunks = assistantResponse.split(/\n\n/); // Split by double newlines for paragraphs
+
+        // Split by double newlines for paragraphs, but preserve newlines inside markdown elements
+        // const chunks = assistantResponse.split(/(\n{2,})/); // Split into chunks while preserving newlines
+        const chunks = assistantResponse.split(/\n/); // Split by single newline
+
 
         for (const chunk of chunks) {
-            if (chunk.trim()) {  // Don't stream empty chunks
-                res.write(`data: ${chunk.trim()}\n\n`); // Stream each chunk as a whole markdown block
-                await new Promise(resolve => setTimeout(resolve, 300)); // Small delay between chunks
+            if (chunk.trim()) {  // Skip empty chunks
+                res.write(`data: ${chunk}\n\n`); // Send markdown-friendly chunks
+                await new Promise(resolve => setTimeout(resolve, 300)); // Delay for better streaming UX
             }
         }
+
 
         // Signal the end of the stream
         res.write('event: end\n');
