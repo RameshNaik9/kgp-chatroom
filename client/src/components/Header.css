@@ -1,4 +1,22 @@
 /* Ensure that the button is always visible in one line */
+
+
+:root {
+    --color-bg: #1f1f38;
+    --color-bg-variant: #2c2c6c;
+    --color-primary: #4db5ff;
+    --color-primary-variant: rgba(77, 181, 255, 0.4);
+    --color-white: #fff;
+    --color-light: rgba(255, 255, 255, 0.6);
+
+    --container-width-lg: 75%;
+    --container-width-md: 86%;
+    --container-width-sm: 90%;
+
+    --transition: all 400ms ease;
+
+}
+
 .btn-container {
     display: flex;
     align-items: center;
@@ -27,4 +45,30 @@
         transition: background-color 0.3s ease;
         border-radius: 4px;
     }
+}
+
+.profile-card {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 250px;
+    border: 1px solid var(--color-primary);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    border-radius: 10px;
+    background-color: var(--color-bg-variant) !important;
+    border-radius: 8px;
+    color: var(--color-white);
+    padding: 10px;
+}
+
+.profile-card h5 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: var(--color-primary);
+}
+
+.profile-card p {
+    margin: 5px 0;
+    color: var(--color-light);
 }
