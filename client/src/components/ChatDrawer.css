@@ -83,3 +83,15 @@
     fill: #17a2b8;
     /* Change the color of any icons (if present) */
 }
+
+/* Three-dot menu styling */
+.MuiIconButton-root {
+    padding: 5px;
+    color: white;
+}
+
+/* Ensure the three-dot menu aligns properly */
+.MuiListItemButton-root {
+    display: flex;
+    justify-content: space-between;
+}
