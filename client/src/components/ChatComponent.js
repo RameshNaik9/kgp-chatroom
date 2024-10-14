@@ -1,13 +1,15 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import './Chatroom.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment';
+import { getDateLabel } from './DateUtility'; // Ensure correct path
 
 const socket = io(process.env.REACT_APP_SOCKET_URL) || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
+const vapid_public_key = process.env.REACT_APP_VAPID_PUBLIC_KEY || 'BOMBbfvkjUBtjs49boCTJnI11Wec0CG7bp-vyVcvAclcvDfgRg2XMdwrINtOlO-S4SX5UxTiMNwAifpAEJ25wts';
 
 const ChatroomComponent = () => {
     const [message, setMessage] = useState('');
@@ -20,7 +22,6 @@ const ChatroomComponent = () => {
     const [replyToMessage, setReplyToMessage] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const messagesEndRef = useRef(null);
-
     const userId = localStorage.getItem('userId');
 
     useLayoutEffect(() => {
@@ -57,10 +58,63 @@ const ChatroomComponent = () => {
         };
     }, [isConnected]);
 
+    useEffect(() => {
+        subscribeUserToPush();
+    }, []);
+
     const scrollToBottom = () => {
         setTimeout(() => {
             messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
         }, 0);
+    };
+
+    const subscribeUserToPush = async () => {
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+            try {
+                const registration = await navigator.serviceWorker.ready;
+                const existingSubscription = await registration.pushManager.getSubscription();
+
+                if (existingSubscription) {
+                    console.log('Already subscribed:', existingSubscription);
+
+                    await axios.post(`${apiBaseUrl}/api/subscribe`, {
+                        ...existingSubscription.toJSON(),
+                        userId,
+                    });
+                    return;
+                }
+
+                const subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(vapid_public_key),
+                });
+
+                await axios.post(`${apiBaseUrl}/api/subscribe`, {
+                    ...subscription.toJSON(),
+                    userId,
+                });
+
+                console.log('User is subscribed:', subscription);
+            } catch (error) {
+                if (Notification.permission === 'denied') {
+                    console.warn('Permission for notifications was denied');
+                } else {
+                    console.error('Failed to subscribe the user:', error);
+                }
+            }
+        }
+    };
+
+    const urlBase64ToUint8Array = (base64String) => {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
     };
 
     const handleSendMessage = (e) => {
@@ -73,12 +127,12 @@ const ChatroomComponent = () => {
                 replyTo: replyToMessage?._id || null 
             };
 
+            setMessage('');
+            setReplyToMessage(null); 
+            scrollToBottom();
+
             socket.emit("sendMessage", messageData, (response) => {
-                if (response.status === 'ok') {
-                    setMessage('');
-                    setReplyToMessage(null); 
-                    scrollToBottom();
-                } else {
+                if (response.status !== 'ok') {
                     toast.error('Session expired. Login again');
                 }
             });
@@ -132,12 +186,7 @@ const ChatroomComponent = () => {
         });
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            handleSendMessage(e);
-        }
-    };
+  
 
     // Filter messages based on search query
     const filteredMessages = messages.filter(msg =>
@@ -176,138 +225,155 @@ const ChatroomComponent = () => {
                     <div className="spinner-border text-primary" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </div>
-                    <p>Connecting to server...</p>
+                    <p className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`} >Connecting to server...</p>
                 </div>
             </div>
             <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} >
                 {filteredMessages.map((msg, index) => {
                     const isCurrentUser = msg.user._id === userId;
                     const isEditing = editingMessageId === msg._id;
+
+                  
+                    const showDateLabel = index === 0 || getDateLabel(msg.createdAt, filteredMessages[index - 1].createdAt);
+
                     return (
-                        <div
-                            key={index}
-                            className={`d-flex flex-column mb-3 ${isCurrentUser ? 'align-items-end' : 'align-items-start'}`}
-                        >
-                            <div className="small text-muted mb-1">
-                                {msg.user.fullName} 
-                                {` • ${moment(msg.createdAt).format('hh:mm A')}`}
-                                {msg.isEdited && <span>(edited)</span>}
-                                
-                                {msg.replyTo && msg.replyTo.user && (
-                                    <div className="small text-muted mb-1">
-                                        Replying to: {msg.replyTo.user.fullName}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="message-wrapper">
-                                {msg.replyTo && (
-                                    <div className={`reply-to-wrapper small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
-                                        {msg.replyTo.message}
-                                    </div>
-                                )}
-                                {isEditing ? (
-                                    <div className="d-flex">
-                                        <textarea
-                                            className="form-control me-2"
-                                            value={newMessageContent}
-                                            onChange={(e) => setNewMessageContent(e.target.value)}
-                                        />
-                                        <button
-                                            style={{backgroundColor:'green'}}
-                                            className="btn2"
-                                            onClick={() => handleEditMessageSubmit(msg._id)}
-                                        >
-                                            Save
-                                        </button>
-                                        <button
-                                            style={{backgroundColor:'grey',width:'135px'}}
-                                            className="btn2 ms-2"
-                                            onClick={() => setEditingMessageId(null)}
-                                        >
-                                            Cancel
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div
-                                        className={`message-box p-2 rounded text-white ${isCurrentUser ? 'bg-primary' : 'bg-success'}`}
-                                    >
-                                        {msg.message}
-                                        <div className="dropdown" style={{ marginRight: 'auto' }}>
-                                            <button
-                                                className={` dropdown-toggle ${theme === 'dark' ? 'text-light' : 'text-dark'}`}
-                                                type="button"
-                                                id={`dropdownMenuButton-${msg._id}`}
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >
-                                            </button>
-                                            <ul className="dropdown-menu dropdown-menu-end p-0" aria-labelledby={`dropdownMenuButton-${msg._id}`}>
-                                                {isCurrentUser ? (
-                                                    <>
-                                                        <li>
-                                                            <a className="dropdown-item" href="#" onClick={() => handleEditMessageClick(msg._id, msg.message)}>
-                                                                Edit
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a className="dropdown-item" href="#" onClick={() => handleDeleteMessage(msg._id)}>
-                                                                Delete
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                        <a className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
-                                                            Reply
-                                                        </a>
-                                                    </li>
-                                                    </>
-                                                ) : (
-                                                    <li>
-                                                        <a className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
-                                                            Reply
-                                                        </a>
-                                                    </li>
-                                                )}
-                                            </ul>
+                        <div key={msg._id}>
+                            {showDateLabel && (
+                                <div className={`date-label text-center text-muted ${theme === "dark" ? "text-light" : "text-dark"}`}>
+                                    {showDateLabel}
+                                </div>
+                            )}
+                            <div className={`d-flex flex-column mb-3 ${isCurrentUser ? 'align-items-end' : 'align-items-start'}`}>
+                                <div className="small text-muted mb-1">
+                                    {msg.user.fullName} 
+                                    {` • ${moment(msg.createdAt).format('hh:mm A')}`}
+                                    {msg.isEdited && <span>(edited)</span>}
+                                    
+                                    {msg.replyTo && msg.replyTo.user && (
+                                        <div className="small text-muted mb-1">
+                                            Replying to: {msg.replyTo.user.fullName}
                                         </div>
-                                    </div>
-                                )}
+                                    )}
+                                </div>
+                                <div className="message-wrapper">
+                                    {msg.replyTo && (
+                                        <div className={`reply-to-wrapper small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
+                                            {msg.replyTo.message}
+                                        </div>
+                                    )}
+                                    {isEditing ? (
+                                        <div className="d-flex">
+                                            <textarea
+                                                className="form-control me-2"
+                                                value={newMessageContent}
+                                                onChange={(e) => setNewMessageContent(e.target.value)}
+                                            />
+                                            <button
+                                                style={{backgroundColor:'green'}}
+                                                className="btn2"
+                                                onClick={() => handleEditMessageSubmit(msg._id)}
+                                            >
+                                                Save
+                                            </button>
+                                            <button
+                                                style={{backgroundColor:'grey',width:'135px'}}
+                                                className="btn2 ms-2"
+                                                onClick={() => setEditingMessageId(null)}
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div
+                                            className={`message-box p-2 rounded text-white ${isCurrentUser ? 'bg-primary' : 'bg-success'}`}
+                                        >
+                                            {msg.message}
+                                            <div className="dropdown" style={{ marginRight: 'auto' }}>
+                                                <button
+                                                    className={` dropdown-toggle ${theme === 'dark' ? 'text-light' : 'text-dark'}`}
+                                                    type="button"
+                                                    id={`dropdownMenuButton-${msg._id}`}
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                >
+                                                </button>
+                                                <ul className="dropdown-menu dropdown-menu-end p-0" aria-labelledby={`dropdownMenuButton-${msg._id}`}>
+                                                    {isCurrentUser ? (
+                                                        <>
+                                                            <li>
+                                                                <button className="dropdown-item" href="#" onClick={() => handleEditMessageClick(msg._id, msg.message)}>
+                                                                    Edit
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button className="dropdown-item" href="#" onClick={() => handleDeleteMessage(msg._id)}>
+                                                                    Delete
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                            <button className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
+                                                                Reply
+                                                            </button>
+                                                        </li>
+                                                        </>
+                                                        ) : (
+                                                        <>
+                                                            <li>
+                                                                <button className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
+                                                                    Reply
+                                                                </button>
+                                                            </li>
+                                                            {localStorage.getItem('fullName') === 'Admin' && (
+                                                                <li>
+                                                                    <button className="dropdown-item" href="#" onClick={() => handleDeleteMessage(msg._id)}>
+                                                                        Delete
+                                                                    </button>
+                                                                </li>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     );
                 })}
                 <div ref={messagesEndRef} />
             </div>
-        <form onSubmit={handleSendMessage} className="p-3 border-top">
-            {replyToMessage && (
-                <div className={`reply-to-container text-muted small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
-                    <span>
-                        Replying to: <strong>{replyToMessage.fullName}</strong> - {replyToMessage.message}
-                    </span>
-                    <div className="cancel-button">
-                        <button
-                            className="btn1 btn-sm"
-                            onClick={() => setReplyToMessage(null)}>
-                            Cancel
+            <form onSubmit={handleSendMessage} className="p-3 border-top">
+                {replyToMessage && (
+                    <div className={`reply-to-container text-muted small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
+                        <span>
+                            Replying to: <strong>{replyToMessage.fullName}</strong> - {replyToMessage.message}
+                        </span>
+                        <div className="cancel-button">
+                            <button
+                                className="btn1 btn-sm"
+                                onClick={() => setReplyToMessage(null)}>
+                                Cancel
                         </button>
+                        </div>
                     </div>
+                )}
+                <div className="input-group">
+                    <textarea
+                        className="form-control"
+                        placeholder="Enter your message"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSendMessage(e); } }}
+                        style={{ resize: "none", height: "auto", overflow: "auto" }}
+                        rows={1}
+                    />
+                    <button type="submit" className="btn1 btn-primary" style={{ height: "auto" }}>Send</button>
                 </div>
-            )}
-            <div className="input-group">
-                <textarea
-                    className="form-control"
-                    placeholder="Enter your message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSendMessage(e); } }}
-                    style={{ resize: "none", height: "auto", overflow: "auto" }}
-                    rows={1}
-                />
-                <button type="submit" className="btn1 btn-primary" style={{ height: "auto" }}>Send</button>
-            </div>
-        </form>
+            </form>
 
-    </div>
-);
-}
+        </div>
+    );
+};
 
 export default ChatroomComponent;

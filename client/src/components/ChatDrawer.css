@@ -1,0 +1,91 @@
+/* ChatDrawer.css */
+.drawer-container {
+    flex-shrink: 0;
+    top: 70px;
+    box-sizing: border-box;
+    background-color: #212529;
+    color: white;
+    overflow-y: auto;
+    transition: width 0.3s ease;
+    height: 100vh;
+    padding-left: 5px;
+    padding-bottom: 10px;
+}
+
+.drawer-container.open {
+    width: 245px;
+}
+
+.drawer-container.closed {
+    width: 0;
+}
+
+.MuiListItemButton-root {
+    display: flex;
+    justify-content: space-between;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.MuiListItemText-root {
+    flex-grow: 1;
+}
+
+.MuiSvgIcon-root {
+    cursor: pointer;
+}
+
+.MuiCollapse-wrapperInner {
+    padding-left: 10px;
+}
+
+.drawer-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.history-title {
+    padding-left: 16px;
+    margin-top: 16px;
+}
+
+/* Active Item Background */
+.active-item {
+    background-color: #343a40;
+    border-left: 4px solid #17a2b8;
+    font-weight: bold;
+    color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease;
+}
+
+.active-item:hover {
+    background-color: #495057;
+    color: #f1f1f1;
+}
+
+.active-item .MuiListItemText-root {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.active-item .MuiSvgIcon-root {
+    fill: #17a2b8;
+}
+
+/* Hover effect for inactive list items */
+.MuiListItemButton-root:hover {
+    background-color: #495057;
+    color: #ffffff;
+}
+
+.MuiListItemButton-root:hover .MuiListItemText-root {
+    color: #ffffff;
+}
+
+.MuiListItemButton-root:hover .MuiSvgIcon-root {
+    fill: #ffffff;
+}
+
+.MuiIconButton-root {
+    padding: 5px;
+    color: white;
+}
