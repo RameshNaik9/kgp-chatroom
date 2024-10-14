@@ -46,7 +46,7 @@
         border-radius: 4px;
     }
 }
-
+/* 
 .profile-card {
     position: fixed;
     top: 60px;
@@ -71,4 +71,33 @@
 .profile-card p {
     margin: 5px 0;
     color: var(--color-light);
+} */
+/* Header.css */
+.profile-card {
+    position: fixed !important;
+    top: 70px !important;
+    right: 20px !important;
+    width: 250px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37) !important;
+    z-index: 10 !important;
+    border-radius: 16px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    /* For Safari */
+    /* color: var(--color-white) !important; */
+    padding: 20px !important;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease !important;
+}
+
+.profile-card h5 {
+    margin-bottom: 10px !important;
+    font-size: 1.2rem !important;
+    color: var(--color-primary) !important;
+}
+
+.profile-card p {
+    margin: 5px 0 !important;
+    color: var(--color-light) !important;
 }
