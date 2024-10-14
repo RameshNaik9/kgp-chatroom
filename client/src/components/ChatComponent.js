@@ -25,6 +25,8 @@ const ChatroomComponent = () => {
     const userId = localStorage.getItem('userId');
     const [profileData, setProfileData] = useState(null);  
     const [showProfileCard, setShowProfileCard] = useState(false); // State for controlling profile card visibility
+    const profileCardRef = useRef(null); // Ref for the profile card
+
 
 
     useLayoutEffect(() => {
@@ -64,6 +66,23 @@ const ChatroomComponent = () => {
     useEffect(() => {
         subscribeUserToPush();
     }, []);
+
+    // Function to close the profile card when clicking outside of it
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (profileCardRef.current && !profileCardRef.current.contains(event.target)) {
+                setShowProfileCard(false);
+            }
+        }
+
+        // Add event listener when profile card is shown
+        document.addEventListener('mousedown', handleClickOutside);
+
+        // Clean up event listener when component unmounts or profile card is hidden
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [profileCardRef]);
 
     const scrollToBottom = () => {
         setTimeout(() => {
