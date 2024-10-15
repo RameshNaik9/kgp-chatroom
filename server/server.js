@@ -41,15 +41,48 @@ app.get('/api/health-check', (req, res) => {
 // Error Handling Middleware
 app.use(errorHandler);
 
+// // Socket.IO connection
+// io.on('connection', (socket) => {
+//     console.log('New client connected');
+//     handleNewMessage(socket, io);
+
+//     socket.on('disconnect', () => {
+//         console.log('Client disconnected');
+//     });
+// });
+
+const onlineUsers = new Map(); // Track connected users
+
 // Socket.IO connection
 io.on('connection', (socket) => {
-    console.log('New client connected');
+    console.log('New client connected:', socket.id);
+
+    // Handle new messages (existing functionality)
     handleNewMessage(socket, io);
 
+    // Handle user joining the chat (for tracking online users)
+    socket.on('userJoined', (user) => {
+        console.log(`${user.fullName} has joined`);
+        // Add the user to the online users map
+        onlineUsers.set(socket.id, user);
+
+        // Broadcast the updated online user list to all connected clients
+        io.emit('onlineUsers', Array.from(onlineUsers.values()));  // Send the list of online users
+    });
+
+    // Handle user disconnection
     socket.on('disconnect', () => {
-        console.log('Client disconnected');
+        console.log('Client disconnected:', socket.id);
+
+        // Remove the user from the online users map
+        onlineUsers.delete(socket.id);
+
+        // Broadcast the updated online user list to all connected clients
+        io.emit('onlineUsers', Array.from(onlineUsers.values()));  // Update the user list for everyone
     });
 });
+
+
 
 // Connect to MongoDB
 connectDB();

@@ -4,6 +4,7 @@ import Drawer from '@mui/material/Drawer';
 import Header from '../components/Header';
 import ChatroomComponent from '../components/ChatComponent';
 import ChatDrawer from '../components/ChatDrawer';
+import OnlineUsersComponent from '../components/OnlineUsersComponent'; 
 
 const GroupChatroom = () => {
     const [drawerOpen, setDrawerOpen] = useState(true);
@@ -46,6 +47,7 @@ const GroupChatroom = () => {
                 >
                     <ChatroomComponent />
                 </Box>
+                <OnlineUsersComponent /> 
             </div>
         </div>
     );

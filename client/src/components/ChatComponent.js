@@ -16,7 +16,7 @@ const ChatroomComponent = () => {
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isConnected, setIsConnected] = useState(true);
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState('dark');
     const [editingMessageId, setEditingMessageId] = useState(null);
     const [newMessageContent, setNewMessageContent] = useState("");
     const [replyToMessage, setReplyToMessage] = useState(null);
