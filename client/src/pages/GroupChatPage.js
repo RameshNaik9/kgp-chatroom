@@ -4,7 +4,8 @@ import Drawer from '@mui/material/Drawer';
 import Header from '../components/Header';
 import ChatroomComponent from '../components/ChatComponent';
 import ChatDrawer from '../components/ChatDrawer';
-import OnlineUsersComponent from '../components/OnlineUsersComponent'; 
+import AdditionalComponent from '../components/AdditionalComponent';
+import './ChatPage.css';
 
 const GroupChatroom = () => {
     const [drawerOpen, setDrawerOpen] = useState(true);
@@ -14,14 +15,15 @@ const GroupChatroom = () => {
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+        <div className="group-chat-page">
             <Header toggleDrawer={toggleDrawer} />
-            <div style={{ display: 'flex', flexGrow: 1 }}>
+            <div className="group-chat-container">
                 <Drawer
                     anchor="left"
                     open={drawerOpen}
                     onClose={toggleDrawer}
                     variant="persistent"
+                    className="chat-drawer"
                     sx={{
                         width: 250,
                         flexShrink: 0,
@@ -29,25 +31,21 @@ const GroupChatroom = () => {
                             width: 240,
                             top: '68px',
                             boxSizing: 'border-box',
-                            color:'white',
+                            color: 'white',
                         },
                     }}
                 >
-                    <ChatDrawer/>
+                    <ChatDrawer />
                 </Drawer>
+
                 <Box
                     component="main"
-                    sx={{
-                        flexGrow: 1,
-                        p: 3,
-                        marginLeft: drawerOpen ? '10px' : 0,
-                        marginTop: '45px',
-                        transition: 'margin-left 0.3s',
-                    }}
+                    className={`chatroom-container ${drawerOpen ? 'with-drawer' : 'without-drawer'}`}
                 >
                     <ChatroomComponent />
                 </Box>
-                <OnlineUsersComponent /> 
+
+                <AdditionalComponent /> {/* New additional component */}
             </div>
         </div>
     );

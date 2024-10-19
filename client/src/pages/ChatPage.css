@@ -1,0 +1,124 @@
+/* Ensure all components start below the header */
+.group-chat-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--color-bg);
+    background-image: url(../media/bg-texture.png);
+}
+
+/* Layout for the main container, keeping the drawer, chat, and additional components side by side */
+.group-chat-container {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    margin-top: 68px;
+    /* Ensure components start below the header */
+}
+
+/* Drawer styling remains unchanged */
+.chat-drawer {
+    flex-shrink: 0;
+}
+
+/* Styling for the main chatroom */
+.chatroom-container {
+    flex-grow: 1;
+    transition: margin-left 0.3s ease;
+    padding: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    /* Inherit background */
+}
+
+/* When the drawer is open */
+.with-drawer {
+    margin-left: 240px;
+    /* Drawer width */
+}
+
+/* When the drawer is closed, center the chatroom */
+.without-drawer {
+    margin-left: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+/* AdditionalComponent with a transparent background, matching the overall theme */
+.additional-component {
+    flex-shrink: 0;
+    width: 300px;
+    padding: 20px;
+    background-color: transparent;
+    /* Ensure background matches the chatroom */
+    border: 1px solid red;
+    /* For testing: red border */
+    border-radius: 8px;
+    /* Curved corners */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+}
+
+/* Dummy component styling for now */
+.dummy-component {
+    background-color: var(--color-bg-variant);
+    /* Use a variant of the global background */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1024px) {
+
+    /* Adjust padding and width on smaller screens */
+    .chatroom-container {
+        margin-left: 0;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .additional-component {
+        width: 250px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Narrower layout on smaller devices */
+    .chatroom-container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .additional-component {
+        width: 200px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+
+    /* On very small devices, stack the components vertically */
+    .group-chat-container {
+        flex-direction: column;
+    }
+
+    .chatroom-container {
+        margin-left: 0;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .additional-component {
+        width: 100%;
+        border-left: none;
+        padding: 10px;
+    }
+}
