@@ -1,0 +1,22 @@
+/* Dummy component styling for now */
+.dummy-component {
+    background-color: var(--color-bg-variant);
+    /* Use a variant of the global background */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* Adjustments for responsiveness */
+@media (max-width: 768px) {
+    .dummy-component {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    .dummy-component {
+        padding: 6px;
+    }
+}

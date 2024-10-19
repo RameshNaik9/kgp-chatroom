@@ -1,5 +1,9 @@
 import React from 'react';
 import OnlineUsersComponent from './OnlineUsersComponent';
+import './AdditionalComponent.css';  // Import CSS file
+import './DummyComponent.css';  // Import CSS file
+
+
 
 const AdditionalComponent = () => {
     return (

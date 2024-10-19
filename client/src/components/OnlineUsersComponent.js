@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
+import './OnlineUsersComponent.css';  // Import CSS file
 
 const socket = io(process.env.REACT_APP_SOCKET_URL);
 
@@ -26,7 +27,7 @@ const OnlineUsersComponent = () => {
     }, []);
 
     return (
-        <div className='p-5'>
+        <div className="online-users-component">
             <h3>Online Users ({onlineUsers.length})</h3>
             <ul>
                 {onlineUsers.map((user, index) => (

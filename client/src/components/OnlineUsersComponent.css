@@ -1,0 +1,30 @@
+/* Online users component styling */
+.online-users-component {
+    padding: 10px;
+    background-color: var(--color-bg-variant);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.online-users-component h3 {
+    margin-bottom: 10px;
+    color: var(--color-white);
+}
+
+.online-users-component ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.online-users-component li {
+    padding: 5px 0;
+    color: var(--color-light);
+}
+
+/* Adjustments for responsiveness */
+@media (max-width: 768px) {
+    .online-users-component {
+        padding: 8px;
+    }
+}

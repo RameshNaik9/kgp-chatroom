@@ -1,0 +1,39 @@
+/* AdditionalComponent with a transparent background, matching the overall theme */
+.additional-component {
+    flex-shrink: 0;
+    width: 300px;
+    padding: 20px;
+    background-color: transparent;
+    /* Ensure background matches the chatroom */
+    border: 1px solid red;
+    /* For testing: red border */
+    border-radius: 8px;
+    /* Curved corners */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+}
+
+/* Adjustments for responsiveness */
+@media (max-width: 1024px) {
+    .additional-component {
+        width: 250px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .additional-component {
+        width: 200px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .additional-component {
+        width: 100%;
+        border-left: none;
+        padding: 10px;
+    }
+}
