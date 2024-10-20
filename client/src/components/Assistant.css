@@ -60,7 +60,6 @@
     background-color: #0056b3;
 }
 
-/* Loading section with user's initial message and assistant skeleton loader */
 .loading-section {
     display: flex;
     flex-direction: column;
@@ -78,7 +77,6 @@
     max-width: 70%;
 }
 
-/* Loading Skeleton */
 .skeleton-loader {
     width: 100%;
     max-width: 500px;
@@ -98,13 +96,3 @@
         background-position: -200% 0;
     }
 }
-
-/* Assistant message styling */
-/* .assistant-message {
-    margin-top: 20px;
-    background-color: #f1f1f1;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: left;
-    color: black;
-} */
