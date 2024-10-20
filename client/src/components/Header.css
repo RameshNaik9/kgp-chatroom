@@ -1,26 +1,10 @@
-:root {
-    --color-bg: #1f1f38;
-    --color-bg-variant: #2c2c6c;
-    --color-primary: #4db5ff;
-    --color-primary-variant: rgba(77, 181, 255, 0.4);
-    --color-white: #fff;
-    --color-light: rgba(255, 255, 255, 0.6);
-
-    --container-width-lg: 75%;
-    --container-width-md: 86%;
-    --container-width-sm: 90%;
-
-    --transition: all 400ms ease;
-
-}
-
 .btn-container {
     display: flex;
     align-items: center;
 }
 
-.btn1 {
-    width: 150px;
+.logout-btn {
+    width: 100px;
     padding: 12px;
     background-color: #007bff;
     border: none;
@@ -32,7 +16,7 @@
 }
 
 @media (max-width: 767px) {
-    .btn1 {
+    .logout-btn {
         font-size: 0.8rem;
         padding: 0.4rem 0.8rem;
         width: 75px;
@@ -44,7 +28,6 @@
     }
 }
 
-/* Header.css */
 .profile-card {
     position: fixed !important;
     top: 70px !important;

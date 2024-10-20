@@ -83,11 +83,10 @@ const Header = ({ toggleDrawer }) => {
                             onClick={toggleProfileOpen} 
                             style={{ cursor: 'pointer', marginRight: '15px' }}
                         />
-                        <button className="btn1 btn-primary" onClick={handleLogout}>Logout</button>
+                        <button className="logout-btn" onClick={handleLogout}>Logout</button>
                     </div>
                 </div>
             </nav>
-
         </div>
         <div>
             {profileOpen && (
