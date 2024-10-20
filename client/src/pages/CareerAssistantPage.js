@@ -34,7 +34,7 @@ const CareerAssistantPage = () => {
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
                             width: 250,
-                            top: '70px', // Adjust based on your header height
+                            top: '67px', 
                             boxSizing: 'border-box',
                         },
                     }}

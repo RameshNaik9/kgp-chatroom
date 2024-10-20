@@ -12,74 +12,56 @@
     padding-bottom: 10px;
     /* margin-bottom: 10px; */
 }
-
 .drawer-container.open {
     width: 245px;
 }
-
 .drawer-container.closed {
     width: 0;
 }
-
 .MuiListItemButton-root {
     display: flex;
     justify-content: space-between;
 }
-
 .MuiListItemText-root {
     flex-grow: 1;
 }
-
 .MuiSvgIcon-root {
     cursor: pointer;
 }
-
-.MuiCollapse-wrapperInner {
-    padding-left: 10px;
-}
-
 .drawer-container {
     overflow-y: auto;
     overflow-x: hidden;
 }
-
 /* History Section */
 .history-title {
-    padding-left: 16px;
     margin-top: 16px;
+    color: #000000;
+    padding-left: 20px; /* Adjust this padding to show it as a child */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* Limit height of history section */
+.history-list {
+    max-height: 200px; /* Adjust this height as needed */
+    overflow-y: auto;
+    overflow-x: auto; /* Add horizontal scrolling */
 }
 
 /* Active Item Background */
 .active-item {
-    background-color: #343a40;
-    /* Change to desired active background color */
-    border-left: 4px solid #17a2b8;
-    /* Add a border to indicate it's selected */
+    background-color: #ffffff;
+    color: black;
+    border-left: 4px solid #17a2b8; /* Keep your border as needed */
     font-weight: bold;
-    /* Make the text bold for active items */
-    color: #ffffff;
-    /* Ensure active items have bright, clear text */
     transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease;
-    /* Smooth transition for better UX */
 }
-
 .active-item:hover {
-    background-color: #495057;
-    /* Change hover effect on active items */
-    color: #f1f1f1;
-    /* Slightly lighter color on hover */
+    background-color: #e0e0e0; /* Change hover effect on active items */
+    color: #000000; /* Ensure text color remains clear */
 }
-
 /* Additional styles for when an item is active */
 .active-item .MuiListItemText-root {
-    color: #ffffff;
-    /* Force text color to be white or another bright color */
+    color: black;
     font-weight: bold;
-    /* Make the list item text bold */
-}
-
-/* Style for the icon (if any) when the item is active */
-.active-item .MuiSvgIcon-root {
-    fill: #17a2b8;
-    /* Change the color of any icons (if present) */
 }

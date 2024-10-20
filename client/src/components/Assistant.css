@@ -6,6 +6,7 @@
 
 .greeting {
     margin-bottom: 20px;
+    font-family:cursive;
 }
 
 .cards {
@@ -20,7 +21,8 @@
     width: 23%;
     text-align: center;
     border-radius: 8px;
-    color: black;
+    color: rgba(55, 0, 193, 0.3)
+   
 }
 
 .message-bar {
