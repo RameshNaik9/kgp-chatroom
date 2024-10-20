@@ -13,23 +13,6 @@
     margin-top: 68px;
 }
 
-@media (max-width: 1024px) {
-
-    .chatroom-container {
-        margin-left: 0;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-}
-
-@media (max-width: 768px) {
-
-    .chatroom-container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-}
-
 @media (max-width: 576px) {
 
 
@@ -37,9 +20,4 @@
         flex-direction: column;
     }
 
-    .chatroom-container {
-        margin-left: 0;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
 }
