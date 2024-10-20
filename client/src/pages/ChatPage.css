@@ -13,10 +13,6 @@
     margin-top: 68px;
 }
 
-.chat-drawer {
-    flex-shrink: 0;
-}
-
 .chatroom-container1 {
     flex-grow: 1;
     transition: margin-left 0.3s ease;
@@ -25,10 +21,6 @@
     display: flex;
     flex-direction: column;
     background-color: transparent;
-}
-
-.with-drawer {
-    margin-left: 240px;
 }
 
 .without-drawer {
