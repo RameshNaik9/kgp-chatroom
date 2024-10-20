@@ -13,10 +13,8 @@
     flex-grow: 1;
     width: 100%;
     margin-top: 68px;
-    /* Ensure components start below the header */
 }
 
-/* Drawer styling remains unchanged */
 .chat-drawer {
     flex-shrink: 0;
 }
@@ -32,10 +30,8 @@
     background-color: transparent;
 }
 
-/* When the drawer is open */
 .with-drawer {
     margin-left: 240px;
-    /* Drawer width */
 }
 
 /* When the drawer is closed, center the chatroom */
