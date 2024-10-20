@@ -1,4 +1,5 @@
 .additional-component {
+    right: 0px;
     width: 300px;
     padding: 20px;
     background-color: transparent;
@@ -8,6 +9,7 @@
     flex-direction: column;
     justify-content: flex-start;
     position: relative;
+        /* height: 100vh; */
 }
 
 .others-profile-card {

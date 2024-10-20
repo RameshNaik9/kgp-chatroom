@@ -39,7 +39,7 @@ const GroupChatPage = () => {
                         '& .MuiDrawer-paper': {
                             width: 250,
                             top: '68px',
-                            boxSizing: 'border-box',
+                            // boxSizing: 'border-box',
                             color: 'white',
                         },
                     }}
