@@ -7,24 +7,29 @@ const socket = io(process.env.REACT_APP_SOCKET_URL);
 const OnlineUsersComponent = () => {
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [isExpanded, setIsExpanded] = useState(false);  // State for controlling the dropdown
+    const currentUserId = localStorage.getItem('userId');  // Get the current user's ID
 
     useEffect(() => {
         // Emit the userJoined event when the component mounts
         const user = {
-            userId: localStorage.getItem('userId'),
+            userId: currentUserId,
             fullName: localStorage.getItem('fullName'),
         };
         socket.emit('userJoined', user);
 
         // Listen for the onlineUsers event to get the list of online users
         socket.on('onlineUsers', (users) => {
-            setOnlineUsers(users);
+            const uniqueUsers = Array.from(new Set(users.map(u => u.userId))) // Filter unique users by userId
+                .map(userId => users.find(u => u.userId === userId)) // Map unique users
+                .filter(user => user.userId !== currentUserId); // Exclude the current user
+
+            setOnlineUsers(uniqueUsers);
         });
 
         return () => {
             socket.off('onlineUsers');
         };
-    }, []);
+    }, [currentUserId]);
 
     const toggleDropdown = () => {
         setIsExpanded(!isExpanded);  // Toggle the dropdown
@@ -34,7 +39,7 @@ const OnlineUsersComponent = () => {
         <div className="online-users-component">
             <div className="header" onClick={toggleDropdown}>
                 <span className="green-dot"></span>
-                <h3 className="active-users-heading">Active Users ({onlineUsers.length})</h3>
+                <h3 className="active-users-heading">Active Users ({onlineUsers.length+1})</h3>
                 <span className={`dropdown-icon ${isExpanded ? 'expanded' : ''}`}>&#9660;</span> {/* Triangle icon */}
             </div>
 
