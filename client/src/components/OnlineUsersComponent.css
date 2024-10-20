@@ -1,25 +1,84 @@
-/* Online users component styling */
 .online-users-component {
     padding: 10px;
     background-color: var(--color-bg-variant);
     border: 1px solid #ccc;
     border-radius: 8px;
     margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+    max-height: 200px;
+    /* Ensure the component doesn't grow too large */
 }
 
-.online-users-component h3 {
-    margin-bottom: 10px;
+.header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+}
+
+.green-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #28a745;
+    /* Green color */
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.active-users-heading {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 16px;
     color: var(--color-white);
 }
 
-.online-users-component ul {
-    list-style-type: none;
-    padding: 0;
+.dropdown-icon {
+    font-size: 16px;
+    color: var(--color-light);
+    transition: transform 0.3s ease;
 }
 
-.online-users-component li {
+.dropdown-icon.expanded {
+    transform: rotate(180deg);
+    /* Rotate when expanded */
+}
+
+.users-list {
+    list-style-type: none;
+    padding: 10px 0;
+    margin: 0;
+    max-height: 150px;
+    /* Restrict height to display only 5 users */
+    overflow-y: auto;
+    /* Enable scrolling if there are more than 5 users */
+    scrollbar-width: thin;
+    /* Custom scrollbar for Firefox */
+}
+
+/* For Webkit browsers like Chrome and Safari */
+.users-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.users-list::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.users-list li {
+    display: flex;
+    align-items: center;
     padding: 5px 0;
     color: var(--color-light);
+}
+
+.user-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #28a745;
+    /* Small green dot for each user */
+    border-radius: 50%;
+    margin-right: 8px;
 }
 
 /* Adjustments for responsiveness */
