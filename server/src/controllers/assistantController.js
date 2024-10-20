@@ -37,7 +37,6 @@ const createNewConversation = async (req, res) => {
 
 
 // Send a message in a conversation
-// Send a message in a conversation
 const sendMessage = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -58,18 +57,19 @@ const sendMessage = async (req, res) => {
     // Save the user's message in the messages collection
     const savedUserMessage = await saveUserMessageService(conversationId, userId, user_message.content);
 
-    // Send request to the FastAPI microservice to get the assistant's response and potentially the chat_title
-    const updatedMessage = await getAssistantResponseService(conversationId, savedUserMessage._id, user_message.content, conversation.chat_profile);
+    // Send request to the FastAPI microservice and handle assistant's response, tags, and recommended questions
+    const { updatedMessage, tags, recommended_questions } = await getAssistantResponseService(conversationId, savedUserMessage._id, user_message.content, conversation.chat_profile);
 
     // Fetch the updated conversation (chat_title will be unchanged if FastAPI returned null)
     const updatedConversation = await Conversation.findById(conversationId);
-
-    // Customize the response to include chat_title and match the expected format
+   // Prepare the response to include chat title, tags, and recommended questions
     const response = {
       message_id: updatedMessage._id,
       conversation_id: updatedMessage.conversation_id,
       user: updatedMessage.user,
-      chat_title: updatedConversation.chat_title,  // Send the stored chat_title (it won't change if null)
+      chat_title: updatedConversation.chat_title,
+      tags: tags,
+      recommended_questions: recommended_questions,
       user_message: {
         content: updatedMessage.user_message.content,
         timestamp: updatedMessage.user_message.timestamp,
@@ -82,7 +82,7 @@ const sendMessage = async (req, res) => {
       }
     };
 
-    // Send the formatted response back to the client
+    // Send the response back to the client
     return res.status(201).json(response);
 
   } catch (error) {
@@ -93,6 +93,7 @@ const sendMessage = async (req, res) => {
 
 
 
+// Controller to fetch a specific conversation and its messages
 const getConversation = async (req, res) => {
     try {
         const { conversation_id } = req.params;
@@ -106,13 +107,13 @@ const getConversation = async (req, res) => {
         // Fetch all messages for the conversation
         const messages = await getConversationMessages(conversation_id);
 
-        // Format the response to include conversation info and messages
+        // Format the response to include conversation info, messages, tags, and recommended questions
         const formattedMessages = messages.map(message => ({
             message_id: message._id,
             conversation_id: message.conversation_id,
             user: message.user,
             chat_title: conversation.chat_title,
-            chat_profile: conversation.chat_profile, // Include chat_profile in the response
+            chat_profile: conversation.chat_profile,
             user_message: {
                 content: message.user_message.content,
                 timestamp: message.user_message.timestamp,
@@ -125,11 +126,13 @@ const getConversation = async (req, res) => {
             } : null
         }));
 
-        // Include the createdAt field in the response
+      // Include the createdAt, tags, and recommended questions in the response
         return res.status(200).json({
             conversation_id,
             chat_title: conversation.chat_title,
             chat_profile: conversation.chat_profile,
+            tags: conversation.tags,
+            recommended_questions: conversation.recommended_questions,
             createdAt: conversation.createdAt, 
             messages: formattedMessages
         });
