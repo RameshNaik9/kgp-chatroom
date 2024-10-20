@@ -1,4 +1,4 @@
-/* .group-chat-page {
+.group-chat-page {
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -11,22 +11,6 @@
     flex-grow: 1;
     width: 100%;
     margin-top: 68px;
-}
-
-.chatroom-container1 {
-    flex-grow: 1;
-    transition: margin-left 0.3s ease;
-    padding: 16px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    background-color: transparent;
-}
-
-.without-drawer {
-    margin-left: 0;
-    padding-left: 40px;
-    padding-right: 40px;
 }
 
 @media (max-width: 1024px) {
@@ -48,6 +32,7 @@
 
 @media (max-width: 576px) {
 
+
     .group-chat-container {
         flex-direction: column;
     }
@@ -57,4 +42,4 @@
         padding-left: 10px;
         padding-right: 10px;
     }
-} */
+}

@@ -1,6 +1,4 @@
-/* AdditionalComponent with a transparent background, matching the overall theme */
 .additional-component {
-    /* flex-shrink: 0; */
     width: 300px;
     padding: 20px;
     background-color: transparent;

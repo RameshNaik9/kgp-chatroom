@@ -1,21 +1,20 @@
 import React from 'react';
 import './AdditionalComponent.css';
 import OnlineUsersComponent from './OnlineUsersComponent';
-import './AdditionalComponent.css';  // Import CSS file
-import './DummyComponent.css';  // Import CSS file
+import './DummyComponent.css'; 
 
-const AdditionalComponent = ({ profileData, onCloseProfileCard }) => { // Accept onClose function
+const AdditionalComponent = ({ profileData, onCloseProfileCard }) => { 
     return (
         <div className="additional-component">
             <OnlineUsersComponent />
             <div className="dummy-component">Dummy Component 1</div>
             <div className="dummy-component">Dummy Component 2</div>
 
-            {profileData && (  // Conditionally render the profile card
+            {profileData && ( 
                 <div className="others-profile-card">
                     <span 
                         className="close-btn" 
-                        onClick={onCloseProfileCard}  // Call function to close the card
+                        onClick={onCloseProfileCard}
                     >
                         &times;
                     </span>

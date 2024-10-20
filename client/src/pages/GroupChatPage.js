@@ -47,14 +47,11 @@ const GroupChatPage = () => {
                     <ChatDrawer />
                 </Drawer>
 
-                <Box
-                    component="main"
-                    className={`chatroom-container1 ${drawerOpen ? 'with-drawer' : 'without-drawer'}`}
-                >
-                    <ChatroomComponent onProfileClick={handleProfileClick} /> {/* Pass handler */}
+                <Box>
+                    <ChatroomComponent onProfileClick={handleProfileClick} /> 
                 </Box>
 
-                <AdditionalComponent profileData={profileData} onCloseProfileCard={closeProfileCard} />  {/* Pass profileData and close function */}
+                <AdditionalComponent profileData={profileData} onCloseProfileCard={closeProfileCard} /> 
             </div>
         </div>
     );
