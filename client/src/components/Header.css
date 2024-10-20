@@ -42,9 +42,10 @@
     box-shadow: 0 0.5rem 2rem rgba(31, 38, 135, 0.37);
     z-index: 100;
     border-radius: 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(0.625rem);
     -webkit-backdrop-filter: blur(0.625rem);
+    background-color: var(--color-bg) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
     transition: background 0.3s ease, backdrop-filter 0.3s ease;
 }
 
@@ -73,6 +74,15 @@
         top: 2rem;
         right: 0.625rem;
         width: 12.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0.5rem 2rem rgba(31, 38, 135, 0.37);
+        z-index: 100;
+        border-radius: 1rem;
+        -webkit-backdrop-filter: blur(0.625rem);
+        background-color: var(--color-bg) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        transition: background 0.3s ease, backdrop-filter 0.3s ease;
     }
 }
 

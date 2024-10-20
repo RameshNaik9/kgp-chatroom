@@ -2,13 +2,14 @@
     right: 0px;
     width: 300px;
     padding: 20px;
-    background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);    
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     position: relative;
+    background-color: var(--color-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .others-profile-card {
@@ -68,5 +69,6 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             height: 100vh;
+            transition: background 0.3s ease, backdrop-filter 0.3s ease;
         }
 }
