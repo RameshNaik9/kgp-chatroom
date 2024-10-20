@@ -13,11 +13,30 @@
     margin-top: 68px;
 }
 
+.additional-desktop {
+    display: flex;
+}
+
 @media (max-width: 576px) {
-
-
     .group-chat-container {
         flex-direction: column;
     }
 
+    .additional-desktop {
+        display: none;
+    }
+
+    .toggle-additional-button {
+        position: fixed;
+        top: 50%;
+        right: 0;
+        background-color: #007bff;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 4px 0 0 4px;
+        cursor: pointer;
+        transform: translateY(-50%);
+        z-index: 110;
+        display: block;
+    }
 }

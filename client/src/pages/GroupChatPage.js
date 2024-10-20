@@ -9,10 +9,15 @@ import './GroupChatPage.css';
 
 const GroupChatPage = () => {
     const [drawerOpen, setDrawerOpen] = useState(true);
+    const [additionalOpen, setAdditionalOpen] = useState(false); // For mobile toggle
     const [profileData, setProfileData] = useState(null);
 
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen);
+    };
+
+    const toggleAdditionalDrawer = () => {
+        setAdditionalOpen(!additionalOpen);
     };
 
     const handleProfileClick = (profile) => {
@@ -39,7 +44,6 @@ const GroupChatPage = () => {
                         '& .MuiDrawer-paper': {
                             width: 250,
                             top: '68px',
-                            // boxSizing: 'border-box',
                             color: 'white',
                         },
                     }}
@@ -47,11 +51,38 @@ const GroupChatPage = () => {
                     <ChatDrawer />
                 </Drawer>
 
+                {/* Main Chatroom */}
                 <Box>
                     <ChatroomComponent onProfileClick={handleProfileClick} /> 
                 </Box>
 
-                <AdditionalComponent profileData={profileData} onCloseProfileCard={closeProfileCard} /> 
+                {/* AdditionalComponent for larger screens */}
+                <div className="additional-desktop">
+                    <AdditionalComponent profileData={profileData} onCloseProfileCard={closeProfileCard} />
+                </div>
+
+                {/* Additional Drawer for mobile */}
+                <Drawer
+                    anchor="right"
+                    open={additionalOpen}
+                    onClose={toggleAdditionalDrawer}
+                    variant="temporary" 
+                    sx={{
+                        display: { xs: 'block', sm: 'none' },
+                        width: 300,
+                        '& .MuiDrawer-paper': {
+                            width: 300,
+                            top: '68px',
+                        },
+                    }}
+                >
+                    <AdditionalComponent profileData={profileData} onCloseProfileCard={closeProfileCard} />
+                </Drawer>
+
+                {/* Toggle button for mobile */}
+                <div className="toggle-additional-button" onClick={toggleAdditionalDrawer}>
+                    {additionalOpen ? '<' : '>'}
+                </div>
             </div>
         </div>
     );
