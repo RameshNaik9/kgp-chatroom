@@ -19,6 +19,10 @@ const GroupChatroom = () => {
         setProfileData(profile);  // Update profile data when clicked
     };
 
+    const closeProfileCard = () => {
+        setProfileData(null);  // Clear profile data to hide the profile card
+    };
+
     return (
         <div className="group-chat-page">
             <Header toggleDrawer={toggleDrawer} />
@@ -50,7 +54,7 @@ const GroupChatroom = () => {
                     <ChatroomComponent onProfileClick={handleProfileClick} /> {/* Pass handler */}
                 </Box>
 
-                <AdditionalComponent profileData={profileData} />  {/* Pass profileData */}
+                <AdditionalComponent profileData={profileData} onCloseProfileCard={closeProfileCard} />  {/* Pass profileData and close function */}
             </div>
         </div>
     );
