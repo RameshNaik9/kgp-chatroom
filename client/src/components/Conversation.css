@@ -35,7 +35,6 @@
     text-align: left;
 }
 
-/* Loading Skeleton */
 .loading-skeleton {
     width: 100%;
     padding: 15px;
@@ -64,7 +63,6 @@
     }
 }
 
-/* Updated message input to match MessageBar styling */
 .message-input {
     display: flex;
     margin-top: 10px;
@@ -115,28 +113,20 @@
     margin-left: 8px;
 }
 
-/* Flex container for assistant message */
 .assistant-response-container {
     display: flex;
     align-items: flex-start;
-    /* Align the content vertically */
 }
 
-/* Assistant logo styling */
 .assistant-logo {
     width: 36px;
     height: 36px;
     border-radius: 50%;
     object-fit: cover;
     margin-right: 10px;
-    /* Space between logo and response */
 }
 
-/* Styling for the response content */
 .assistant-response-content {
     flex-grow: 1;
-    /* Allow the response to take up the remaining space */
     word-wrap: break-word;
-    /* Ensure the text wraps properly */
-    /* white-space: pre-wrap; */
 }

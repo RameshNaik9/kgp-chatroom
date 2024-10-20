@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown'; // For markdown rendering
+import ReactMarkdown from 'react-markdown';
 import './Conversation.css';
 
 const Conversation = () => {
@@ -40,10 +40,9 @@ const Conversation = () => {
             }
         };
 
-        fetchConversationHistory(); // Call the function
-    }, [conversation_id, token]); // Dependency array
+        fetchConversationHistory();
+    }, [conversation_id, token]);
 
-    // Scroll to the bottom whenever messages change
     useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -157,7 +156,7 @@ const Conversation = () => {
         }
     };
 
-    const assistantLogo = '/icons/img1-icon.png'; // Reference the logo from public folder
+    const assistantLogo = '/icons/img1-icon.png';
 
     return (
         <div className="conversation-container">
@@ -179,7 +178,6 @@ const Conversation = () => {
                                 <div className="assistant-response-container">
                                     <img src={assistantLogo} alt="Assistant Logo" className="assistant-logo" />
                                     <div className="assistant-response-content">
-                                        {/* Render the assistant message progressively with ReactMarkdown */}
                                         <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
                                     </div>
                                 </div>

@@ -8,9 +8,9 @@ import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 
 const CareerAssistantPage = () => {
-    const { conversation_id } = useParams(); // Get conversation_id from URL
+    const { conversation_id } = useParams();
     const [drawerOpen, setDrawerOpen] = useState(true);
-    const [newConversation, setNewConversation] = useState(null);  // State to track new conversation
+    const [newConversation, setNewConversation] = useState(null);
 
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen);
@@ -34,7 +34,7 @@ const CareerAssistantPage = () => {
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
                             width: 250,
-                            top: '70px', // Adjust based on your header height
+                            top: '70px',
                             boxSizing: 'border-box',
                         },
                     }}
