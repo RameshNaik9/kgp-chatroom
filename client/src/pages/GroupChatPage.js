@@ -9,9 +9,14 @@ import './ChatPage.css';
 
 const GroupChatroom = () => {
     const [drawerOpen, setDrawerOpen] = useState(true);
+    const [profileData, setProfileData] = useState(null); // Manage profile state
 
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen);
+    };
+
+    const handleProfileClick = (profile) => {
+        setProfileData(profile);  // Update profile data when clicked
     };
 
     return (
@@ -42,10 +47,10 @@ const GroupChatroom = () => {
                     component="main"
                     className={`chatroom-container ${drawerOpen ? 'with-drawer' : 'without-drawer'}`}
                 >
-                    <ChatroomComponent />
+                    <ChatroomComponent onProfileClick={handleProfileClick} /> {/* Pass handler */}
                 </Box>
 
-                <AdditionalComponent /> {/* New additional component */}
+                <AdditionalComponent profileData={profileData} />  {/* Pass profileData */}
             </div>
         </div>
     );

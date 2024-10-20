@@ -11,7 +11,7 @@ const socket = io(process.env.REACT_APP_SOCKET_URL) || 'https://kgp-chatroom-end
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 const vapid_public_key = process.env.REACT_APP_VAPID_PUBLIC_KEY || 'BOMBbfvkjUBtjs49boCTJnI11Wec0CG7bp-vyVcvAclcvDfgRg2XMdwrINtOlO-S4SX5UxTiMNwAifpAEJ25wts';
 
-const ChatroomComponent = () => {
+const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -91,11 +91,20 @@ const ChatroomComponent = () => {
     };
 
     // Fetch user profile data when fullName is clicked
-    const handleFullNameClick = (userId) => {
+    // const handleFullNameClick = (userId) => {
+    //     axios.get(`${apiBaseUrl}/api/profile/get-profile-info/${userId}`)
+    //         .then(response => {
+    //             setProfileData(response.data);  // Store fetched user data
+    //             setShowProfileCard(true);  // Show the profile card
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching user profile:', error);
+    //         });
+    // };
+        const handleFullNameClick = (userId) => {
         axios.get(`${apiBaseUrl}/api/profile/get-profile-info/${userId}`)
             .then(response => {
-                setProfileData(response.data);  // Store fetched user data
-                setShowProfileCard(true);  // Show the profile card
+                onProfileClick(response.data); // Pass profile data to the parent component
             })
             .catch(error => {
                 console.error('Error fetching user profile:', error);
@@ -414,7 +423,7 @@ const ChatroomComponent = () => {
             </form>
 
         </div>
-        <div>
+        {/* <div>
             {showProfileCard && profileData && (
                 <div style={{ padding: '20px',zIndex:'9999' }} className="profile-card">
                     <h5>{profileData.fullName}</h5>
@@ -438,7 +447,7 @@ const ChatroomComponent = () => {
                 </div>
             )}
 
-        </div>
+        </div> */}
         </div>
     );
 };
