@@ -17,6 +17,10 @@
     display: flex;
 }
 
+.toggle-additional-button {
+     display: none;
+ }
+
 @media (max-width: 576px) {
     .group-chat-container {
         flex-direction: column;
