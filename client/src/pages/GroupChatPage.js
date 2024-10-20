@@ -9,18 +9,18 @@ import './ChatPage.css';
 
 const GroupChatroom = () => {
     const [drawerOpen, setDrawerOpen] = useState(true);
-    const [profileData, setProfileData] = useState(null); // Manage profile state
+    const [profileData, setProfileData] = useState(null);
 
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen);
     };
 
     const handleProfileClick = (profile) => {
-        setProfileData(profile);  // Update profile data when clicked
+        setProfileData(profile); 
     };
 
     const closeProfileCard = () => {
-        setProfileData(null);  // Clear profile data to hide the profile card
+        setProfileData(null); 
     };
 
     return (

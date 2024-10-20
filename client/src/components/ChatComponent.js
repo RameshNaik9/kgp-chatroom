@@ -90,17 +90,6 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
         }, 0);
     };
 
-    // Fetch user profile data when fullName is clicked
-    // const handleFullNameClick = (userId) => {
-    //     axios.get(`${apiBaseUrl}/api/profile/get-profile-info/${userId}`)
-    //         .then(response => {
-    //             setProfileData(response.data);  // Store fetched user data
-    //             setShowProfileCard(true);  // Show the profile card
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching user profile:', error);
-    //         });
-    // };
         const handleFullNameClick = (userId) => {
         axios.get(`${apiBaseUrl}/api/profile/get-profile-info/${userId}`)
             .then(response => {
@@ -238,7 +227,6 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
     );
 
     return (
-        <div>
         <div className={`chatroom-container bg-${theme}`}>
             <ToastContainer /> 
             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
@@ -421,33 +409,6 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
                     <button type="submit" className="btn1 btn-primary" style={{ height: "auto" }}>Send</button>
                 </div>
             </form>
-
-        </div>
-        {/* <div>
-            {showProfileCard && profileData && (
-                <div style={{ padding: '20px',zIndex:'9999' }} className="profile-card">
-                    <h5>{profileData.fullName}</h5>
-                    <p> {profileData.email}</p>
-                    <p>{profileData.rollNumber}</p>
-                    <p> {profileData.department} Department</p>
-                    <p><strong>Verified:</strong> {profileData.isVerified ? 'Yes' : 'No'}</p>
-                    <span 
-                        style={{ 
-                            position: 'absolute', 
-                            top: '10px', 
-                            right: '10px', 
-                            cursor: 'pointer', 
-                            fontSize: '20px',
-                            color: 'white'
-                        }} 
-                        onClick={() => setShowProfileCard(false)}
-                        >
-                        &times;
-                    </span>
-                </div>
-            )}
-
-        </div> */}
         </div>
     );
 };
