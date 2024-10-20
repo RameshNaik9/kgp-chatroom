@@ -94,16 +94,6 @@
     /* Ensure padding is included in the width calculation */
 }
 
-/* .message-box .dropdown {
-    position: absolute;
-    right: -30px;
-    top: 50%;
-    transform: translateY(-30%);
-    transform: translateX(25%);
-    margin-left: 0px;
-    z-index: 55;
-} */
-
 .dropdown-toggle {
     position: absolute;
     top: 0px; 

@@ -49,7 +49,7 @@ const GroupChatroom = () => {
 
                 <Box
                     component="main"
-                    className={`chatroom-container ${drawerOpen ? 'with-drawer' : 'without-drawer'}`}
+                    className={`chatroom-container1 ${drawerOpen ? 'with-drawer' : 'without-drawer'}`}
                 >
                     <ChatroomComponent onProfileClick={handleProfileClick} /> {/* Pass handler */}
                 </Box>

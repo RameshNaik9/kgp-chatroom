@@ -22,7 +22,7 @@
 }
 
 /* Styling for the main chatroom */
-.chatroom-container {
+.chatroom-container1 {
     flex-grow: 1;
     transition: margin-left 0.3s ease;
     padding: 16px;
@@ -30,7 +30,6 @@
     display: flex;
     flex-direction: column;
     background-color: transparent;
-    /* Inherit background */
 }
 
 /* When the drawer is open */
