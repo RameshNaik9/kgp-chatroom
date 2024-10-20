@@ -9,7 +9,6 @@
     flex-direction: column;
     justify-content: flex-start;
     position: relative;
-        /* height: 100vh; */
 }
 
 .others-profile-card {
@@ -62,8 +61,12 @@
 
 @media (max-width: 576px) {
     .additional-component {
-        width: 100%;
-        border-left: none;
-        padding: 10px;
-    }
+            width: 100%;
+            padding: 10px;
+            background-color: var(--color-bg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            height: 100vh;
+        }
 }

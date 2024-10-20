@@ -21,7 +21,11 @@ const GroupChatPage = () => {
     };
 
     const handleProfileClick = (profile) => {
-        setProfileData(profile); 
+        setProfileData(profile);
+        // Open the additional drawer when a profile is clicked (for mobile)
+        if (window.innerWidth <= 576) {
+            setAdditionalOpen(true);
+        }
     };
 
     const closeProfileCard = () => {
@@ -32,6 +36,7 @@ const GroupChatPage = () => {
         <div className="group-chat-page">
             <Header toggleDrawer={toggleDrawer} />
             <div className="group-chat-container">
+                {/* Left Drawer (ChatDrawer) */}
                 <Drawer
                     anchor="left"
                     open={drawerOpen}
@@ -66,13 +71,14 @@ const GroupChatPage = () => {
                     anchor="right"
                     open={additionalOpen}
                     onClose={toggleAdditionalDrawer}
-                    variant="temporary" 
+                    variant="temporary"
                     sx={{
                         display: { xs: 'block', sm: 'none' },
                         width: 300,
                         '& .MuiDrawer-paper': {
                             width: 300,
                             top: '68px',
+                            backgroundColor: 'transparent', // Same as desktop
                         },
                     }}
                 >

@@ -7,8 +7,8 @@ const AdditionalComponent = ({ profileData, onCloseProfileCard }) => {
     return (
         <div className="additional-component">
             <OnlineUsersComponent />
-            <div className="dummy-component">Dummy Component 1</div>
-            <div className="dummy-component">Dummy Component 2</div>
+            {/* <div className="dummy-component">Dummy Component 1</div> */}
+            {/* <div className="dummy-component">Dummy Component 2</div> */}
 
             {profileData && ( 
                 <div className="others-profile-card">

@@ -12,15 +12,8 @@
     flex-direction: column;
     height: 100vh;
     background-color: var(--color-bg);
-    /* background-image: url(../media/bg-texture.png); */
-}
-
-.drawer-container.open {
-    width: 250px;
-}
-
-.drawer-container.closed {
-    width: 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .MuiListItemButton-root {
