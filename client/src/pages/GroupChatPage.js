@@ -5,9 +5,9 @@ import Header from '../components/Header';
 import ChatroomComponent from '../components/ChatComponent';
 import ChatDrawer from '../components/ChatDrawer';
 import AdditionalComponent from '../components/AdditionalComponent';
-import './ChatPage.css';
+import './GroupChatPage.css';
 
-const GroupChatroom = () => {
+const GroupChatPage = () => {
     const [drawerOpen, setDrawerOpen] = useState(true);
     const [profileData, setProfileData] = useState(null);
 
@@ -60,4 +60,4 @@ const GroupChatroom = () => {
     );
 };
 
-export default GroupChatroom;
+export default GroupChatPage;
