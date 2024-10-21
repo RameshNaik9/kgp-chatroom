@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
 // import HomePage from "./HomePage";
 import '../components/Landingpage_comp2.css';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+// import axios from 'axios';
+// import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 
 const Landingpage_comp2 = () => {
   const [activeForm, setActiveForm] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
-  const navigate = useNavigate();
+  // const [isConnected, setIsConnected] = useState(false);
+  // const navigate = useNavigate();
 //    useEffect(() => {
 //     let intervalId = null;
 //     // let toastId = null;
@@ -60,14 +60,14 @@ const Landingpage_comp2 = () => {
       {/* <ToastContainer /> */}
       <div className="row1">
         
-          <button
-            className="btn btn-primary mb-2 mx-3"
+          <button type="button"
+            className="glow-on-hover mb-2 mx-3"
             onClick={() => setActiveForm("login")}
           >
             Login
           </button>
-          <button
-            className="btn btn-secondary mb-2 mx-3"
+          <button type="button"
+            className="glow-on-hover mb-2 mx-3"
             onClick={() => setActiveForm("signup")}
           >
             Signup

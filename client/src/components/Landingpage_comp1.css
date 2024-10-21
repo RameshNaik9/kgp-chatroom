@@ -258,15 +258,38 @@ img {
     cursor: -webkit-grabbing;
     cursor: grabbing;
 }
-  .night {
+.night {
     position: relative;
     width: 100%;
     height: 100%;
     overflow: auto;
     transform: rotateZ(10deg);
-    animation: loader 2s infinite;
-  }
-  
+    animation: bouncing 2s linear infinite alternate; /* Animation for bouncing */
+}
+@keyframes bouncing {
+    0% {
+        transform: rotateZ(10deg) translateY(0); 
+    }
+    100% {
+        transform: rotateZ(10deg) translateY(-20px); 
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .night { 
+        animation: fade 0.5s ease-in both;
+    }
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
   .shooting_star {
     position: absolute;
     left: 50%;

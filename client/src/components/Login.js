@@ -86,7 +86,7 @@ function Login() {
                         <Icon icon={icon} size={25} />
                     </span>
                 </div>
-                <button className="but" type="submit">Login</button>
+                <button className="glow-on-hover" type="submit">Login</button>
             </form>
             <ToastContainer toastClassName="Toastify__toast--custom" />
         </div>

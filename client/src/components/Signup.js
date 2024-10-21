@@ -138,7 +138,7 @@ function Signup() {
                     <p className="password-error mt-1 fs-14" style={{color:'red'}}>{passwordError}</p> // Display error message
                 )}
                
-                <button className="but" type="submit">Signup</button>
+                <button className="glow-on-hover" type="submit">Signup</button>
             </form>
             <ToastContainer toastClassName="Toastify__toast--custom" />
         </div>
