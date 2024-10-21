@@ -30,8 +30,7 @@
 
 .user-message {
     background-color: #212529;
-    padding: 0px;
-    padding-bottom: 0px;
+    padding: 10px;
     border-radius: 15px;
     text-align: right;
     align-self: flex-end;

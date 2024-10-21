@@ -171,7 +171,7 @@ const Conversation = () => {
                 {messages.map((msg) => (
                     <div key={msg.message_id} className="message-block">
                         <div className="message-item user-message">
-                            <p>{msg.user_message.content}</p>
+                            {msg.user_message.content}
                         </div>
                         {msg.assistant_response ? (
                             <div className="message-item assistant-message">
