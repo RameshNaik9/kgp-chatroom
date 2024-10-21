@@ -4,7 +4,7 @@ import Drawer from '@mui/material/Drawer';
 import Header from '../components/Header';
 import ChatroomComponent from '../components/ChatComponent';
 import ChatDrawer from '../components/ChatDrawer';
-import AdditionalComponent from '../components/AdditionalComponent';
+import AdditionalComponent from '../components/AdditionalComponent.js';
 import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
 import './GroupChatPage.css';
 
