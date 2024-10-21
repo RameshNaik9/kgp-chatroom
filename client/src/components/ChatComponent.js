@@ -23,8 +23,8 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
     const [searchQuery, setSearchQuery] = useState('');
     const messagesEndRef = useRef(null);
     const userId = localStorage.getItem('userId');
-    const [profileData, setProfileData] = useState(null);  
-    const [showProfileCard, setShowProfileCard] = useState(false); // State for controlling profile card visibility
+    // const [profileData, setProfileData] = useState(null);  
+    const [ setShowProfileCard] = useState(false); // State for controlling profile card visibility
     const profileCardRef = useRef(null); // Ref for the profile card
 
 
