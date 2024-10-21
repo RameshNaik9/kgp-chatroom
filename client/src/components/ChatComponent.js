@@ -406,7 +406,7 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
                         style={{ resize: "none", height: "auto", overflow: "auto" }}
                         rows={1}
                     />
-                    <button type="submit" className="btn1 btn-primary" style={{ height: "auto" }}>Send</button>
+                    <button type="submit" className="btn1 btn-primary" style={{ height: "auto" ,}}>Send</button>
                 </div>
             </form>
         </div>

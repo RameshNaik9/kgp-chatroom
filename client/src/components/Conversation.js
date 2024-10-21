@@ -14,6 +14,7 @@ const Conversation = () => {
     const [userMessage, setUserMessage] = useState('');
     const [error, setError] = useState('');
     const messagesEndRef = useRef(null);
+    const textAreaRef = useRef(null); // Ref for textarea
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const fullName = localStorage.getItem('fullName') || 'there';
@@ -131,13 +132,18 @@ const Conversation = () => {
             console.error('Error sending message:', error);
             setError('Message sending failed');
             setLoading(false);
+            if (textAreaRef.current) {
+                textAreaRef.current.style.height = 'auto'; // Reset height
+            }
         }
     };
 
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            sendMessage();
+        // Prevent form submission when pressing Enter without Shift
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            sendMessage(); // Send message on Enter
         }
     };
 
@@ -157,6 +163,14 @@ const Conversation = () => {
     };
 
     const assistantLogo = '/icons/img1-icon.png';
+
+    // Function to dynamically adjust the textarea height
+    const adjustTextareaHeight = () => {
+        if (textAreaRef.current) {
+            textAreaRef.current.style.height = 'auto'; // Reset the height to auto
+            textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`; // Set height based on content
+        }
+    };
 
     return (
         <div className="conversation-container">
@@ -196,13 +210,23 @@ const Conversation = () => {
             {error && <p className="error-message">{error}</p>}
 
             <div className="message-input">
-                <input 
-                    type="text" 
+                <textarea 
+                    ref={textAreaRef} // Add ref to textarea
                     value={userMessage} 
-                    onChange={(e) => setUserMessage(e.target.value)} 
+                    onChange={(e) => {
+                        setUserMessage(e.target.value);
+                        adjustTextareaHeight(); // Adjust height on change
+                    }} 
                     onKeyDown={handleKeyDown} 
                     placeholder={getPlaceholderText()} 
+                    rows="1" // Start with one row
                     disabled={loading} 
+                    className="textarea-input"
+                    style={{ 
+                        overflow: 'auto',
+                        height: 'auto',  // Let the height adjust automatically
+                        maxHeight: '200px' // Maximum height to avoid overly large textareas
+                    }} // Ensure no scrollbars are shown
                 />
                 <button onClick={sendMessage} disabled={loading}>Send</button>
             </div>

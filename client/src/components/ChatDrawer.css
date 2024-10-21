@@ -15,17 +15,14 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
-
 .MuiListItemButton-root {
     display: flex;
     justify-content: space-between;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
-
 .MuiListItemText-root {
     flex-grow: 1;
 }
-
 .MuiSvgIcon-root {
     cursor: pointer;
 }
@@ -35,36 +32,47 @@
 }
 
 
+/* History Section */
 .history-title {
-    padding-left: 16px;
     margin-top: 16px;
+    /* color: #000000; */
+    padding-left: 16px;
+    /* white-space: nowrap; */
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
+}
+/* Limit height of history section */
+.history-list {
+    max-height: 200px; /* Adjust this height as needed */
+    overflow-y: auto;
+    overflow-x: auto; /* Add horizontal scrolling */
 }
 
 /* Active Item Background */
 .active-item {
-    background-color: #343a40;
-    border-left: 4px solid #17a2b8;
+    background-color: #ffffff;
+    color: black;
+    border-left: 4px solid #17a2b8; /* Keep your border as needed */
     font-weight: bold;
-    color: #ffffff;
     transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease;
 }
-
 .active-item:hover {
-    background-color: #495057;
-    color: #f1f1f1;
+    background-color: #e0e0e0; /* Change hover effect on active items */
+    color: #000000; /* Ensure text color remains clear */
+    font-weight: bold;
 }
-
 .active-item .MuiListItemText-root {
     color: #ffffff;
     font-weight: bold;
 }
 
+/* Style for the icon (if any) when the item is active */
 .active-item .MuiSvgIcon-root {
     fill: #17a2b8;
+    /* Change the color of any icons (if present) */
 }
-
 /* Hover effect for inactive list items */
-.MuiListItemButton-root:hover {
+/* .MuiListItemButton-root:hover {
     background-color: #495057;
     color: #ffffff;
 }
@@ -80,4 +88,4 @@
 .MuiIconButton-root {
     padding: 5px;
     color: white;
-}
+} */

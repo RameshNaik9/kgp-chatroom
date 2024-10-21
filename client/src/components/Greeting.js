@@ -11,8 +11,8 @@ const Greeting = () => {
     };
 
     return (
-        <div className="greeting">
-            <h2>{`${getTimeOfDay()}, ${fullName}`}</h2>
+        <div className="greeting fst-italic" >
+            <h2>{`${getTimeOfDay()}! ${fullName}`}</h2>
         </div>
     );
 };
