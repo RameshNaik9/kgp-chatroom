@@ -14,7 +14,7 @@ const Conversation = () => {
     const [loading, setLoading] = useState(false);
     const [userMessage, setUserMessage] = useState('');
     const [error, setError] = useState('');
-    const [recommendedQuestions, setRecommendedQuestions] = useState([]); // New state for recommended questions
+    const [lastRecommendedQuestions, setLastRecommendedQuestions] = useState([]); // Store recommended questions for the latest response
     const [isQuestionsVisible, setIsQuestionsVisible] = useState(false);  // Toggle for recommended questions
     const messagesEndRef = useRef(null);
     const textAreaRef = useRef(null); // Ref for textarea
@@ -36,7 +36,12 @@ const Conversation = () => {
                 setChatTitle(response.data.chat_title); // Set the chat title
                 setChatProfile(response.data.chat_profile); // Set the chat profile (Career, Academics, General)
                 setCreatedAt(response.data.createdAt); // Set the createdAt (conversation start date)
-                setRecommendedQuestions(response.data.recommended_questions || []); // Store recommended questions
+
+                // Set the recommended questions for the latest assistant response from the whole conversation
+                if (response.data.recommended_questions) {
+                    setLastRecommendedQuestions(response.data.recommended_questions);
+                }
+
             } catch (error) {
                 setError('Failed to fetch conversation history');
                 console.error('Error fetching conversation history:', error);
@@ -76,8 +81,6 @@ const Conversation = () => {
         setLoading(true);
 
         try {
-            console.log('Sending user message to the backend:', userMessage);
-
             // Send HTTP request to process the user message and get final response
             const postResponse = await axios.post(
                 `http://localhost:8080/api/assistant/${conversation_id}`,
@@ -122,14 +125,18 @@ const Conversation = () => {
                             ? {
                                 ...msg,
                                 assistant_response: {
-                                    content: postResponse.data.assistant_response.content // Replace with final response content
-                                }
+                                    content: postResponse.data.assistant_response.content, // Replace with final response content
+                                },
+                                recommended_questions: postResponse.data.recommended_questions // Set recommended questions for last message
                             }
                             : msg
                     );
                 });
 
-                setLoading(false); // Stop the loading state after replacement
+                // Set the recommended questions for the last message
+                setLastRecommendedQuestions(postResponse.data.recommended_questions || []);
+
+                setLoading(false);
             });
 
         } catch (error) {
@@ -194,7 +201,7 @@ const Conversation = () => {
             </h2>
 
             <div className="messages-list">
-                {messages.map((msg) => (
+                {messages.map((msg, index) => (
                     <div key={msg.message_id} className="message-block">
                         <div className="message-item user-message">
                             {msg.user_message.content}
@@ -214,17 +221,19 @@ const Conversation = () => {
                                             <FaSyncAlt />
                                         </div>
 
-                                        {/* Recommended Questions */}
-                                        <div className="recommended-questions">
-                                            <button onClick={toggleQuestions}>Recommended Questions</button>
-                                            {isQuestionsVisible && (
-                                                <ul className="questions-list">
-                                                    {recommendedQuestions.map((question, idx) => (
-                                                        <li key={idx}>{question}</li>
-                                                    ))}
-                                                </ul>
-                                            )}
-                                        </div>
+                                        {/* Recommended Questions - only for the latest response */}
+                                        {index === messages.length - 1 && lastRecommendedQuestions.length > 0 && (
+                                            <div className="recommended-questions">
+                                                <button onClick={toggleQuestions}>Recommended Questions</button>
+                                                {isQuestionsVisible && (
+                                                    <ul className="questions-list">
+                                                        {lastRecommendedQuestions.map((question, idx) => (
+                                                            <li key={idx}>{question}</li>
+                                                        ))}
+                                                    </ul>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
