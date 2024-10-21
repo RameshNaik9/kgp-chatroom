@@ -10,7 +10,7 @@
 .convo-title{
     color: #007bff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
 }
 
 .messages-list {
@@ -202,4 +202,9 @@
             /* margin: 0 0 0 0; */
             max-width: 70%;
         }
+                .convo-title {
+                    color: #007bff;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    font-size: 1.2rem;
+                }
 }
