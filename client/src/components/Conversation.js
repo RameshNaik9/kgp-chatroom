@@ -15,7 +15,8 @@ const Conversation = () => {
     const [userMessage, setUserMessage] = useState('');
     const [error, setError] = useState('');
     const [lastRecommendedQuestions, setLastRecommendedQuestions] = useState([]); // Store recommended questions for the latest response
-    const [isQuestionsVisible, setIsQuestionsVisible] = useState(false);  // Toggle for recommended questions
+    const [isQuestionsVisible, setIsQuestionsVisible] = useState(true);  // Toggle for recommended questions
+    const [isStreaming, setIsStreaming] = useState(false); // Track if streaming is happening
     const messagesEndRef = useRef(null);
     const textAreaRef = useRef(null); // Ref for textarea
     const token = localStorage.getItem('token');
@@ -79,6 +80,7 @@ const Conversation = () => {
         setMessages((prev) => [...prev, newMessage]);
         setUserMessage('');
         setLoading(true);
+        setIsStreaming(true); // Set streaming to true when message is sent
 
         try {
             // Send HTTP request to process the user message and get final response
@@ -135,13 +137,14 @@ const Conversation = () => {
 
                 // Set the recommended questions for the last message
                 setLastRecommendedQuestions(postResponse.data.recommended_questions || []);
-
+                setIsStreaming(false); // Stop streaming once the final response is set
                 setLoading(false);
             });
 
         } catch (error) {
             console.error('Error sending message:', error);
             setError('Message sending failed');
+            setIsStreaming(false);
             setLoading(false);
             if (textAreaRef.current) {
                 textAreaRef.current.style.height = 'auto'; // Reset height
@@ -214,15 +217,17 @@ const Conversation = () => {
                                         <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
 
                                         {/* Action buttons */}
-                                        <div className="action-buttons">
-                                            <FaRegCopy onClick={() => copyResponse(msg.assistant_response.content)} />
-                                            <FaRegThumbsUp />
-                                            <FaRegThumbsDown />
-                                            <FaSyncAlt />
-                                        </div>
+                                        {!isStreaming && ( // Only show when streaming has ended
+                                            <div className="action-buttons">
+                                                <FaRegCopy onClick={() => copyResponse(msg.assistant_response.content)} />
+                                                <FaRegThumbsUp />
+                                                <FaRegThumbsDown />
+                                                <FaSyncAlt />
+                                            </div>
+                                        )}
 
-                                        {/* Recommended Questions - only for the latest response */}
-                                        {index === messages.length - 1 && lastRecommendedQuestions.length > 0 && (
+                                        {/* Recommended Questions - only for the latest response and after streaming ends */}
+                                        {!isStreaming && index === messages.length - 1 && lastRecommendedQuestions.length > 0 && (
                                             <div className="recommended-questions">
                                                 <button onClick={toggleQuestions}>Recommended Questions</button>
                                                 {isQuestionsVisible && (
