@@ -381,7 +381,7 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
                 })}
                 <div ref={messagesEndRef} />
             </div>
-            <form onSubmit={handleSendMessage} className="p-3 border-top">
+            <form onSubmit={handleSendMessage} className="p-1 mx-5 border-top">
                 {replyToMessage && (
                     <div className={`reply-to-container text-muted small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
                         <span>
