@@ -67,13 +67,13 @@ const Conversation = () => {
         return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options);
     };
 
-    const sendMessage = async () => {
-        if (!userMessage.trim()) return;
+    const sendMessage = async (message) => {
+        if (!message.trim()) return;
 
         const newMessage = {
             message_id: 'temp-' + new Date().getTime(),
             user: userId, 
-            user_message: { content: userMessage },
+            user_message: { content: message },
             assistant_response: null
         };
 
@@ -86,7 +86,7 @@ const Conversation = () => {
             // Send HTTP request to process the user message and get final response
             const postResponse = await axios.post(
                 `http://localhost:8080/api/assistant/${conversation_id}`,
-                { user_message: { content: userMessage } }, 
+                { user_message: { content: message } }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
@@ -152,6 +152,12 @@ const Conversation = () => {
         }
     };
 
+    // Handle recommended question click
+    const handleQuestionClick = (question) => {
+        setUserMessage(question);
+        sendMessage(question); // Send the recommended question as a message
+    };
+
     const toggleQuestions = () => {
         setIsQuestionsVisible(!isQuestionsVisible); // Toggle visibility of recommended questions
     };
@@ -165,7 +171,7 @@ const Conversation = () => {
         // Prevent form submission when pressing Enter without Shift
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
-            sendMessage(); // Send message on Enter
+            sendMessage(userMessage); // Send message on Enter
         }
     };
 
@@ -233,7 +239,9 @@ const Conversation = () => {
                                                 {isQuestionsVisible && (
                                                     <ul className="questions-list">
                                                         {lastRecommendedQuestions.map((question, idx) => (
-                                                            <li key={idx}>{question}</li>
+                                                            <li key={idx} onClick={() => handleQuestionClick(question)}>
+                                                                {question}
+                                                            </li>
                                                         ))}
                                                     </ul>
                                                 )}
@@ -274,7 +282,7 @@ const Conversation = () => {
                         maxHeight: '200px' // Maximum height to avoid overly large textareas
                     }} // Ensure no scrollbars are shown
                 />
-                <button onClick={sendMessage} disabled={loading}>Send</button>
+                <button onClick={() => sendMessage(userMessage)} disabled={loading}>Send</button>
             </div>
         </div>
     );
