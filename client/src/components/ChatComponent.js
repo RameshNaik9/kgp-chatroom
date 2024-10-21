@@ -381,7 +381,7 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
                 })}
                 <div ref={messagesEndRef} />
             </div>
-            <form onSubmit={handleSendMessage} className="p-1 mx-5 border-top">
+            <form onSubmit={handleSendMessage} className="msg-chese-space">
                 {replyToMessage && (
                     <div className={`reply-to-container text-muted small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
                         <span>
@@ -406,7 +406,10 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
                         style={{ resize: "none", height: "auto", overflow: "auto" }}
                         rows={1}
                     />
-                    <button type="submit" className="btn1 btn-primary" style={{ height: "auto" ,}}>Send</button>
+                    {/* <button type="submit" className=" send-button" style={{ height: "auto" ,}}>Send</button> */}
+                    <button type="submit" className="send-button" style={{ height: "auto" }}>
+                        <i className="fas fa-paper-plane"></i>  {/* Font Awesome send icon */}
+                    </button>
                 </div>
             </form>
         </div>
