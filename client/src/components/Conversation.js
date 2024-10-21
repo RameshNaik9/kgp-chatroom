@@ -5,6 +5,9 @@ import ReactMarkdown from 'react-markdown';
 import './Conversation.css';
 import { FaRegThumbsUp, FaRegThumbsDown, FaRegCopy, FaSyncAlt } from 'react-icons/fa';  // Import icons
 
+// Cache for storing conversation data
+const conversationCache = new Map();
+
 const Conversation = () => {
     const { conversation_id } = useParams();
     const [messages, setMessages] = useState([]);
@@ -23,25 +26,40 @@ const Conversation = () => {
     const userId = localStorage.getItem('userId');
     const fullName = localStorage.getItem('fullName') || 'there';
 
-    // Fetch conversation history on component mount
+    // Fetch conversation history on component mount or cache hit
     useEffect(() => {
         const fetchConversationHistory = async () => {
             setLoading(true);
             setError(''); // Clear any existing errors
+
+            // Check if the conversation is already cached
+            if (conversationCache.has(conversation_id)) {
+                const cachedConversation = conversationCache.get(conversation_id);
+                setMessages(cachedConversation.messages);
+                setChatTitle(cachedConversation.chat_title);
+                setChatProfile(cachedConversation.chat_profile);
+                setCreatedAt(cachedConversation.createdAt);
+                setLastRecommendedQuestions(cachedConversation.recommended_questions || []);
+                setLoading(false);
+                return;
+            }
+
+            // If not cached, fetch from the backend
             try {
                 const response = await axios.get(
                     `http://localhost:8080/api/assistant/conversation/${conversation_id}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
-                setMessages(response.data.messages); // Load conversation messages
-                setChatTitle(response.data.chat_title); // Set the chat title
-                setChatProfile(response.data.chat_profile); // Set the chat profile (Career, Academics, General)
-                setCreatedAt(response.data.createdAt); // Set the createdAt (conversation start date)
 
-                // Set the recommended questions for the latest assistant response from the whole conversation
-                if (response.data.recommended_questions) {
-                    setLastRecommendedQuestions(response.data.recommended_questions);
-                }
+                // Store the conversation in cache
+                conversationCache.set(conversation_id, response.data);
+
+                // Update state with fetched data
+                setMessages(response.data.messages);
+                setChatTitle(response.data.chat_title);
+                setChatProfile(response.data.chat_profile);
+                setCreatedAt(response.data.createdAt);
+                setLastRecommendedQuestions(response.data.recommended_questions || []);
 
             } catch (error) {
                 setError('Failed to fetch conversation history');
@@ -139,6 +157,12 @@ const Conversation = () => {
                 setLastRecommendedQuestions(postResponse.data.recommended_questions || []);
                 setIsStreaming(false); // Stop streaming once the final response is set
                 setLoading(false);
+
+                // Update the cache with new messages
+                conversationCache.set(conversation_id, {
+                    ...conversationCache.get(conversation_id),
+                    messages: [...messages, newMessage], // Append new message to cached messages
+                });
             });
 
         } catch (error) {
