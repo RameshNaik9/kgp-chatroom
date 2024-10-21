@@ -50,14 +50,14 @@
 
 /* Active Item Background */
 .active-item {
-    background-color: #ffffff;
+    background-color: #343a40;
     color: black;
-    border-left: 4px solid #17a2b8; /* Keep your border as needed */
+    border-left: 4px solid #007bff; /* Keep your border as needed */
     font-weight: bold;
     transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease;
 }
 .active-item:hover {
-    background-color: #e0e0e0; /* Change hover effect on active items */
+    background-color: #495057; /* Change hover effect on active items */
     color: #000000; /* Ensure text color remains clear */
     font-weight: bold;
 }
@@ -68,7 +68,7 @@
 
 /* Style for the icon (if any) when the item is active */
 .active-item .MuiSvgIcon-root {
-    fill: #17a2b8;
+    fill: #007bff;
     /* Change the color of any icons (if present) */
 }
 /* Hover effect for inactive list items */
