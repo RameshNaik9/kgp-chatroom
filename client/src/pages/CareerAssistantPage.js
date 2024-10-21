@@ -6,11 +6,14 @@ import Assistant from '../components/Assistant';
 import Conversation from '../components/Conversation';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
+import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
+import './CareerAssistantPage.css';
 
 const CareerAssistantPage = () => {
-    const { conversation_id } = useParams(); // Get conversation_id from URL
-    const [drawerOpen, setDrawerOpen] = useState(true);
-    const [newConversation, setNewConversation] = useState(null);  // State to track new conversation
+    const { conversation_id } = useParams();
+    const isMobile = useMediaQuery('(max-width: 576px)'); // Check if the screen size is mobile
+    const [drawerOpen, setDrawerOpen] = useState(!isMobile); // Default: hidden on mobile, shown on desktop
+    const [newConversation, setNewConversation] = useState(null);
 
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen);
@@ -21,28 +24,33 @@ const CareerAssistantPage = () => {
     };
 
     return (
-        <div style={{ display: 'flex', height: '100vh' }}>
+        <div className="career-assistant-page">
             <Header toggleDrawer={toggleDrawer} />
-            <div style={{ display: 'flex', flexGrow: 1 }}>
+            <div className="career-assistant-container">
                 <Drawer
                     anchor="left"
                     open={drawerOpen}
                     onClose={toggleDrawer}
-                    variant="persistent"
+                    variant={isMobile ? 'temporary' : 'persistent'} // Temporary drawer on mobile, persistent on desktop
+                    className="chat-drawer"
                     sx={{
                         width: 250,
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
                             width: 250,
-                            top: '67px', 
-                            boxSizing: 'border-box',
+                            top: '68px',
+                            backgroundColor: 'transparent',
                         },
                     }}
                 >
                     <ChatDrawer newConversation={newConversation} />
                 </Drawer>
-                <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 10 }}>
-                    {conversation_id ? <Conversation /> : <Assistant onNewConversation={handleNewConversation} />}
+                <Box className="main-content">
+                    {conversation_id ? (
+                            <Conversation />
+                    ) : (
+                            <Assistant onNewConversation={handleNewConversation} />
+                    )}
                 </Box>
             </div>
         </div>

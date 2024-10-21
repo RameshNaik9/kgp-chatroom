@@ -1,0 +1,74 @@
+.additional-component {
+    right: 0px;
+    width: 300px;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    background-color: var(--color-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.others-profile-card {
+    padding: 10px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
+    position: relative;
+}
+
+.others-profile-card h5 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: var(--color-primary);
+}
+
+.others-profile-card p {
+    margin: 5px 0;
+    color: var(--color-light);
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--color-white);
+}
+
+/* Adjustments for responsiveness */
+@media (max-width: 1024px) {
+    .additional-component {
+        width: 250px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .additional-component {
+        width: 200px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .additional-component {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--color-bg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            height: 100vh;
+            transition: background 0.3s ease, backdrop-filter 0.3s ease;
+        }
+}

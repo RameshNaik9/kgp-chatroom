@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown'; // For markdown rendering
+import ReactMarkdown from 'react-markdown';
 import './Conversation.css';
 
 const Conversation = () => {
@@ -19,6 +19,7 @@ const Conversation = () => {
     const userId = localStorage.getItem('userId');
     const fullName = localStorage.getItem('fullName') || 'there';
 
+    // Fetch conversation history on component mount
     useEffect(() => {
         const fetchConversationHistory = async () => {
             setLoading(true);
@@ -40,8 +41,14 @@ const Conversation = () => {
             }
         };
 
-        fetchConversationHistory(); // Call the function
-    }, [conversation_id, token]); // Dependency array
+        fetchConversationHistory();
+    }, [conversation_id, token]);
+
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages]);
 
     const formatDate = (dateString) => {
         if (!dateString) return '';
@@ -65,28 +72,72 @@ const Conversation = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post(
+            console.log('Sending user message to the backend:', userMessage);
+
+            // Send HTTP request to process the user message and get final response
+            const postResponse = await axios.post(
                 `http://localhost:8080/api/assistant/${conversation_id}`,
                 { user_message: { content: userMessage } }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            setMessages((prevMessages) =>
-                prevMessages.map((msg) =>
-                    msg.message_id === newMessage.message_id
-                        ? response.data 
-                        : msg
-                )
-            );
+
+            // Start SSE streaming
+            const eventSource = new EventSource(`http://localhost:8080/api/assistant/stream-response/${conversation_id}?token=${token}`);
+
+            eventSource.onmessage = (event) => {
+                if (event.data.trim()) {
+                    setMessages((prevMessages) => {
+                        return prevMessages.map((msg) =>
+                            msg.message_id === newMessage.message_id
+                                ? {
+                                    ...msg,
+                                    assistant_response: {
+                                        content: (msg.assistant_response?.content || '') + event.data + "\n"
+                                    }
+                                }
+                                : msg
+                        );
+                    });
+                }
+                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            eventSource.onerror = (err) => {
+                console.error('Error in SSE connection:', err);
+                eventSource.close(); // Close SSE connection on error
+            };
+
+            eventSource.addEventListener('end', () => {
+                console.log('SSE stream ended.');
+                eventSource.close();  // Close SSE connection when done
+
+                // Replace the streamed response with the final response from the post request
+                setMessages((prevMessages) => {
+                    return prevMessages.map((msg) =>
+                        msg.message_id === newMessage.message_id
+                            ? {
+                                ...msg,
+                                assistant_response: {
+                                    content: postResponse.data.assistant_response.content // Replace with final response content
+                                }
+                            }
+                            : msg
+                    );
+                });
+
+                setLoading(false); // Stop the loading state after replacement
+            });
+
         } catch (error) {
-            setError('Message sending failed');
             console.error('Error sending message:', error);
-        } finally {
+            setError('Message sending failed');
             setLoading(false);
             if (textAreaRef.current) {
                 textAreaRef.current.style.height = 'auto'; // Reset height
             }
         }
     };
+
 
     const handleKeyDown = (event) => {
         // Prevent form submission when pressing Enter without Shift
@@ -111,7 +162,7 @@ const Conversation = () => {
         }
     };
 
-    const assistantLogo = '/icons/img1-icon.png'; // Reference the logo from public folder
+    const assistantLogo = '/icons/img1-icon.png';
 
     // Function to dynamically adjust the textarea height
     const adjustTextareaHeight = () => {
@@ -123,7 +174,7 @@ const Conversation = () => {
 
     return (
         <div className="conversation-container">
-            <h2>
+            <h2 className='convo-title'>
                 {chatTitle || 'Conversation'}
                 <span className="conversation-date">
                     {createdAt && ` - ${formatDate(createdAt)}`}
@@ -134,7 +185,7 @@ const Conversation = () => {
                 {messages.map((msg) => (
                     <div key={msg.message_id} className="message-block">
                         <div className="message-item user-message">
-                            <p>{msg.user_message.content}</p>
+                            {msg.user_message.content}
                         </div>
                         {msg.assistant_response ? (
                             <div className="message-item assistant-message">

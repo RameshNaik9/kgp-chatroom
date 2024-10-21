@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Greeting from './Greeting';
 import Cards from './Cards';
@@ -7,10 +6,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Assistant.css';
 
-const Assistant = ({ onNewConversation }) => {  // Prop to update the drawer
+const Assistant = ({ onNewConversation }) => { 
     const [loading, setLoading] = useState(false);
-    const [userMessage, setUserMessage] = useState(''); // Store the user's message
-    const [assistantMessage, setAssistantMessage] = useState(''); // Store the assistant's response
+    const [userMessage, setUserMessage] = useState(''); 
+    const [assistantMessage, setAssistantMessage] = useState(''); 
     const navigate = useNavigate();
 
     const handleSendMessage = async (message) => {
