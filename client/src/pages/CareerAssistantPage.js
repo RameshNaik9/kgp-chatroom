@@ -6,11 +6,13 @@ import Assistant from '../components/Assistant';
 import Conversation from '../components/Conversation';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
+import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
 import './CareerAssistantPage.css';
 
 const CareerAssistantPage = () => {
     const { conversation_id } = useParams();
-    const [drawerOpen, setDrawerOpen] = useState(true);
+    const isMobile = useMediaQuery('(max-width: 576px)'); // Check if the screen size is mobile
+    const [drawerOpen, setDrawerOpen] = useState(!isMobile); // Default: hidden on mobile, shown on desktop
     const [newConversation, setNewConversation] = useState(null);
 
     const toggleDrawer = () => {
@@ -29,7 +31,7 @@ const CareerAssistantPage = () => {
                     anchor="left"
                     open={drawerOpen}
                     onClose={toggleDrawer}
-                    variant="persistent"
+                    variant={isMobile ? 'temporary' : 'persistent'} // Temporary drawer on mobile, persistent on desktop
                     className="chat-drawer"
                     sx={{
                         width: 250,

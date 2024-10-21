@@ -4,12 +4,14 @@ import Drawer from '@mui/material/Drawer';
 import Header from '../components/Header';
 import ChatroomComponent from '../components/ChatComponent';
 import ChatDrawer from '../components/ChatDrawer';
-import AdditionalComponent from '../components/AdditionalComponent.js';
+import AdditionalComponent from '../components/AdditionalComponent';
+import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
 import './GroupChatPage.css';
 
 const GroupChatPage = () => {
-    const [drawerOpen, setDrawerOpen] = useState(true);
-    const [additionalOpen, setAdditionalOpen] = useState(false); // For mobile toggle
+    const isMobile = useMediaQuery('(max-width: 576px)'); // Check if it's mobile screen
+    const [drawerOpen, setDrawerOpen] = useState(!isMobile); // Default hidden for mobile, visible for desktop
+    const [additionalOpen, setAdditionalOpen] = useState(false);
     const [profileData, setProfileData] = useState(null);
 
     const toggleDrawer = () => {
@@ -23,7 +25,7 @@ const GroupChatPage = () => {
     const handleProfileClick = (profile) => {
         setProfileData(profile);
         // Open the additional drawer when a profile is clicked (for mobile)
-        if (window.innerWidth <= 576) {
+        if (isMobile) {
             setAdditionalOpen(true);
         }
     };
@@ -41,7 +43,7 @@ const GroupChatPage = () => {
                     anchor="left"
                     open={drawerOpen}
                     onClose={toggleDrawer}
-                    variant="persistent"
+                    variant={isMobile ? 'temporary' : 'persistent'} // Temporary for mobile, persistent for desktop
                     className="chat-drawer"
                     sx={{
                         width: 250,
