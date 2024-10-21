@@ -32,7 +32,7 @@ const ConversationSchema = new Schema({
   tags: [String],
   chat_profile: {
     type: String,
-    enum: ['Career', 'Academics', 'General'],
+    enum: ['Career', 'Academics', 'Gymkhana', 'Bhaat'],
     default: 'Career'
   },
   chat_title: {
@@ -40,7 +40,8 @@ const ConversationSchema = new Schema({
     default: 'New Chat',
     required: false
   },
-  feedback: FeedbackSchema
+  feedback: FeedbackSchema,
+  recommended_questions: [String]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Conversation', ConversationSchema);

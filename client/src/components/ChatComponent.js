@@ -11,18 +11,23 @@ const socket = io(process.env.REACT_APP_SOCKET_URL) || 'https://kgp-chatroom-end
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 const vapid_public_key = process.env.REACT_APP_VAPID_PUBLIC_KEY || 'BOMBbfvkjUBtjs49boCTJnI11Wec0CG7bp-vyVcvAclcvDfgRg2XMdwrINtOlO-S4SX5UxTiMNwAifpAEJ25wts';
 
-const ChatroomComponent = () => {
+const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isConnected, setIsConnected] = useState(true);
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState('dark');
     const [editingMessageId, setEditingMessageId] = useState(null);
     const [newMessageContent, setNewMessageContent] = useState("");
     const [replyToMessage, setReplyToMessage] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const messagesEndRef = useRef(null);
     const userId = localStorage.getItem('userId');
+    const [profileData, setProfileData] = useState(null);  
+    const [showProfileCard, setShowProfileCard] = useState(false); // State for controlling profile card visibility
+    const profileCardRef = useRef(null); // Ref for the profile card
+
+
 
     useLayoutEffect(() => {
         axios.get(`${apiBaseUrl}/api/messages`)
@@ -62,10 +67,37 @@ const ChatroomComponent = () => {
         subscribeUserToPush();
     }, []);
 
+    // Function to close the profile card when clicking outside of it
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (profileCardRef.current && !profileCardRef.current.contains(event.target)) {
+                setShowProfileCard(false);
+            }
+        }
+
+        // Add event listener when profile card is shown
+        document.addEventListener('mousedown', handleClickOutside);
+
+        // Clean up event listener when component unmounts or profile card is hidden
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [profileCardRef]);
+
     const scrollToBottom = () => {
         setTimeout(() => {
             messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
         }, 0);
+    };
+
+        const handleFullNameClick = (userId) => {
+        axios.get(`${apiBaseUrl}/api/profile/get-profile-info/${userId}`)
+            .then(response => {
+                onProfileClick(response.data); // Pass profile data to the parent component
+            })
+            .catch(error => {
+                console.error('Error fetching user profile:', error);
+            });
     };
 
     const subscribeUserToPush = async () => {
@@ -245,7 +277,13 @@ const ChatroomComponent = () => {
                             )}
                             <div className={`d-flex flex-column mb-3 ${isCurrentUser ? 'align-items-end' : 'align-items-start'}`}>
                                 <div className="small text-muted mb-1">
-                                    {msg.user.fullName} 
+                                    {/* {msg.user.fullName}  */}
+                                    <span 
+                                        style={{ cursor: 'pointer', textDecoration: '' }}
+                                        onClick={() => handleFullNameClick(msg.user._id)}
+                                    >
+                                        {msg.user.fullName}
+                                    </span>
                                     {` • ${moment(msg.createdAt).format('hh:mm A')}`}
                                     {msg.isEdited && <span>(edited)</span>}
                                     
@@ -371,7 +409,6 @@ const ChatroomComponent = () => {
                     <button type="submit" className="btn1 btn-primary" style={{ height: "auto" }}>Send</button>
                 </div>
             </form>
-
         </div>
     );
 };

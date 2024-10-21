@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown'; // For markdown rendering
+import ReactMarkdown from 'react-markdown';
 import './Conversation.css';
 
 const Conversation = () => {
@@ -40,10 +40,9 @@ const Conversation = () => {
             }
         };
 
-        fetchConversationHistory(); // Call the function
-    }, [conversation_id, token]); // Dependency array
+        fetchConversationHistory();
+    }, [conversation_id, token]);
 
-    // Scroll to the bottom whenever messages change
     useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -157,11 +156,11 @@ const Conversation = () => {
         }
     };
 
-    const assistantLogo = '/icons/img1-icon.png'; // Reference the logo from public folder
+    const assistantLogo = '/icons/img1-icon.png';
 
     return (
         <div className="conversation-container">
-            <h2>
+            <h2 className='convo-title'>
                 {chatTitle || 'Conversation'}
                 <span className="conversation-date">
                     {createdAt && ` - ${formatDate(createdAt)}`}
@@ -172,14 +171,13 @@ const Conversation = () => {
                 {messages.map((msg) => (
                     <div key={msg.message_id} className="message-block">
                         <div className="message-item user-message">
-                            <p>{msg.user_message.content}</p>
+                            {msg.user_message.content}
                         </div>
                         {msg.assistant_response ? (
                             <div className="message-item assistant-message">
                                 <div className="assistant-response-container">
                                     <img src={assistantLogo} alt="Assistant Logo" className="assistant-logo" />
                                     <div className="assistant-response-content">
-                                        {/* Render the assistant message progressively with ReactMarkdown */}
                                         <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
                                     </div>
                                 </div>

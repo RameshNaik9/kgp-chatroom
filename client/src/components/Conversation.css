@@ -2,8 +2,14 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    padding-right: 80px;
-    padding-left: 80px;
+    padding-right: 100px;
+    padding-left: 260px;
+    padding-top: 70px;
+}
+
+.convo-title{
+    color: #007bff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .messages-list {
@@ -15,7 +21,7 @@
 .message-block {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .message-item {
@@ -23,8 +29,8 @@
 }
 
 .user-message {
-    background-color: rgb(36, 33, 33);
-    padding: 5px;
+    background-color: #212529;
+    padding: 10px;
     border-radius: 15px;
     text-align: right;
     align-self: flex-end;
@@ -35,7 +41,6 @@
     text-align: left;
 }
 
-/* Loading Skeleton */
 .loading-skeleton {
     width: 100%;
     padding: 15px;
@@ -64,7 +69,6 @@
     }
 }
 
-/* Updated message input to match MessageBar styling */
 .message-input {
     display: flex;
     margin-top: 10px;
@@ -115,28 +119,36 @@
     margin-left: 8px;
 }
 
-/* Flex container for assistant message */
 .assistant-response-container {
     display: flex;
     align-items: flex-start;
-    /* Align the content vertically */
 }
 
-/* Assistant logo styling */
 .assistant-logo {
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 10px;
-    /* Space between logo and response */
+    margin-right: 8px;
 }
 
-/* Styling for the response content */
 .assistant-response-content {
     flex-grow: 1;
-    /* Allow the response to take up the remaining space */
     word-wrap: break-word;
-    /* Ensure the text wraps properly */
-    /* white-space: pre-wrap; */
+}
+
+
+@media (max-width: 576px) {
+    .conversation-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding-right: 5px;
+            padding-left: 5px;
+            padding-top: 70px;
+        }
+
+    .conversation-date {
+        display: none;
+    }
 }

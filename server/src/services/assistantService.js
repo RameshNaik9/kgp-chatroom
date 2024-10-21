@@ -58,7 +58,7 @@ const saveUserMessageService = async (conversationId, userId, userMessageContent
   }
 };
 
-// Get the assistant's response and update the same message document
+// Get the assistant's response, update the message, and save tags/recommended questions in the conversation
 const getAssistantResponseService = async (conversationId, messageId, userMessage, chatProfile) => {
   try {
     // Send request to FastAPI microservice
@@ -68,11 +68,11 @@ const getAssistantResponseService = async (conversationId, messageId, userMessag
       chat_profile: chatProfile,
     });
 
-    const { assistant_response, response_time, chat_title } = response.data;
+    const { assistant_response, response_time, chat_title, tags_list, questions_list } = response.data;
 
     // Update the existing message document with the assistant's response
     const updatedMessage = await Message.findOneAndUpdate(
-      { _id: messageId },  // Find the message by its _id
+      { _id: messageId },
       {
         $set: {
           assistant_response: {
@@ -82,19 +82,36 @@ const getAssistantResponseService = async (conversationId, messageId, userMessag
           response_time: response_time
         }
       },
-      { new: true }  // Return the updated document
+      { new: true }
     );
 
     // Check if chat_title is not null. If it is, retain the current chat_title in the database.
     if (chat_title) {
       await Conversation.findByIdAndUpdate(
         conversationId,
-        { $set: { chat_title } },  // Update the chat_title only if it's not null
+        { $set: { chat_title } },
         { new: true }
       );
     }
 
-    return updatedMessage;
+    // Update the conversation with tags and recommended questions from the assistant response
+    await Conversation.findByIdAndUpdate(
+      conversationId,
+      {
+        $set: {
+          tags: tags_list,  // Update the tags in the conversation
+          recommended_questions: questions_list  // Update the recommended questions
+        }
+      },
+      { new: true }
+    );
+
+    // Return the updated message
+    return {
+      updatedMessage,
+      tags: tags_list,
+      recommended_questions: questions_list
+    };
   } catch (error) {
     console.error('Error getting assistant response:', error);
     throw new Error('Failed to get assistant response');

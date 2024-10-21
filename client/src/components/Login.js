@@ -41,6 +41,10 @@ function Login() {
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('userId', response.data.user._id);
                 localStorage.setItem('fullName', response.data.user.fullName);
+                localStorage.setItem('email', response.data.user.email);
+                localStorage.setItem('rollNumber', response.data.user.rollNumber);
+                localStorage.setItem('department', response.data.user.department);
+                localStorage.setItem('isVerified', response.data.user.isVerified);
                 toast.success('Login successful!');
                 navigate('/home');
             } else {
@@ -55,6 +59,7 @@ function Login() {
             }
         }
     };
+
 
     return (
         <div className="login-container">

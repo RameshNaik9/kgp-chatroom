@@ -1,0 +1,89 @@
+.online-users-component {
+    margin-bottom: 10px;
+    max-height: 200px;
+    padding: 10px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
+    position: relative;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+}
+
+.green-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #28a745;
+    /* Green color */
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.active-users-heading {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 16px;
+    color: var(--color-white);
+}
+
+.dropdown-icon {
+    font-size: 16px;
+    color: var(--color-light);
+    transition: transform 0.3s ease;
+}
+
+.dropdown-icon.expanded {
+    transform: rotate(180deg);
+    /* Rotate when expanded */
+}
+
+.users-list {
+    list-style-type: none;
+    padding: 10px 0;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+/* For Webkit browsers like Chrome and Safari */
+.users-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.users-list::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.users-list li {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+    color: var(--color-light);
+}
+
+.user-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #28a745;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* Adjustments for responsiveness */
+@media (max-width: 768px) {
+    .online-users-component {
+        padding: 8px;
+    }
+}
