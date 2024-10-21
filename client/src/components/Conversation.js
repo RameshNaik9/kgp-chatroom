@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import './Conversation.css';
+import { FaRegThumbsUp, FaRegThumbsDown, FaRegCopy, FaSyncAlt } from 'react-icons/fa';  // Import icons
 
 const Conversation = () => {
     const { conversation_id } = useParams();
@@ -13,6 +14,8 @@ const Conversation = () => {
     const [loading, setLoading] = useState(false);
     const [userMessage, setUserMessage] = useState('');
     const [error, setError] = useState('');
+    const [recommendedQuestions, setRecommendedQuestions] = useState([]); // New state for recommended questions
+    const [isQuestionsVisible, setIsQuestionsVisible] = useState(false);  // Toggle for recommended questions
     const messagesEndRef = useRef(null);
     const textAreaRef = useRef(null); // Ref for textarea
     const token = localStorage.getItem('token');
@@ -33,6 +36,7 @@ const Conversation = () => {
                 setChatTitle(response.data.chat_title); // Set the chat title
                 setChatProfile(response.data.chat_profile); // Set the chat profile (Career, Academics, General)
                 setCreatedAt(response.data.createdAt); // Set the createdAt (conversation start date)
+                setRecommendedQuestions(response.data.recommended_questions || []); // Store recommended questions
             } catch (error) {
                 setError('Failed to fetch conversation history');
                 console.error('Error fetching conversation history:', error);
@@ -138,6 +142,14 @@ const Conversation = () => {
         }
     };
 
+    const toggleQuestions = () => {
+        setIsQuestionsVisible(!isQuestionsVisible); // Toggle visibility of recommended questions
+    };
+
+    const copyResponse = (text) => {
+        navigator.clipboard.writeText(text);
+        alert('Response copied!');
+    };
 
     const handleKeyDown = (event) => {
         // Prevent form submission when pressing Enter without Shift
@@ -193,6 +205,26 @@ const Conversation = () => {
                                     <img src={assistantLogo} alt="Assistant Logo" className="assistant-logo" />
                                     <div className="assistant-response-content">
                                         <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
+
+                                        {/* Action buttons */}
+                                        <div className="action-buttons">
+                                            <FaRegCopy onClick={() => copyResponse(msg.assistant_response.content)} />
+                                            <FaRegThumbsUp />
+                                            <FaRegThumbsDown />
+                                            <FaSyncAlt />
+                                        </div>
+
+                                        {/* Recommended Questions */}
+                                        <div className="recommended-questions">
+                                            <button onClick={toggleQuestions}>Recommended Questions</button>
+                                            {isQuestionsVisible && (
+                                                <ul className="questions-list">
+                                                    {recommendedQuestions.map((question, idx) => (
+                                                        <li key={idx}>{question}</li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

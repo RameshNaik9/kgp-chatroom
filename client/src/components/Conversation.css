@@ -151,8 +151,63 @@
 .assistant-response-content {
     flex-grow: 1;
     word-wrap: break-word;
-    /* Ensure the text wraps properly */
 }
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.action-buttons svg {
+    cursor: pointer;
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+.action-buttons svg:hover {
+    color: #007bff;
+}
+
+/* Recommended Questions */
+.recommended-questions {
+    margin-top: 10px;
+}
+
+.recommended-questions button {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.recommended-questions button:hover {
+    color: #0056b3;
+}
+
+.questions-list {
+    list-style-type: none;
+    margin: 10px 0 0 0;
+    padding-left: 0;
+    border-left: 3px solid #007bff;
+    padding-left: 10px;
+}
+
+.questions-list li {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.questions-list li:hover {
+    color: #007bff;
+    cursor: pointer;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .conversation-container {
@@ -179,6 +234,7 @@
         padding: 8px 15px;
     }
 }
+
 @media (max-width: 576px) {
     .conversation-container {
         display: flex;
@@ -193,18 +249,18 @@
         display: none;
     }
 
-        .user-message {
-            background-color: #212529;
-            padding: 10px;
-            border-radius: 15px;
-            text-align: left;
-            align-self: flex-end;
-            /* margin: 0 0 0 0; */
-            max-width: 70%;
-        }
-                .convo-title {
-                    color: #007bff;
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    font-size: 1.2rem;
-                }
+    .user-message {
+        background-color: #212529;
+        padding: 10px;
+        border-radius: 15px;
+        text-align: left;
+        align-self: flex-end;
+        max-width: 70%;
+    }
+
+    .convo-title {
+        color: #007bff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1.2rem;
+    }
 }
