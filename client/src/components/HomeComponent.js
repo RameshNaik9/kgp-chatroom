@@ -1,7 +1,7 @@
 import React from "react";
-import '../components/HomePageComp.css'; // Import the CSS for the component
+import './HomeComponent.css'; // Import the CSS for the component
 
-const HomePageComp = () => {
+const HomeComponent = () => {
   return (
     <div>
       <a
@@ -83,4 +83,4 @@ const HomePageComp = () => {
   );
 };
 
-export default HomePageComp;
+export default HomeComponent;
