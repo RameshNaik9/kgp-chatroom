@@ -160,7 +160,7 @@ const Conversation = () => {
 
     return (
         <div className="conversation-container">
-            <h2>
+            <h2 className='convo-title'>
                 {chatTitle || 'Conversation'}
                 <span className="conversation-date">
                     {createdAt && ` - ${formatDate(createdAt)}`}
