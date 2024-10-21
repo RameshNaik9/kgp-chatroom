@@ -162,6 +162,15 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                                             textOverflow: 'ellipsis'
                                         }}
                                     />
+                                     <IconButton
+                                           size="small"
+                                           onClick={(e) => handleMenuClick(e, conversation._id)}
+                                           aria-label="more"
+                                           sx={{ color: 'white' }}
+                                       >
+                                           <MoreVertIcon />
+                                       </IconButton>
+
                                 </ListItemButton>
                             </ListItem>
                         ))}
