@@ -1,23 +1,20 @@
-/* @import url('normalize.css');
+@import 'normalize.css';
 
 *,
 *:after,
 *:before {
   box-sizing: border-box;
 }
-html {
-  color-scheme: light only;
-}
 
-body {
+.containerk {
   display: grid;
   place-items: center;
   min-height: 100vh;
   font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
     Helvetica, Arial, sans-serif, system-ui;
-} 
+}
 
-body::before {
+.containerk::before {
   --size: 45px;
   --line: color-mix(in lch, canvasText, transparent 70%);
   content: '';
@@ -37,29 +34,27 @@ body::before {
   transform-style: flat;
   pointer-events: none;
   z-index: -1;
-} 
-.bear-link {
-  color: white;
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  width: 48px;
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  z-index: 1000;
 }
 
-.bear-link svg {
-  width: 75%;
-}
-
-:root {
+/* :root {
   --info-size: 35vh;
-}
+} */
 
-main {
+nav {
+  position: sticky;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 80px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.75rem;
+  display: flex;
+  align-items: center;
+  background: canvasText;
+  color: canvas;
+  padding: 0 1rem;
+  z-index: 3;
 }
 
 article {
@@ -124,7 +119,11 @@ article img {
   height: var(--info-size);
 }
 
-a:not(.bear-link) {
+main {
+  width: 100%;
+}
+
+a {
   text-transform: uppercase;
   font-weight: 600;
   color: hsl(0 0% 98%);
@@ -154,6 +153,7 @@ a:hover {
     position: relative;
     grid-template-rows: unset;
   }
+
   .article__info {
     background: transparent;
     height: 100vh;
@@ -164,6 +164,7 @@ a:hover {
     gap: 1rem;
     align-content: center;
   }
+
   .article__img {
     position: fixed;
     top: 0;
@@ -173,11 +174,13 @@ a:hover {
     height: 100vh;
     animation: none;
   }
+
   .article__img {
     animation: brighten both linear;
     animation-timeline: --article;
     animation-range: entry 0% entry 50%;
   }
+
   .article__img img {
     animation: clip-out both linear;
     animation-timeline: --article;
@@ -203,4 +206,4 @@ a:hover {
     filter: brightness(0.5);
     clip-path: inset(100% 0 0 0);
   }
-} */
+}
