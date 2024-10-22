@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './HomeComponent.css';
 import img1 from '../media/Academics.svg';
 import img2 from '../media/Career.svg';
@@ -13,9 +14,10 @@ const HomeComponent = () => {
             <img src={img1} alt="" style={{borderRadius:'0px'}}/>
           </div>
           <div className="article__info">
-            <h2>CSS Scroll Animations</h2>
-            <p>Check out this rad demo</p>
-            <a href="#">Follow</a>
+            <h2>Engage in lively discussions with your peers</h2>
+            <Link to="/group-chat">
+          <button className="glow-on-hover">Kgp Chatroom</button>
+        </Link>
           </div>
         </article>
 
@@ -24,9 +26,10 @@ const HomeComponent = () => {
             <img src={img2} alt="" style={{borderRadius:'0px'}}/>
           </div>
           <div className="article__info">
-            <h2>Animate on scroll</h2>
-            <p>Works with media queries too</p>
-            <a href="#">Check it out</a>
+            <h2>Get guidance on career planning and job searches</h2>
+            <Link to="/career-assistant">
+          <button className="glow-on-hover" type="button">Career Assistant</button>
+        </Link>
           </div>
         </article>
 
@@ -35,9 +38,10 @@ const HomeComponent = () => {
             <img src={img3} alt="" style={{borderRadius:'0px'}}/>
           </div>
           <div className="article__info">
-            <h2>Parallax Effects</h2>
-            <p>Tweak your timings</p>
-            <a href="#">Get Styling</a>
+            <h2>Find resources and help for your academic queries</h2>
+            <Link to="/acads-assistant">
+          <button className="glow-on-hover">Acads Assistant</button>
+        </Link>
           </div>
         </article>
 
@@ -46,9 +50,10 @@ const HomeComponent = () => {
             <img src={img4} alt="" style={{borderRadius:'0px'}} />
           </div>
           <div className="article__info">
-            <h2>Drive Keyframes</h2>
-            <p>CSS alone and...</p>
-            <a href="#">No JavaScript</a>
+            <h2>Assistance with general inquiries and more...</h2>
+            <Link to="/general-assistant">
+          <button className="glow-on-hover">General Assistant</button>
+        </Link>
           </div>
         </article>
       </main>
