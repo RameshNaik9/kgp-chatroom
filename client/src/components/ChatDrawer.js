@@ -69,17 +69,8 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
         setSelectedAssistant(selectedProfile);
         setSelectedConversation(''); // Clear selected conversation on new assistant selection
 
-        // Show history after a slight delay for better UX
-        if (category !== 'group-chat') {
-            setTimeout(() => setShowHistory(true), 200);
-        } else {
-            setShowHistory(false);
-        }
+        navigate(`/${category}`, { replace: true });
 
-        // Only navigate if the item clicked is not "Career Assistant" with the arrow
-        if (category !== 'career-assistant') {
-            navigate(`/${category}`, { replace: true });
-        }
     };
 
     // Toggle history visibility for Career Assistant
