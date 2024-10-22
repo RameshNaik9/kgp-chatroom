@@ -26,9 +26,6 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const [currentConversationId, setCurrentConversationId] = useState(null); // Track the clicked conversation
     const open = Boolean(anchorEl);
 
-    // New loading state to indicate when conversations are being fetched
-    const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         const fetchAllConversations = async () => {
             try {
@@ -39,38 +36,43 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 setAllConversations(response.data.reverse()); // Reverse to have the latest at the top
             } catch (error) {
                 console.error('Error fetching conversations:', error);
-            } finally {
-                setLoading(false); // Always stop the loading indicator
             }
         };
         fetchAllConversations();
     }, []);
 
-    useEffect(() => {
-        if (newConversation) {
-            setAllConversations(prevConversations => [newConversation, ...prevConversations]);
-            setSelectedConversation(newConversation._id); // Set the new conversation as active
-        }
-    }, [newConversation]);
+useEffect(() => {
+    if (newConversation) {
+        setAllConversations(prevConversations => [newConversation, ...prevConversations]);
+        setSelectedConversation(newConversation._id); // Set the new conversation as active
+    }
+}, [newConversation]);
+
 
     // Filter conversations based on selected assistant
     const filteredConversations = allConversations.filter(conversation => conversation.chat_profile === selectedAssistant);
 
-    // Assistant map for better organization
-    const assistantMap = {
-        'career-assistant': 'Career',
-        'academics-assistant': 'Academics',
-        'general-assistant': 'General',
-        'group-chat': 'Group'
-    };
-
     const handleAssistantClick = async (category) => {
+        const assistantMap = {
+            'career-assistant': 'Career',
+            'academics-assistant': 'Academics',
+            'general-assistant': 'General',
+            'group-chat': 'Group'
+        };
         const selectedProfile = assistantMap[category];
         setSelectedAssistant(selectedProfile);
         setSelectedConversation(''); // Clear selected conversation on new assistant selection
 
-        navigate(`/${category}`, { replace: true });
+        if (category !== 'group-chat') {
+            setTimeout(() => setShowHistory(true), 200);
+        } else {
+            setShowHistory(false);
+        }
 
+        // Only navigate if the item clicked is not "Career Assistant" with the arrow
+        if (category !== 'career-assistant') {
+            navigate(`/${category}`, { replace: true });
+        }
     };
 
     // Toggle history visibility for Career Assistant
@@ -126,12 +128,11 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 <ListItem disablePadding>
                     <ListItemButton
                         onClick={() => handleAssistantClick('career-assistant')}
-                        onKeyDown={(e) => e.key === 'Enter' && handleAssistantClick('career-assistant')} // Accessibility: Enter key
                         className={selectedAssistant === 'Career' ? 'active-item' : ''}
                     >
                         <ListItemText primary="Career Assistant" sx={{ color: 'white' }} />
                         {/* Add arrow button that toggles history, prevent parent click */}
-                        <IconButton onClick={handleCareerArrowClick} aria-label="toggle history" sx={{ color: 'white' }}>
+                        <IconButton onClick={handleCareerArrowClick} sx={{ color: 'white' }}>
                             {careerOpen ? <ExpandLess /> : <ExpandMore />}
                         </IconButton>
                     </ListItemButton>
@@ -151,43 +152,57 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                             </ListItemButton>
                         </ListItem>
                         {/* History */}
-                        {filteredConversations.length > 0 ? (
-                            filteredConversations.map(conversation => (
-                                <ListItem 
-                                    key={conversation._id} 
-                                    disablePadding 
-                                    sx={{ pl: 4 }}
-                                    className={selectedConversation === conversation._id ? 'active-item' : ''}
-                                >
-                                    <ListItemButton onClick={() => handleConversationClick('career-assistant', conversation._id)}>
-                                        <ListItemText 
-                                            primary={conversation.chat_title}
-                                            sx={{
-                                                color: 'white',
-                                                whiteSpace: 'nowrap',
-                                                overflow: 'hidden',
-                                                textOverflow: 'ellipsis'
-                                            }}
-                                        />
-                                        <IconButton
-                                            size="small"
-                                            onClick={(e) => handleMenuClick(e, conversation._id)}
-                                            aria-label="more options for conversation"
-                                            sx={{ color: 'white' }}
-                                        >
-                                            <MoreVertIcon />
-                                        </IconButton>
-                                    </ListItemButton>
-                                </ListItem>
-                            ))
-                        ) : (
-                            <ListItem disablePadding sx={{ pl: 4 }}>
-                                <ListItemText primary="No conversations available" sx={{ color: 'grey' }} />
+                        {filteredConversations.map(conversation => (
+                            <ListItem 
+                                key={conversation._id} 
+                                disablePadding 
+                                sx={{ pl: 4 }}
+                                className={selectedConversation === conversation._id ? 'active-item' : ''}
+                            >
+                                <ListItemButton onClick={() => handleConversationClick('career-assistant', conversation._id)}>
+                                    <ListItemText 
+                                        primary={conversation.chat_title}
+                                        sx={{
+                                            color: 'white',
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis'
+                                        }}
+                                    />
+                                     <IconButton
+                                           size="small"
+                                           onClick={(e) => handleMenuClick(e, conversation._id)}
+                                           aria-label="more"
+                                           sx={{ color: 'white' }}
+                                       >
+                                           <MoreVertIcon />
+                                       </IconButton>
+
+                                </ListItemButton>
                             </ListItem>
-                        )}
+                        ))}
                     </List>
                 </Collapse>
+                {/* Academics Assistant */}
+                <ListItem disablePadding>
+                    <ListItemButton
+                        onClick={() => handleAssistantClick('academics-assistant')}
+                        className={selectedAssistant === 'Academics' ? 'active-item' : ''}
+                    >
+                        <ListItemText primary="Acads Assistant" sx={{ color: 'white' }} />
+                    </ListItemButton>
+                </ListItem>
+                {/* General Assistant */}
+                <ListItem disablePadding>
+                    <ListItemButton
+                        onClick={() => handleAssistantClick('general-assistant')}
+                        className={selectedAssistant === 'General' ? 'active-item' : ''}
+                    >
+                        <ListItemText primary="General Assistant" sx={{ color: 'white' }} />
+                    </ListItemButton>
+                </ListItem>
             </List>
+
             <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
                 <MenuItem onClick={() => console.log('Rename clicked')}>Rename</MenuItem>
                 <MenuItem onClick={() => console.log('Archive clicked')}>Archive</MenuItem>
