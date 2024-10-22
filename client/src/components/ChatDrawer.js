@@ -187,28 +187,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                         )}
                     </List>
                 </Collapse>
-                {/* Academics Assistant */}
-                <ListItem disablePadding>
-                    <ListItemButton
-                        onClick={() => handleAssistantClick('academics-assistant')}
-                        onKeyDown={(e) => e.key === 'Enter' && handleAssistantClick('academics-assistant')} // Accessibility
-                        className={selectedAssistant === 'Academics' ? 'active-item' : ''}
-                    >
-                        <ListItemText primary="Acads Assistant" sx={{ color: 'white' }} />
-                    </ListItemButton>
-                </ListItem>
-                {/* General Assistant */}
-                <ListItem disablePadding>
-                    <ListItemButton
-                        onClick={() => handleAssistantClick('general-assistant')}
-                        onKeyDown={(e) => e.key === 'Enter' && handleAssistantClick('general-assistant')} // Accessibility
-                        className={selectedAssistant === 'General' ? 'active-item' : ''}
-                    >
-                        <ListItemText primary="General Assistant" sx={{ color: 'white' }} />
-                    </ListItemButton>
-                </ListItem>
             </List>
-
             <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
                 <MenuItem onClick={() => console.log('Rename clicked')}>Rename</MenuItem>
                 <MenuItem onClick={() => console.log('Archive clicked')}>Archive</MenuItem>
