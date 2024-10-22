@@ -37,13 +37,41 @@
     padding-left: 16px;
 
 }
-
 .history-list {
-    max-height: 200px;
+    max-height: 250px;
+    /* Set a fixed height for the scrollable area */
     overflow-y: auto;
-    overflow-x: auto;
+    /* Enable vertical scrolling */
+    scrollbar-width: thin;
+    /* Thin scrollbar for Firefox */
+    scrollbar-color: #007bff transparent;
+    /* Blue scrollbar for Firefox */
 }
 
+/* Custom scrollbar styles for WebKit-based browsers (Chrome, Safari) */
+.history-list::-webkit-scrollbar {
+    width: 5px;
+    /* Thin scrollbar width */
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    /* Blue color for the scrollbar */
+    border-radius: 4px;
+    /* Rounded corners for smooth look */
+    min-height: 5px;
+    /* The minimum height of the scroll thumb */
+}
+
+.history-list::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
+    /* Track with subtle color for contrast */
+    border-radius: 4px;
+    margin-top: 5px;
+    /* Small margin at the top of the track */
+    margin-bottom: 5px;
+    /* Small margin at the bottom of the track */
+}
 .active-item {
     background-color: #343a40;
     color: black;
