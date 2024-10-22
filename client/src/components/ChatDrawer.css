@@ -1,4 +1,3 @@
-/* ChatDrawer.css */
 .drawer-container {
     top: 67.2px;
     width: 250px;
@@ -15,6 +14,7 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
+
 .MuiListItemButton-root {
     display: flex;
     justify-content: space-between;
@@ -32,33 +32,28 @@
 }
 
 
-/* History Section */
 .history-title {
     margin-top: 16px;
-    /* color: #000000; */
     padding-left: 16px;
-    /* white-space: nowrap; */
-    /* overflow: hidden; */
-    /* text-overflow: ellipsis; */
-}
-/* Limit height of history section */
-.history-list {
-    max-height: 200px; /* Adjust this height as needed */
-    overflow-y: auto;
-    overflow-x: auto; /* Add horizontal scrolling */
+
 }
 
-/* Active Item Background */
+.history-list {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
 .active-item {
     background-color: #343a40;
     color: black;
-    border-left: 4px solid #007bff; /* Keep your border as needed */
+    border-left: 4px solid #007bff;
     font-weight: bold;
     transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease;
 }
 .active-item:hover {
-    background-color: #495057; /* Change hover effect on active items */
-    color: #000000; /* Ensure text color remains clear */
+    background-color: #495057;
+    color: #000000;
     font-weight: bold;
 }
 .active-item .MuiListItemText-root {
@@ -66,26 +61,6 @@
     font-weight: bold;
 }
 
-/* Style for the icon (if any) when the item is active */
 .active-item .MuiSvgIcon-root {
     fill: #007bff;
-    /* Change the color of any icons (if present) */
-}
-/* Hover effect for inactive list items */
-/* .MuiListItemButton-root:hover {
-    background-color: #495057;
-    color: #ffffff;
-}
-
-.MuiListItemButton-root:hover .MuiListItemText-root {
-    color: #ffffff;
-}
-
-.MuiListItemButton-root:hover .MuiSvgIcon-root {
-    fill: #ffffff;
-}
-
-.MuiIconButton-root {
-    padding: 5px;
-    color: white;
-} */
+} 
