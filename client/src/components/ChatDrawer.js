@@ -44,6 +44,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     useEffect(() => {
         if (newConversation) {
             setAllConversations(prevConversations => [newConversation, ...prevConversations]);
+            setSelectedConversation(newConversation._id); // Set the new conversation as active
         }
     }, [newConversation]);
 
