@@ -59,22 +59,24 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
         };
         const selectedProfile = assistantMap[category];
         setSelectedAssistant(selectedProfile);
-        // navigate(`/${category}`);
         setSelectedConversation(''); // Clear selected conversation on new assistant selection
-
-        if (category === 'career-assistant') {
-            setCareerOpen(prevOpen => !prevOpen); // Toggle the career history visibility
-        } else {
-            setCareerOpen(false);
-        }
-
-        navigate(`/${category}`, { replace: true });
 
         if (category !== 'group-chat') {
             setTimeout(() => setShowHistory(true), 200);
         } else {
             setShowHistory(false);
         }
+
+        // Only navigate if the item clicked is not "Career Assistant" with the arrow
+        if (category !== 'career-assistant') {
+            navigate(`/${category}`, { replace: true });
+        }
+    };
+
+    // Toggle history visibility for Career Assistant
+    const handleCareerArrowClick = (event) => {
+        event.stopPropagation(); // Prevent the parent ListItemButton click
+        setCareerOpen(prevOpen => !prevOpen); // Toggle the career history visibility
     };
 
     const handleConversationClick = (category, conversationId) => {
@@ -127,7 +129,10 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                         className={selectedAssistant === 'Career' ? 'active-item' : ''}
                     >
                         <ListItemText primary="Career Assistant" sx={{ color: 'white' }} />
-                        {careerOpen ? <ExpandLess sx={{ color: 'white' }} /> : <ExpandMore sx={{ color: 'white' }} />}
+                        {/* Add arrow button that toggles history, prevent parent click */}
+                        <IconButton onClick={handleCareerArrowClick} sx={{ color: 'white' }}>
+                            {careerOpen ? <ExpandLess /> : <ExpandMore />}
+                        </IconButton>
                     </ListItemButton>
                 </ListItem>
                 <Collapse in={careerOpen} timeout="auto" unmountOnExit>
