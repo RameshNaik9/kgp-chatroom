@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import './Conversation.css';
-import { FaRegThumbsUp, FaRegThumbsDown, FaRegCopy, FaSyncAlt, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';  // Import icons
+import { FaRegThumbsUp, FaRegThumbsDown, FaRegCopy, FaSyncAlt, FaThumbsUp, FaThumbsDown, FaCheck } from 'react-icons/fa';  // Import FaCheck for tick
 
 
 // Cache for storing conversation data
@@ -26,6 +26,18 @@ const Conversation = () => {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const fullName = localStorage.getItem('fullName') || 'there';
+
+        const [copiedMessageId, setCopiedMessageId] = useState(null);  // Track copied message
+
+    // Function to handle copy
+    const handleCopy = (messageId, text) => {
+        navigator.clipboard.writeText(text).then(() => {
+            setCopiedMessageId(messageId);  // Set the copied message ID
+            setTimeout(() => {
+                setCopiedMessageId(null);  // Reset after 2 seconds
+            }, 2000);  // Show tick for 2 seconds
+        });
+    };
 
     // Fetch conversation history on component mount or cache hit
     useEffect(() => {
@@ -189,11 +201,6 @@ const Conversation = () => {
         setIsQuestionsVisible(!isQuestionsVisible); // Toggle visibility of recommended questions
     };
 
-    // const copyResponse = (text) => {
-    //     navigator.clipboard.writeText(text);
-    //     alert('Response copied!');
-    // };
-
     const handleKeyDown = (event) => {
         // Prevent form submission when pressing Enter without Shift
         if (event.key === 'Enter' && !event.shiftKey) {
@@ -275,13 +282,16 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
                                         {/* Action buttons */}
                                         {!isStreaming && (
                                             <div className="action-buttons">
-                                                <FaRegCopy onClick={() => navigator.clipboard.writeText(msg.assistant_response.content)} />
+                                                {copiedMessageId === msg.message_id
+                                                    ? <FaCheck color="grey" />  // Show tick icon if copied
+                                                    : <FaRegCopy onClick={() => handleCopy(msg.message_id, msg.assistant_response.content)} />
+                                                }
                                                 {msg.feedback === 5
-                                                    ? <FaThumbsUp color="blue" onClick={() => toggleFeedback(msg.message_id, msg.feedback, 5)} />
+                                                    ? <FaThumbsUp color="grey" onClick={() => toggleFeedback(msg.message_id, msg.feedback, 5)} />
                                                     : <FaRegThumbsUp onClick={() => toggleFeedback(msg.message_id, msg.feedback, 5)} />
                                                 }
                                                 {msg.feedback === 1
-                                                    ? <FaThumbsDown color="blue" onClick={() => toggleFeedback(msg.message_id, msg.feedback, 1)} />
+                                                    ? <FaThumbsDown color="grey" onClick={() => toggleFeedback(msg.message_id, msg.feedback, 1)} />
                                                     : <FaRegThumbsDown onClick={() => toggleFeedback(msg.message_id, msg.feedback, 1)} />
                                                 }
                                                 <FaSyncAlt />
