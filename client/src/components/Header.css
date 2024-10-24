@@ -33,6 +33,25 @@
     background-color: #0056b3;
 }
 
+/* Chat info (dynamic title and date) */
+.chat-info {
+    margin-left: 10px;
+}
+
+.convo-title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #007bff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.conversation-date {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* Profile Card */
 .profile-card {
     margin-top: 1rem;
     position: fixed;
@@ -83,6 +102,10 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(10px);
         transition: background 0.3s ease, backdrop-filter 0.3s ease;
+    }
+
+    .convo-title {
+        font-size: 1.2rem;
     }
 }
 

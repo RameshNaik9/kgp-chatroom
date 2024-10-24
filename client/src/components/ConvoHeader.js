@@ -1,0 +1,130 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../media/iit-kgp-logo.png';
+import './Header.css'; // Reuse the existing header styles
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+import Avatar from '@mui/material/Avatar';
+import CardContent from '@mui/material/CardContent';
+import axios from 'axios';
+
+const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
+    const navigate = useNavigate();
+    const [profileOpen, setProfileOpen] = useState(false);
+    const [chatTitle, setChatTitle] = useState('');
+    const [createdAt, setCreatedAt] = useState('');  // Fix this line
+    const profileCardRef = useRef(null);
+
+    const fullName = localStorage.getItem('fullName');
+    const email = localStorage.getItem('email');
+    const rollNumber = localStorage.getItem('rollNumber');
+    const department = localStorage.getItem('department');
+    const isVerified = localStorage.getItem('isVerified') === 'true';
+
+    const handleLogout = () => {
+        localStorage.clear();
+        navigate('/');
+    };
+
+    const toggleProfileOpen = () => {
+        setProfileOpen(prevOpen => !prevOpen);
+    };
+
+    const handleClickOutside = (event) => {
+        if (profileCardRef.current && !profileCardRef.current.contains(event.target)) {
+            setProfileOpen(false);
+        }
+    };
+
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const parsedDate = new Date(dateString);
+        return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options);
+    };
+
+    useEffect(() => {
+        if (profileOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [profileOpen]);
+
+    // Fetch conversation details dynamically if conversationId is provided
+    useEffect(() => {
+        if (conversationId) {
+            const fetchConversationDetails = async () => {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await axios.get(`http://localhost:8080/api/assistant/conversation/${conversationId}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const { chat_title, createdAt } = response.data;
+                    setChatTitle(chat_title);
+                    setCreatedAt(createdAt);  // Fix this line
+                } catch (error) {
+                    console.error('Error fetching conversation details:', error);
+                }
+            };
+            fetchConversationDetails();
+        }
+    }, [conversationId]);
+
+    return (
+        <header className="header-class">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+                <div className="container-fluid d-flex justify-content-between align-items-center">
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        onClick={toggleDrawer}
+                    >
+                        {isDrawerOpen ? <CloseIcon /> : <MenuIcon />}
+                    </IconButton>
+
+                    {/* Display dynamic chat title and date here */}
+                    {conversationId && (
+                        <div className="chat-info">
+                            <h2 className="convo-title">
+                                {chatTitle || 'Conversation'}
+                                <span className="conversation-date">
+                                    {createdAt && ` - ${formatDate(createdAt)}`}
+                                </span>
+                            </h2>
+                        </div>
+                    )}
+
+                    <div className="d-flex align-items-center">
+                        <Avatar 
+                            alt="Profile" 
+                            onClick={toggleProfileOpen} 
+                            className="avatar"
+                        />
+                        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                    </div>
+                </div>
+            </nav>
+
+            {profileOpen && (
+                <div className="profile-card" ref={profileCardRef}>
+                    <CardContent>
+                        <h5>{fullName}</h5>
+                        <p>{email}</p>
+                        <p>{rollNumber}</p>
+                        <p>{department} Department</p>
+                        <p><strong>Verified:</strong> {isVerified ? 'Yes' : 'No'}</p>
+                        <span className="close-btn" onClick={() => setProfileOpen(false)}>&times;</span>
+                    </CardContent>
+                </div>
+            )}
+        </header>
+    );
+};
+
+export default ConvoHeader;

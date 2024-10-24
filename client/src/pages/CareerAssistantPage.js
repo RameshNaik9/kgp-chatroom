@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Header from '../components/Header';
+import ConvoHeader from '../components/ConvoHeader';  // Import the new header
 import ChatDrawer from '../components/ChatDrawer';
 import Assistant from '../components/Assistant';
 import Conversation from '../components/Conversation';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
+import useMediaQuery from '@mui/material/useMediaQuery';
 import './CareerAssistantPage.css';
 
 const CareerAssistantPage = () => {
     const { conversation_id } = useParams();
-    const isMobile = useMediaQuery('(max-width: 576px)'); // Check if the screen size is mobile
-    const [drawerOpen, setDrawerOpen] = useState(!isMobile); // Default: hidden on mobile, shown on desktop
+    const isMobile = useMediaQuery('(max-width: 576px)');
+    const [drawerOpen, setDrawerOpen] = useState(!isMobile);
     const [newConversation, setNewConversation] = useState(null);
 
     const toggleDrawer = () => {
@@ -25,13 +25,18 @@ const CareerAssistantPage = () => {
 
     return (
         <div className="career-assistant-page">
-            <Header toggleDrawer={toggleDrawer} />
+            {/* Use ConvoHeader instead of Header */}
+            <ConvoHeader 
+                toggleDrawer={toggleDrawer} 
+                isDrawerOpen={drawerOpen} 
+                conversationId={conversation_id} 
+            />
             <div className="career-assistant-container">
                 <Drawer
                     anchor="left"
                     open={drawerOpen}
                     onClose={toggleDrawer}
-                    variant={isMobile ? 'temporary' : 'persistent'} // Temporary drawer on mobile, persistent on desktop
+                    variant={isMobile ? 'temporary' : 'persistent'}
                     className="chat-drawer"
                     sx={{
                         width: 250,
@@ -47,9 +52,9 @@ const CareerAssistantPage = () => {
                 </Drawer>
                 <Box className="main-content">
                     {conversation_id ? (
-                            <Conversation />
+                        <Conversation />
                     ) : (
-                            <Assistant onNewConversation={handleNewConversation} />
+                        <Assistant onNewConversation={handleNewConversation} />
                     )}
                 </Box>
             </div>

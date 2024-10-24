@@ -260,12 +260,12 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
 
     return (
         <div className="conversation-container">
-            <h2 className='convo-title'>
+            {/* <h2 className='convo-title'>
                 {chatTitle || 'Conversation'}
                 <span className="conversation-date">
                     {createdAt && ` - ${formatDate(createdAt)}`}
                 </span>
-            </h2>
+            </h2> */}
 
             <div className="messages-list">
                 {messages.map((msg, index) => (
