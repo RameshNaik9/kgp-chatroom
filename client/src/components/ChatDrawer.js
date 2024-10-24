@@ -357,7 +357,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Career Assistant */}
                 <ListItem disablePadding>
                     <ListItemButton className="assistant-item">
-                        <ListItemText primary="Career Assistant" sx={{ color: 'white' }} />
+                        <ListItemText primary="Career" sx={{ color: 'white' }} />
                         <IconButton
                         onClick={() => {
                             setSelectedConversation(''); // Reset the active conversation
@@ -408,7 +408,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Academics Assistant */}
                 <ListItem disablePadding>
                     <ListItemButton className="assistant-item">
-                        <ListItemText primary="Academics Assistant" sx={{ color: 'white' }} />
+                        <ListItemText primary="Academics" sx={{ color: 'white' }} />
                         <IconButton
                             onClick={() => {
                             setSelectedConversation(''); // Reset the active conversation
@@ -459,7 +459,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* General Assistant */}
                 <ListItem disablePadding>
                     <ListItemButton className="assistant-item">
-                        <ListItemText primary="General Assistant" sx={{ color: 'white' }} />
+                        <ListItemText primary="General" sx={{ color: 'white' }} />
                         <IconButton
                             onClick={() => {
                             setSelectedConversation(''); // Reset the active conversation
