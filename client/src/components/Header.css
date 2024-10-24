@@ -44,6 +44,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: center;
 }
 
 .convo-title {
@@ -147,6 +148,14 @@
 @media (min-width: 48.06rem) and (max-width: 64rem) {
     .navbar {
         padding: 0.5rem 2rem;
+    }
+
+    .chat-info {
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     .logout-btn {
