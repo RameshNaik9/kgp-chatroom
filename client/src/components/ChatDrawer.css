@@ -13,6 +13,7 @@
     background-color: var(--color-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    padding-bottom: 30px;
 }
 
 .MuiListItemButton-root {
@@ -112,15 +113,37 @@
     visibility: visible;
     opacity: 1;
 }
-
-/* Keep MoreVertIcon hidden unless hovered */
+/* Hide the three dots by default */
 .history-list .MuiIconButton-root {
     visibility: hidden;
     opacity: 0;
+    transition: visibility 0.2s ease, opacity 0.2s ease;
 }
 
-/* Show MoreVertIcon when hovered */
-.history-list:hover .MuiIconButton-root {
+/* Show the three dots only when the specific history item is hovered */
+.history-list .MuiListItemButton-root:hover .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* Keep the three dots visible when the IconButton or the Menu is focused */
+.history-list .MuiIconButton-root,
+.history-list .MuiIconButton-root:focus,
+.history-list .MuiIconButton-root:active {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Hide the three dots by default */
+.history-list .MuiIconButton-root {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.2s ease, opacity 0.2s ease;
+}
+
+/* Show the three dots when the list item is hovered */
+.history-list .MuiListItemButton-root:hover .MuiIconButton-root {
     visibility: visible;
     opacity: 1;
 }

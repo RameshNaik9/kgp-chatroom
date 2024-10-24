@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert'; // Three dots icon
+import AssistantIcon from '@mui/icons-material/Assistant';
 import Collapse from '@mui/material/Collapse';
 import './ChatDrawer.css';
 import { useNavigate, useLocation } from 'react-router-dom'; // Use useLocation to track URL
@@ -146,7 +147,11 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Horizontal line to separate Group Chat and Assistants */}
                 <Divider sx={{ marginY: 1, backgroundColor: 'grey' }} />
 
-                <ListItemText primary="Assistants" sx={{ color: 'white', textAlign: 'center', marginY: 1 }} />
+                {/* <ListItemText primary="Assistants" sx={{ color: 'white', textAlign: 'center', marginY: 1 }} /> */}
+                <ListItem disablePadding>
+                        <AssistantIcon sx={{ color: 'white', marginRight: 1 ,  marginLeft: 2 }} />
+                        <ListItemText primary="Assistants" sx={{ color: 'white' }} />
+                </ListItem>
 
                 {/* Career Assistant */}
                 <ListItemButton className={`assistant-item ${careerOpen ? 'open' : ''}`}>
@@ -364,7 +369,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Private Rooms */}
                 <ListItem disablePadding>
                     <ListItemButton onClick={() => navigate('/rooms')}>
-                        <img src={image3} alt="Chatroom Icon" style={{ width: 24, marginRight: 8, filter: 'brightness(0) invert(1)' }} />
+                        <img src={image3} alt="Chatroom Icon" style={{ width: 24, marginRight: 8 }} />
                         <ListItemText primary="Private Rooms" sx={{ color: 'white' }} />
                     </ListItemButton>
                 </ListItem>
