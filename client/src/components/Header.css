@@ -84,10 +84,8 @@
     font-size: 1.25rem;
     color: white;
 }
-
 /* Mobile screens (max-width: 768px) */
 @media (max-width: 48rem) {
-
     .navbar {
         flex-direction: row;
         justify-content: space-between;
@@ -99,7 +97,6 @@
         margin-right: 10px;
         width: 2rem;
         height: 2rem;
-        /* Adjust logo size for mobile */
     }
 
     .convo-title {
@@ -111,15 +108,29 @@
         max-width: 100%;
     }
 
+    /* Hide logout button in the navbar on mobile screens */
     .logout-btn {
         display: none;
     }
 
-    .profile-card .logout-btn {
+    /* Show logout button in profile card for mobile screens */
+    .logout-btn-mobile {
         display: block;
         width: 100%;
         text-align: center;
         margin-top: 1rem;
+        background-color: #007bff;
+        border: none;
+        color: white;
+        padding: 0.625rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 1.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .logout-btn-mobile:hover {
+        background-color: #0056b3;
     }
 
     .profile-card {

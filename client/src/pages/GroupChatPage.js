@@ -76,9 +76,9 @@ const GroupChatPage = () => {
                     variant="temporary"
                     sx={{
                         display: { xs: 'block', sm: 'none' },
-                        width: 300,
+                        width: 250,
                         '& .MuiDrawer-paper': {
-                            width: 300,
+                            width: 250,
                             top: '68px',
                             backgroundColor: 'transparent', // Same as desktop
                         },

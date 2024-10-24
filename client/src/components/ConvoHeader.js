@@ -12,8 +12,9 @@ import axios from 'axios';
 const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
     const navigate = useNavigate();
     const [profileOpen, setProfileOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);  // Track window width for mobile
     const [chatTitle, setChatTitle] = useState('');
-    const [createdAt, setCreatedAt] = useState('');  // Fix this line
+    const [createdAt, setCreatedAt] = useState('');
     const profileCardRef = useRef(null);
 
     const fullName = localStorage.getItem('fullName');
@@ -55,6 +56,13 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
         };
     }, [profileOpen]);
 
+    // Update isMobile state on window resize
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     // Fetch conversation details dynamically if conversationId is provided
     useEffect(() => {
         if (conversationId) {
@@ -66,7 +74,7 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
                     });
                     const { chat_title, createdAt } = response.data;
                     setChatTitle(chat_title);
-                    setCreatedAt(createdAt);  // Fix this line
+                    setCreatedAt(createdAt);
                 } catch (error) {
                     console.error('Error fetching conversation details:', error);
                 }
@@ -106,7 +114,10 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
                             onClick={toggleProfileOpen} 
                             className="avatar"
                         />
-                        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                        {/* Conditionally render logout button based on screen size */}
+                        {!isMobile && (
+                            <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                        )}
                     </div>
                 </div>
             </nav>
@@ -119,6 +130,10 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
                         <p>{rollNumber}</p>
                         <p>{department} Department</p>
                         <p><strong>Verified:</strong> {isVerified ? 'Yes' : 'No'}</p>
+                        {/* Render logout button inside profile card for mobile screens */}
+                        {isMobile && (
+                            <button className="logout-btn logout-btn-mobile" onClick={handleLogout}>Logout</button>
+                        )}
                         <span className="close-btn" onClick={() => setProfileOpen(false)}>&times;</span>
                     </CardContent>
                 </div>

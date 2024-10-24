@@ -10,6 +10,7 @@ import CardContent from '@mui/material/CardContent';
 const Header = ({ toggleDrawer }) => {
     const navigate = useNavigate();
     const [profileOpen, setProfileOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const profileCardRef = useRef(null);
 
     const fullName = localStorage.getItem('fullName');
@@ -44,6 +45,13 @@ const Header = ({ toggleDrawer }) => {
         };
     }, [profileOpen]);
 
+    // Update isMobile state on window resize
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <header className="header-class">
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -69,7 +77,10 @@ const Header = ({ toggleDrawer }) => {
                             onClick={toggleProfileOpen} 
                             className="avatar"
                         />
-                        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                        {/* Logout button is hidden on mobile, shown on larger screens */}
+                        {!isMobile && (
+                            <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                        )}
                     </div>
                 </div>
             </nav>
@@ -82,6 +93,9 @@ const Header = ({ toggleDrawer }) => {
                         <p>{rollNumber}</p>
                         <p>{department} Department</p>
                         <p><strong>Verified:</strong> {isVerified ? 'Yes' : 'No'}</p>
+                        {isMobile && (
+                            <button className="logout-btn logout-btn-mobile" onClick={handleLogout}>Logout</button>
+                        )}
                         <span className="close-btn" onClick={() => setProfileOpen(false)}>&times;</span>
                     </CardContent>
                 </div>
