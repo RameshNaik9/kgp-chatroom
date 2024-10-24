@@ -6,16 +6,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px;
+    flex-wrap: nowrap;
 }
 
 .logo {
     width: 2.5rem;
     height: 2.5rem;
+    flex-shrink: 0;
 }
 
 .avatar {
     cursor: pointer;
     margin-right: 1rem;
+    flex-shrink: 0;
 }
 
 .logout-btn {
@@ -36,6 +40,10 @@
 /* Chat info (dynamic title and date) */
 .chat-info {
     margin-left: 10px;
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .convo-title {
@@ -63,7 +71,6 @@
     border-radius: 1rem;
     -webkit-backdrop-filter: blur(0.625rem);
     background-color: var(--color-bg) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     transition: background 0.3s ease, backdrop-filter 0.3s ease;
 }
@@ -77,16 +84,41 @@
     color: white;
 }
 
-/* Small screens (max-width: 768px) */
+/* Mobile screens (max-width: 768px) */
 @media (max-width: 48rem) {
 
     .navbar {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .logo {
+        margin-right: 10px;
+        width: 2rem;
+        height: 2rem;
+        /* Adjust logo size for mobile */
+    }
+
+    .convo-title {
+        font-size: 1.2rem;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
     }
 
     .logout-btn {
-        padding: 0.375rem 0.625rem;
-        font-size: 0.75rem;
+        display: none;
+    }
+
+    .profile-card .logout-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
     }
 
     .profile-card {
@@ -104,8 +136,10 @@
         transition: background 0.3s ease, backdrop-filter 0.3s ease;
     }
 
-    .convo-title {
-        font-size: 1.2rem;
+    .avatar {
+        margin-left: 10px;
+        width: 2.5rem;
+        height: 2.5rem;
     }
 }
 
