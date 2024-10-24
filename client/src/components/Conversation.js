@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import './Conversation.css';
-import { FaRegThumbsUp, FaRegThumbsDown, FaRegCopy, FaSyncAlt } from 'react-icons/fa';  // Import icons
+import { FaRegThumbsUp, FaRegThumbsDown, FaRegCopy, FaSyncAlt, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';  // Import icons
+
 
 // Cache for storing conversation data
 const conversationCache = new Map();
@@ -85,6 +86,7 @@ const Conversation = () => {
         return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options);
     };
 
+
     const sendMessage = async (message) => {
         if (!message.trim()) return;
 
@@ -144,6 +146,7 @@ const Conversation = () => {
                         msg.message_id === newMessage.message_id
                             ? {
                                 ...msg,
+                                message_id: postResponse.data.message_id,  // Replace with the actual message ID
                                 assistant_response: {
                                     content: postResponse.data.assistant_response.content, // Replace with final response content
                                 },
@@ -186,10 +189,10 @@ const Conversation = () => {
         setIsQuestionsVisible(!isQuestionsVisible); // Toggle visibility of recommended questions
     };
 
-    const copyResponse = (text) => {
-        navigator.clipboard.writeText(text);
-        alert('Response copied!');
-    };
+    // const copyResponse = (text) => {
+    //     navigator.clipboard.writeText(text);
+    //     alert('Response copied!');
+    // };
 
     const handleKeyDown = (event) => {
         // Prevent form submission when pressing Enter without Shift
@@ -198,6 +201,29 @@ const Conversation = () => {
             sendMessage(userMessage); // Send message on Enter
         }
     };
+
+const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
+    // Prevent feedback for temporary messages
+    if (messageId.startsWith('temp-')) {
+        alert('Cannot submit feedback for unsaved messages.');
+        return;
+    }
+
+    const updatedFeedback = currentFeedback === newFeedback ? 2.5 : newFeedback; // Toggle feedback
+    try {
+        await axios.post(
+            'http://localhost:8080/api/assistant/feedback',
+            { message_id: messageId, feedback: updatedFeedback },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setMessages(prevMessages => prevMessages.map(msg =>
+            msg.message_id === messageId ? { ...msg, feedback: updatedFeedback } : msg
+        ));
+    } catch (error) {
+        console.error('Error submitting feedback:', error);
+    }
+};
+
 
     const getPlaceholderText = () => {
         switch (chatProfile) {
@@ -247,11 +273,17 @@ const Conversation = () => {
                                         <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
 
                                         {/* Action buttons */}
-                                        {!isStreaming && ( // Only show when streaming has ended
+                                        {!isStreaming && (
                                             <div className="action-buttons">
-                                                <FaRegCopy onClick={() => copyResponse(msg.assistant_response.content)} />
-                                                <FaRegThumbsUp />
-                                                <FaRegThumbsDown />
+                                                <FaRegCopy onClick={() => navigator.clipboard.writeText(msg.assistant_response.content)} />
+                                                {msg.feedback === 5
+                                                    ? <FaThumbsUp color="blue" onClick={() => toggleFeedback(msg.message_id, msg.feedback, 5)} />
+                                                    : <FaRegThumbsUp onClick={() => toggleFeedback(msg.message_id, msg.feedback, 5)} />
+                                                }
+                                                {msg.feedback === 1
+                                                    ? <FaThumbsDown color="blue" onClick={() => toggleFeedback(msg.message_id, msg.feedback, 1)} />
+                                                    : <FaRegThumbsDown onClick={() => toggleFeedback(msg.message_id, msg.feedback, 1)} />
+                                                }
                                                 <FaSyncAlt />
                                             </div>
                                         )}

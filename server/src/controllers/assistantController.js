@@ -1,8 +1,10 @@
 const { createConversationInDB } = require('../services/assistantService');
 const { saveUserMessageService, getAssistantResponseService } = require('../services/assistantService');
 const Conversation = require('../models/conversation');  // Import the Conversation model
+const Message = require('../models/message'); // Ensure the correct path to the Message model
 const { getConversationMessages } = require('../services/assistantService');
 const { getAllConversationsForUserService } = require('../services/assistantService');
+const { updateMessageFeedbackService } = require('../services/assistantService');
 
 
 
@@ -123,10 +125,11 @@ const getConversation = async (req, res) => {
                 content: message.assistant_response.content,
                 timestamp: message.assistant_response.timestamp,
                 message_type: message.message_type
-            } : null
+            } : null,
+            feedback: message.feedback ? message.feedback.rating : 2.5  // Include feedback with default value of 2.5 if not set
         }));
 
-      // Include the createdAt, tags, and recommended questions in the response
+        // Include the createdAt, tags, and recommended questions in the response
         return res.status(200).json({
             conversation_id,
             chat_title: conversation.chat_title,
@@ -176,6 +179,47 @@ const deleteConversation = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
+const submitFeedback = async (req, res) => {
+  try {
+    const { message_id, feedback } = req.body;
 
-module.exports = { createNewConversation, sendMessage, getConversation,getAllConversationsForUser, deleteConversation };
+    // Validate the input
+    if (!message_id || ![1, 2.5, 5].includes(feedback)) {
+      return res.status(400).json({ message: 'Invalid feedback data' });
+    }
+
+    // Find the message by ID
+    const message = await Message.findById(message_id);
+
+    // If the message does not exist, return an error
+    if (!message) {
+      return res.status(404).json({ message: 'Message not found' });
+    }
+
+    // If the feedback field does not exist, initialize it
+    if (!message.feedback) {
+      message.feedback = {}; // Initialize feedback as an object if it's undefined
+    }
+
+    // Toggle feedback: If feedback matches, set it back to 2.5 (default)
+    if (message.feedback.rating === feedback) {
+      message.feedback.rating = 2.5; // Reset feedback to default
+    } else {
+      message.feedback.rating = feedback; // Set new feedback value
+    }
+
+    // Save the updated message with the feedback
+    await message.save();
+
+    // Return success response
+    res.status(200).json({ message: 'Feedback updated successfully' });
+  } catch (error) {
+    // Log and return an error response
+    console.error('Error submitting feedback:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+module.exports = { createNewConversation, sendMessage, getConversation,getAllConversationsForUser, deleteConversation, submitFeedback };
 

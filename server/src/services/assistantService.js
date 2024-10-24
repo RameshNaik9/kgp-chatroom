@@ -145,6 +145,25 @@ const getAllConversationsForUserService = async (userId) => {
     }
 };
 
+const updateMessageFeedbackService = async (messageId, feedbackRating) => {
+  try {
+    const updatedMessage = await Message.findOneAndUpdate(
+      { _id: messageId },
+      { $set: { 'feedback.rating': feedbackRating } },
+      { new: true } // Return updated document
+    );
 
-module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService, getConversationMessages, getAllConversationsForUserService };
+    if (!updatedMessage) {
+      throw new Error('Message not found');
+    }
+
+    return updatedMessage;
+  } catch (error) {
+    console.error('Error updating message feedback:', error);
+    throw new Error('Database operation failed');
+  }
+};
+
+
+module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService, getConversationMessages, getAllConversationsForUserService, updateMessageFeedbackService };
 

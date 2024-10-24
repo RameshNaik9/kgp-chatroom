@@ -1,9 +1,12 @@
 const express = require('express');
-const { createNewConversation, sendMessage, getConversation, getAllConversationsForUser, deleteConversation } = require('../controllers/assistantController');
+const { createNewConversation, sendMessage, getConversation, getAllConversationsForUser, deleteConversation, submitFeedback } = require('../controllers/assistantController');
 const { streamAssistantResponse } = require('../controllers/assistantSSEController'); // Import SSE controller
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
+
+// Add route for submitting feedback
+router.post('/feedback', authMiddleware, submitFeedback);
 
 // POST route to create a new conversation
 router.post('/new-conversation', authMiddleware, createNewConversation);
@@ -22,5 +25,6 @@ router.get('/stream-response/:conversation_id', authMiddleware, streamAssistantR
 
 // DELETE route to delete a conversation
 router.delete('/conversation/:conversation_id', authMiddleware, deleteConversation);
+
 
 module.exports = router;

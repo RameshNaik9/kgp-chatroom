@@ -17,7 +17,7 @@ const MetadataSchema = new Schema({
 }, { _id: false });
 
 const FeedbackSchema = new Schema({
-  rating: { type: Number, min: 1, max: 5 },
+  rating: { type: Number, min: 1, max: 5, default: 2.5 }, // Default rating is 2.5
   comment: { type: String }
 }, { _id: false });
 
