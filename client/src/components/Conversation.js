@@ -21,13 +21,14 @@ const Conversation = () => {
     const [lastRecommendedQuestions, setLastRecommendedQuestions] = useState([]); // Store recommended questions for the latest response
     const [isQuestionsVisible, setIsQuestionsVisible] = useState(true);  // Toggle for recommended questions
     const [isStreaming, setIsStreaming] = useState(false); // Track if streaming is happening
+    const [shouldScroll, setShouldScroll] = useState(true); // Control when to scroll
     const messagesEndRef = useRef(null);
     const textAreaRef = useRef(null); // Ref for textarea
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const fullName = localStorage.getItem('fullName') || 'there';
 
-        const [copiedMessageId, setCopiedMessageId] = useState(null);  // Track copied message
+    const [copiedMessageId, setCopiedMessageId] = useState(null);  // Track copied message
 
     // Function to handle copy
     const handleCopy = (messageId, text) => {
@@ -86,10 +87,10 @@ const Conversation = () => {
     }, [conversation_id, token]);
 
     useEffect(() => {
-        if (messagesEndRef.current) {
+        if (shouldScroll && messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [messages]);
+    }, [messages, shouldScroll]);
 
     const formatDate = (dateString) => {
         if (!dateString) return '';
@@ -113,6 +114,7 @@ const Conversation = () => {
         setUserMessage('');
         setLoading(true);
         setIsStreaming(true); // Set streaming to true when message is sent
+        setShouldScroll(true); // Enable scrolling for new messages
 
         try {
             // Send HTTP request to process the user message and get final response
@@ -172,6 +174,7 @@ const Conversation = () => {
                 setLastRecommendedQuestions(postResponse.data.recommended_questions || []);
                 setIsStreaming(false); // Stop streaming once the final response is set
                 setLoading(false);
+                setShouldScroll(true); // Re-enable scrolling for the next message
 
                 // Update the cache with new messages
                 conversationCache.set(conversation_id, {
@@ -218,6 +221,7 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
 
     const updatedFeedback = currentFeedback === newFeedback ? 2.5 : newFeedback; // Toggle feedback
     try {
+        setShouldScroll(false); // Disable scrolling when feedback is submitted
         await axios.post(
             'http://localhost:8080/api/assistant/feedback',
             { message_id: messageId, feedback: updatedFeedback },
@@ -228,6 +232,8 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
         ));
     } catch (error) {
         console.error('Error submitting feedback:', error);
+    } finally {
+        setShouldScroll(false); // Re-enable scrolling after feedback is handled
     }
 };
 
