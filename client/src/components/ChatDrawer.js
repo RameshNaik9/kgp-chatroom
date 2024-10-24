@@ -16,6 +16,8 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add'; // Add icon for the plus button
 import Divider from '@mui/material/Divider'; // Divider for horizontal line
+import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'; // Archive icon
+import image from '../media/image1.png'; // Import the image for Group Chat
 
 const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const navigate = useNavigate();
@@ -23,8 +25,9 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const [allConversations, setAllConversations] = useState([]);
     const [selectedConversation, setSelectedConversation] = useState('');
     const [careerOpen, setCareerOpen] = useState(false); // Toggle career history visibility
+    const [archivedOpen, setArchivedOpen] = useState(false); // Toggle archived chats visibility
+    const [generalOpen, setGymkhanaOpen] = useState(false); // Toggle general history visibility
     const [academicsOpen, setAcademicsOpen] = useState(false); // Toggle academics history visibility
-    const [generalOpen, setGeneralOpen] = useState(false); // Toggle general history visibility
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentConversationId, setCurrentConversationId] = useState(null); // Track the clicked conversation
     const open = Boolean(anchorEl);
@@ -65,7 +68,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
             } else if (category === 'academics-assistant') {
                 setAcademicsOpen(true);
             } else if (category === 'general-assistant') {
-                setGeneralOpen(true);
+                setGymkhanaOpen(true);
             }
         }
     }, [location.pathname]);
@@ -89,7 +92,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     // Toggle history visibility for General Assistant
     const handleGeneralArrowClick = (event) => {
         event.stopPropagation();
-        setGeneralOpen(prevOpen => !prevOpen);
+        setGymkhanaOpen(prevOpen => !prevOpen);
     };
 
     const handleConversationClick = (category, conversationId) => {
@@ -97,6 +100,11 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
         navigate(`/${category}/${conversationId}`);
     };
 
+    // Toggle history visibility for Archived Chats
+    const handleArchivedArrowClick = (event) => {
+        event.stopPropagation();
+        setArchivedOpen(prevOpen => !prevOpen);
+    };
     const handleMenuClick = (event, conversationId) => {
         event.stopPropagation(); // Stop the propagation to prevent triggering the conversation click
         setAnchorEl(event.currentTarget);
@@ -129,6 +137,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Group Chat */}
                 <ListItem disablePadding>
                     <ListItemButton onClick={() => navigate('/group-chat')}>
+                        <img src={image} alt="Chatroom Icon" style={{ width: 24, marginRight: 8, filter: 'brightness(0) invert(1)' }} />
                         <ListItemText primary="Group Chat" sx={{ color: 'white' }} />
                     </ListItemButton>
                 </ListItem>
@@ -344,11 +353,23 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
 
                 {/* Divider and Bottom List Items */}
                 <Divider sx={{ marginY: 1, backgroundColor: 'grey' }} />
+            {/* </List> */}
+
+                {/* Archived Chats */}
                 <ListItem disablePadding>
-                    <ListItemButton onClick={() => navigate('/archived-chats')}>
+                    <ListItemButton className="assistant-item">
+                        <ArchiveOutlinedIcon sx={{ color: 'white', marginRight: 1 }} />
                         <ListItemText primary="Archived Chats" sx={{ color: 'white' }} />
+                        <IconButton onClick={handleArchivedArrowClick} sx={{ color: 'white' }}>
+                            {archivedOpen ? <ExpandLess /> : <ExpandMore />}
+                        </IconButton>
                     </ListItemButton>
                 </ListItem>
+                <Collapse in={archivedOpen} timeout="auto" unmountOnExit>
+                    {/* Add chat history for Archived Chats here */}
+                </Collapse>
+
+                {/* Rooms */}
                 <ListItem disablePadding>
                     <ListItemButton onClick={() => navigate('/rooms')}>
                         <ListItemText primary="Rooms" sx={{ color: 'white' }} />
