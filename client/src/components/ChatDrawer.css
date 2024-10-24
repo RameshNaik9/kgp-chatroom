@@ -93,3 +93,34 @@
     fill: #007bff;
 } 
 
+/* Hide action icons by default */
+.assistant-item .MuiIconButton-root {
+    visibility: hidden;
+    /* Hide icons initially */
+    transition: visibility 0.2s ease, opacity 0.2s ease;
+    opacity: 0;
+}
+
+/* Show the icons when the item is hovered */
+.assistant-item:hover .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* When history is open, keep the icons visible */
+.assistant-item.open .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Keep MoreVertIcon hidden unless hovered */
+.history-list .MuiIconButton-root {
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* Show MoreVertIcon when hovered */
+.history-list:hover .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}

@@ -16,9 +16,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add'; // Add icon for the plus button
 import Divider from '@mui/material/Divider'; // Divider for horizontal line
-// import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'; // Archive icon
 import ArchiveIcon from '@mui/icons-material/Archive';
-// import image from '../media/image1.png'; // Import the image for Group Chat
 import image3 from '../media/image3.png'; // Import the image for Group Chat
 
 const ChatDrawer = ({ toggleDrawer, newConversation }) => {
@@ -107,6 +105,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
         event.stopPropagation();
         setArchivedOpen(prevOpen => !prevOpen);
     };
+
     const handleMenuClick = (event, conversationId) => {
         event.stopPropagation(); // Stop the propagation to prevent triggering the conversation click
         setAnchorEl(event.currentTarget);
@@ -150,23 +149,21 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 <ListItemText primary="Assistants" sx={{ color: 'white', textAlign: 'center', marginY: 1 }} />
 
                 {/* Career Assistant */}
-                <ListItem disablePadding>
-                    <ListItemButton className="assistant-item">
-                        <ListItemText primary="Career" sx={{ color: 'white' }} />
-                        <IconButton
-                        onClick={() => {
-                            setSelectedConversation(''); // Reset the active conversation
-                            navigate('/career-assistant');
-                        }}
-                            sx={{ color: 'white' }}
-                        >
-                            <AddIcon />
-                        </IconButton>
-                        <IconButton onClick={handleCareerArrowClick} sx={{ color: 'white' }}>
-                            {careerOpen ? <ExpandLess /> : <ExpandMore />}
-                        </IconButton>
-                    </ListItemButton>
-                </ListItem>
+                <ListItemButton className={`assistant-item ${careerOpen ? 'open' : ''}`}>
+                    <ListItemText primary="Career" sx={{ color: 'white' }} />
+                    <IconButton
+                    onClick={() => {
+                        setSelectedConversation(''); // Reset the active conversation
+                        navigate('/career-assistant');
+                    }}
+                        sx={{ color: 'white' }}
+                    >
+                        <AddIcon />
+                    </IconButton>
+                    <IconButton onClick={handleCareerArrowClick} sx={{ color: 'white' }}>
+                        {careerOpen ? <ExpandLess /> : <ExpandMore />}
+                    </IconButton>
+                </ListItemButton>
                 <Collapse in={careerOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="history-list">
                         {filteredConversations('Career').map(conversation => (
@@ -201,8 +198,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 </Collapse>
 
                 {/* Academics Assistant */}
-                <ListItem disablePadding>
-                    <ListItemButton className="assistant-item">
+                    <ListItemButton className={`assistant-item ${academicsOpen ? 'open' : ''}`}>
                         <ListItemText primary="Academics" sx={{ color: 'white' }} />
                         <IconButton
                             onClick={() => {
@@ -217,7 +213,6 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                             {academicsOpen ? <ExpandLess /> : <ExpandMore />}
                         </IconButton>
                     </ListItemButton>
-                </ListItem>
                 <Collapse in={academicsOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="history-list">
                         {filteredConversations('Academics').map(conversation => (
@@ -252,9 +247,8 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 </Collapse>
 
                 {/* Gymkhana Assistant */}
-                <ListItem disablePadding>
-                    <ListItemButton className="assistant-item">
-                        <ListItemText primary="Gymkana" sx={{ color: 'white' }} />
+                    <ListItemButton className={`assistant-item ${generalOpen ? 'open' : ''}`}>
+                        <ListItemText primary="Gymkhana" sx={{ color: 'white' }} />
                         <IconButton
                             onClick={() => {
                             setSelectedConversation(''); // Reset the active conversation
@@ -268,7 +262,6 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                             {generalOpen ? <ExpandLess /> : <ExpandMore />}
                         </IconButton>
                     </ListItemButton>
-                </ListItem>
                 <Collapse in={generalOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="history-list">
                         {filteredConversations('Gymkhana').map(conversation => (
@@ -303,8 +296,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 </Collapse>
 
                 {/* Bhaat Assistant */}
-                <ListItem disablePadding>
-                    <ListItemButton className="assistant-item">
+                    <ListItemButton className={`assistant-item ${generalOpen ? 'open' : ''}`}>
                         <ListItemText primary="Bhaat" sx={{ color: 'white' }} />
                         <IconButton
                             onClick={() => {
@@ -319,7 +311,6 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                             {generalOpen ? <ExpandLess /> : <ExpandMore />}
                         </IconButton>
                     </ListItemButton>
-                </ListItem>
                 <Collapse in={generalOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="history-list">
                         {filteredConversations('Bhaat').map(conversation => (
@@ -355,7 +346,6 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
 
                 {/* Divider and Bottom List Items */}
                 <Divider sx={{ marginY: 1, backgroundColor: 'grey' }} />
-            {/* </List> */}
 
                 {/* Archived Chats */}
                 <ListItem disablePadding>
@@ -373,12 +363,10 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
 
                 {/* Private Rooms */}
                 <ListItem disablePadding>
-                    <ListItem disablePadding>
                     <ListItemButton onClick={() => navigate('/rooms')}>
                         <img src={image3} alt="Chatroom Icon" style={{ width: 24, marginRight: 8, filter: 'brightness(0) invert(1)' }} />
                         <ListItemText primary="Private Rooms" sx={{ color: 'white' }} />
                     </ListItemButton>
-                </ListItem>
                 </ListItem>
             </List>
 
