@@ -248,6 +248,7 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
     };
 
     const assistantLogo = '/icons/img1-icon.png';
+    // const assistantLogo = '/icons/kgp-chatroom.png';
 
     // Function to dynamically adjust the textarea height
     const adjustTextareaHeight = () => {
@@ -275,7 +276,12 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
                         {msg.assistant_response ? (
                             <div className="message-item assistant-message">
                                 <div className="assistant-response-container">
-                                    <img src={assistantLogo} alt="Assistant Logo" className="assistant-logo" />
+                                    <img 
+                                        src={assistantLogo} 
+                                        alt="Assistant Logo" 
+                                        className={`assistant-logo ${isStreaming ? 'loading' : ''}`} 
+                                    />
+
                                     <div className="assistant-response-content">
                                         <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
 

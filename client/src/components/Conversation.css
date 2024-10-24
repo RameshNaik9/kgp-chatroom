@@ -148,6 +148,13 @@
     margin-right: 8px;
 }
 
+
+
+.assistant-logo:hover {
+    transform: scale(1.05);
+    /* Slight zoom effect on hover for smaller logo */
+}
+
 .assistant-response-content {
     flex-grow: 1;
     word-wrap: break-word;
