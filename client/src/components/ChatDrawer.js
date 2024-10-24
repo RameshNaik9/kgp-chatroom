@@ -214,7 +214,6 @@
 
 // // export default ChatDrawer;
 
-
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -227,7 +226,7 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert'; // Three dots icon
 import Collapse from '@mui/material/Collapse';
 import './ChatDrawer.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'; // Use useLocation to track URL
 import axios from 'axios';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -236,6 +235,7 @@ import Divider from '@mui/material/Divider'; // Divider for horizontal line
 
 const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const navigate = useNavigate();
+    const location = useLocation(); // Get current location (URL)
     const [allConversations, setAllConversations] = useState([]);
     const [selectedConversation, setSelectedConversation] = useState('');
     const [careerOpen, setCareerOpen] = useState(false); // Toggle career history visibility
@@ -266,6 +266,25 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
             setSelectedConversation(newConversation._id); // Set the new conversation as active
         }
     }, [newConversation]);
+
+    // Sync with current conversation from URL
+    useEffect(() => {
+        const pathSegments = location.pathname.split('/');
+        if (pathSegments.length >= 3) {
+            const category = pathSegments[1];
+            const conversationId = pathSegments[2];
+            setSelectedConversation(conversationId);
+
+            // Open the correct assistant history based on URL category
+            if (category === 'career-assistant') {
+                setCareerOpen(true);
+            } else if (category === 'academics-assistant') {
+                setAcademicsOpen(true);
+            } else if (category === 'general-assistant') {
+                setGeneralOpen(true);
+            }
+        }
+    }, [location.pathname]);
 
     // Filter conversations based on selected assistant
     const filteredConversations = (profile) =>
@@ -340,7 +359,10 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                     <ListItemButton className="assistant-item">
                         <ListItemText primary="Career Assistant" sx={{ color: 'white' }} />
                         <IconButton
-                            onClick={() => navigate('/career-assistant')}
+                        onClick={() => {
+                            setSelectedConversation(''); // Reset the active conversation
+                            navigate('/career-assistant');
+                        }}
                             sx={{ color: 'white' }}
                         >
                             <AddIcon />
@@ -388,7 +410,10 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                     <ListItemButton className="assistant-item">
                         <ListItemText primary="Academics Assistant" sx={{ color: 'white' }} />
                         <IconButton
-                            onClick={() => navigate('/academics-assistant')}
+                            onClick={() => {
+                            setSelectedConversation(''); // Reset the active conversation
+                            navigate('/academics-assistant');
+                        }}
                             sx={{ color: 'white' }}
                         >
                             <AddIcon />
@@ -436,7 +461,10 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                     <ListItemButton className="assistant-item">
                         <ListItemText primary="General Assistant" sx={{ color: 'white' }} />
                         <IconButton
-                            onClick={() => navigate('/general-assistant')}
+                            onClick={() => {
+                            setSelectedConversation(''); // Reset the active conversation
+                            navigate('/general-assistant');
+                        }}
                             sx={{ color: 'white' }}
                         >
                             <AddIcon />
