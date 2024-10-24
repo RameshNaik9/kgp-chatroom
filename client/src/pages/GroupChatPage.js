@@ -36,7 +36,8 @@ const GroupChatPage = () => {
 
     return (
         <div className="group-chat-page">
-            <Header toggleDrawer={toggleDrawer} />
+            {/* Pass `drawerOpen` as `isDrawerOpen` prop to Header */}
+            <Header toggleDrawer={toggleDrawer} isDrawerOpen={drawerOpen} />
             <div className="group-chat-container">
                 {/* Left Drawer (ChatDrawer) */}
                 <Drawer

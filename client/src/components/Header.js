@@ -4,10 +4,11 @@ import logo from '../media/iit-kgp-logo.png';
 import './Header.css';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import Avatar from '@mui/material/Avatar';
 import CardContent from '@mui/material/CardContent';
 
-const Header = ({ toggleDrawer }) => {
+const Header = ({ toggleDrawer, isDrawerOpen }) => {
     const navigate = useNavigate();
     const [profileOpen, setProfileOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -63,7 +64,8 @@ const Header = ({ toggleDrawer }) => {
                         onClick={toggleDrawer}
                         className="menu-icon"
                     >
-                        <MenuIcon />
+                        {/* Toggle between MenuIcon and CloseIcon based on the state of the drawer */}
+                        {isDrawerOpen ? <CloseIcon /> : <MenuIcon />}
                     </IconButton>
 
                     <Link to="#" className="navbar-brand">
