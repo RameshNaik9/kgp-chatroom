@@ -4,7 +4,8 @@ import logo from '../media/iit-kgp-logo.png';
 import './Header.css'; // Reuse the existing header styles
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/MenuOpen';
+// import CloseIcon from '@mui/icons-material/Close';
 import Avatar from '@mui/material/Avatar';
 import CardContent from '@mui/material/CardContent';
 import axios from 'axios';
