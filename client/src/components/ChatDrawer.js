@@ -16,8 +16,10 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add'; // Add icon for the plus button
 import Divider from '@mui/material/Divider'; // Divider for horizontal line
-import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'; // Archive icon
-import image from '../media/image1.png'; // Import the image for Group Chat
+// import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'; // Archive icon
+import ArchiveIcon from '@mui/icons-material/Archive';
+// import image from '../media/image1.png'; // Import the image for Group Chat
+import image3 from '../media/image3.png'; // Import the image for Group Chat
 
 const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const navigate = useNavigate();
@@ -137,7 +139,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Group Chat */}
                 <ListItem disablePadding>
                     <ListItemButton onClick={() => navigate('/group-chat')}>
-                        <img src={image} alt="Chatroom Icon" style={{ width: 24, marginRight: 8, filter: 'brightness(0) invert(1)' }} />
+                        <img src={image3} alt="Chatroom Icon" style={{ width: 24, marginRight: 8, filter: 'brightness(0) invert(1)' }} />
                         <ListItemText primary="Group Chat" sx={{ color: 'white' }} />
                     </ListItemButton>
                 </ListItem>
@@ -358,7 +360,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Archived Chats */}
                 <ListItem disablePadding>
                     <ListItemButton className="assistant-item">
-                        <ArchiveOutlinedIcon sx={{ color: 'white', marginRight: 1 }} />
+                        <ArchiveIcon sx={{ color: 'white', marginRight: 1 }} />
                         <ListItemText primary="Archived Chats" sx={{ color: 'white' }} />
                         <IconButton onClick={handleArchivedArrowClick} sx={{ color: 'white' }}>
                             {archivedOpen ? <ExpandLess /> : <ExpandMore />}
@@ -369,11 +371,14 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                     {/* Add chat history for Archived Chats here */}
                 </Collapse>
 
-                {/* Rooms */}
+                {/* Private Rooms */}
                 <ListItem disablePadding>
+                    <ListItem disablePadding>
                     <ListItemButton onClick={() => navigate('/rooms')}>
-                        <ListItemText primary="Rooms" sx={{ color: 'white' }} />
+                        <img src={image3} alt="Chatroom Icon" style={{ width: 24, marginRight: 8, filter: 'brightness(0) invert(1)' }} />
+                        <ListItemText primary="Private Rooms" sx={{ color: 'white' }} />
                     </ListItemButton>
+                </ListItem>
                 </ListItem>
             </List>
 
