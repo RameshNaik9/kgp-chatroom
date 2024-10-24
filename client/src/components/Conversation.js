@@ -300,14 +300,14 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
                                                     ? <FaThumbsDown color="grey" onClick={() => toggleFeedback(msg.message_id, msg.feedback, 1)} />
                                                     : <FaRegThumbsDown onClick={() => toggleFeedback(msg.message_id, msg.feedback, 1)} />
                                                 }
-                                                <FaSyncAlt />
+                                                {/* <FaSyncAlt /> */}
                                             </div>
                                         )}
 
                                         {/* Recommended Questions - only for the latest response and after streaming ends */}
                                         {!isStreaming && index === messages.length - 1 && lastRecommendedQuestions.length > 0 && (
                                             <div className="recommended-questions">
-                                                <button onClick={toggleQuestions}>Recommended Questions</button>
+                                                <button onClick={toggleQuestions}>Related  +  </button>
                                                 {isQuestionsVisible && (
                                                     <ul className="questions-list">
                                                         {lastRecommendedQuestions.map((question, idx) => (
