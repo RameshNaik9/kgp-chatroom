@@ -4,7 +4,7 @@ import logo from '../media/kgp-chatroom.png';
 import './Header.css';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/MenuOpen';
 import Avatar from '@mui/material/Avatar';
 import CardContent from '@mui/material/CardContent';
 
