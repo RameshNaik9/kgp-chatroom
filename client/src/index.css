@@ -15,7 +15,8 @@
     --color-bg-variant: #2c2c6c; */
     --color-bg: black;
     --color-bg-variant:black;
-    --color-primary: #4db5ff;
+    /* --color-primary: #4db5ff; */
+    --color-primary: #007bff;
     --color-primary-variant: rgba(77, 181, 255, 0.4);
     --color-white: #fff;
     --color-light: rgba(255, 255, 255, 0.6);

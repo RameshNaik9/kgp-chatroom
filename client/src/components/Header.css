@@ -75,6 +75,11 @@
     backdrop-filter: blur(10px);
     transition: background 0.3s ease, backdrop-filter 0.3s ease;
 }
+/* Add this to your existing CSS */
+.profile-card h5 {
+    text-align: center;
+    color: #007bff;
+}
 
 .close-btn {
     position: absolute;
