@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import './Conversation.css';
+import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
 import { FaRegThumbsUp, FaRegThumbsDown, FaRegCopy, FaSyncAlt, FaThumbsUp, FaThumbsDown, FaCheck } from 'react-icons/fa';  // Import FaCheck for tick
 
 
@@ -10,6 +11,7 @@ import { FaRegThumbsUp, FaRegThumbsDown, FaRegCopy, FaSyncAlt, FaThumbsUp, FaThu
 const conversationCache = new Map();
 
 const Conversation = () => {
+    const isMobile = useMediaQuery('(max-width: 576px)'); // Check if it's mobile screen
     const { conversation_id } = useParams();
     const [messages, setMessages] = useState([]);
     const [chatTitle, setChatTitle] = useState('');
@@ -19,7 +21,7 @@ const Conversation = () => {
     const [userMessage, setUserMessage] = useState('');
     const [error, setError] = useState('');
     const [lastRecommendedQuestions, setLastRecommendedQuestions] = useState([]); // Store recommended questions for the latest response
-    const [isQuestionsVisible, setIsQuestionsVisible] = useState(true);  // Toggle for recommended questions
+    const [isQuestionsVisible, setIsQuestionsVisible] = useState(!isMobile);  // Toggle for recommended questions
     const [isStreaming, setIsStreaming] = useState(false); // Track if streaming is happening
     const [shouldScroll, setShouldScroll] = useState(true); // Control when to scroll
     const messagesEndRef = useRef(null);
