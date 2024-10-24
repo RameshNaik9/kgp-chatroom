@@ -269,14 +269,14 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 </ListItem>
                 <Collapse in={generalOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="history-list">
-                        {filteredConversations('General').map(conversation => (
+                        {filteredConversations('Gymkhana').map(conversation => (
                             <ListItem
                                 key={conversation._id}
                                 disablePadding
                                 sx={{ pl: 4 }}
                                 className={selectedConversation === conversation._id ? 'active-item' : ''}
                             >
-                                <ListItemButton onClick={() => handleConversationClick('general-assistant', conversation._id)}>
+                                <ListItemButton onClick={() => handleConversationClick('gymkhana-assistant', conversation._id)}>
                                     <ListItemText
                                         primary={conversation.chat_title}
                                         sx={{
@@ -320,14 +320,14 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 </ListItem>
                 <Collapse in={generalOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="history-list">
-                        {filteredConversations('General').map(conversation => (
+                        {filteredConversations('Bhaat').map(conversation => (
                             <ListItem
                                 key={conversation._id}
                                 disablePadding
                                 sx={{ pl: 4 }}
                                 className={selectedConversation === conversation._id ? 'active-item' : ''}
                             >
-                                <ListItemButton onClick={() => handleConversationClick('general-assistant', conversation._id)}>
+                                <ListItemButton onClick={() => handleConversationClick('bhaat-assistant', conversation._id)}>
                                     <ListItemText
                                         primary={conversation.chat_title}
                                         sx={{
