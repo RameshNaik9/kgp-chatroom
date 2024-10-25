@@ -30,6 +30,8 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
     let touchStartX = 0;
     let touchStartTime = 0;
     let isLongPress = false;
+    let swipeElement = null; // Store the reference to the message element
+    let currentTranslateX = 0; // Track the current X translation of the message
 
 
 
@@ -122,6 +124,13 @@ const handleTouchMove = (e, msg, isCurrentUser) => {
     const touchCurrentX = e.touches[0].clientX;
     const touchDeltaX = touchCurrentX - touchStartX;
 
+    // Get the message box element and store it in swipeElement
+    swipeElement = e.currentTarget;
+    
+    // Move the message box with the swipe, but limit it to a percentage of the screen
+    currentTranslateX = Math.min(Math.max(touchDeltaX, -window.innerWidth * 0.4), window.innerWidth * 0.4);
+    swipeElement.style.transform = `translateX(${currentTranslateX}px)`;
+
     // If the user swipes right (for other users) or left (for current user), trigger reply
     if (isCurrentUser && touchDeltaX < -50) {
         // Swiping left for current user's messages
@@ -137,6 +146,12 @@ const handleTouchMove = (e, msg, isCurrentUser) => {
 
 // Clear the long press detection and swipe if the touch ends
 const handleTouchEnd = (e) => {
+    // Reset the translation to zero when the touch ends
+    if (swipeElement) {
+        swipeElement.style.transition = 'transform 0.3s ease'; // Smooth transition back to original position
+        swipeElement.style.transform = 'translateX(0)';
+    }
+
     clearTimeout(e.currentTarget.longPressTimeout);
 
     // If the long press was triggered, avoid triggering other actions
@@ -144,7 +159,9 @@ const handleTouchEnd = (e) => {
         isLongPress = false;
         return;
     }
-    // If no swipe or long press, handle other touch end actions here if needed
+    // Reset the swipe element and translation
+    swipeElement = null;
+    currentTranslateX = 0;
 };
 
     const subscribeUserToPush = async () => {

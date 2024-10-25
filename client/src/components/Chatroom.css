@@ -290,6 +290,23 @@
         .dropdown-toggle {
             z-index: -1000000;
         }
+
+                .message-box {
+                    position: relative;
+                    display: inline-block;
+                    padding: 10px;
+                    border-radius: 5px;
+                    color: white;
+                    word-wrap: break-word;
+                    max-width: 80vw;
+                    white-space: pre-wrap;
+                    overflow-wrap: break-word;
+                    width: auto;
+                    height: auto;
+                    box-sizing: border-box;
+                    transition: transform 0.3s ease;
+                    /* Smooth transition for swipe */
+                }
 }
 @media (min-width: 768px) {
     .message-box {
