@@ -26,6 +26,11 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
     // const [profileData, setProfileData] = useState(null);  
     const [ setShowProfileCard] = useState(false); // State for controlling profile card visibility
     const profileCardRef = useRef(null); // Ref for the profile card
+    const longPressDuration = 500; // Threshold for detecting long press in milliseconds
+    let touchStartX = 0;
+    let touchStartTime = 0;
+    let isLongPress = false;
+
 
 
 
@@ -99,6 +104,48 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
                 console.error('Error fetching user profile:', error);
             });
     };
+
+// Handle long press detection
+const handleLongPressStart = (e, messageId) => {
+    e.preventDefault(); // Prevent default actions
+    isLongPress = false; // Reset long press state
+    touchStartTime = Date.now(); // Start timing the press
+    touchStartX = e.touches[0].clientX; // Track initial touch position for swipe
+    e.currentTarget.longPressTimeout = setTimeout(() => {
+        isLongPress = true; // Set long press flag
+        document.getElementById(`dropdownMenuButton-${messageId}`).click(); // Trigger dropdown on long press
+    }, longPressDuration);
+};
+
+// Handle touch move to detect swipe gesture
+const handleTouchMove = (e, msg, isCurrentUser) => {
+    const touchCurrentX = e.touches[0].clientX;
+    const touchDeltaX = touchCurrentX - touchStartX;
+
+    // If the user swipes right (for other users) or left (for current user), trigger reply
+    if (isCurrentUser && touchDeltaX < -50) {
+        // Swiping left for current user's messages
+        setReplyToMessage(msg); // Trigger reply
+    } else if (!isCurrentUser && touchDeltaX > 50) {
+        // Swiping right for other users' messages
+        setReplyToMessage(msg); // Trigger reply
+    }
+
+    // If user moves, cancel the long press action
+    clearTimeout(e.currentTarget.longPressTimeout);
+};
+
+// Clear the long press detection and swipe if the touch ends
+const handleTouchEnd = (e) => {
+    clearTimeout(e.currentTarget.longPressTimeout);
+
+    // If the long press was triggered, avoid triggering other actions
+    if (isLongPress) {
+        isLongPress = false;
+        return;
+    }
+    // If no swipe or long press, handle other touch end actions here if needed
+};
 
     const subscribeUserToPush = async () => {
         if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -324,6 +371,9 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
                                     ) : (
                                         <div
                                             className={`message-box p-2 rounded text-white ${isCurrentUser ? 'bg-primary' : 'bg-success'}`}
+                                            onTouchStart={(e) => handleLongPressStart(e, msg._id)} // Start long press and track swipe
+                                            onTouchMove={(e) => handleTouchMove(e, msg, isCurrentUser)} // Detect swipe for reply
+                                            onTouchEnd={handleTouchEnd} // Handle end of the touch, clear timeouts
                                         >
                                             {msg.message}
                                             <div className="dropdown" style={{ marginRight: 'auto' }}>
