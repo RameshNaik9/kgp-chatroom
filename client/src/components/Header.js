@@ -62,7 +62,6 @@ const Header = ({ toggleDrawer, isDrawerOpen }) => {
                         color="inherit"
                         aria-label="menu"
                         onClick={toggleDrawer}
-                        className="menu-icon"
                     >
                         {/* Toggle between MenuIcon and CloseIcon based on the state of the drawer */}
                         {isDrawerOpen ? <CloseIcon /> : <MenuIcon />}

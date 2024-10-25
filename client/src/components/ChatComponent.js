@@ -304,7 +304,7 @@ const handleTouchEnd = (e) => {
     );
 
     return (
-        <div className={`chatroom-container bg-${theme}`}>
+        <div className={`chatroom-container bg-${theme}`} style={{ width: '100%' }}>
             <ToastContainer /> 
             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
                 <strong><h2 style={{fontSize:'18px',}} className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2></strong>

@@ -60,9 +60,9 @@ const GroupChatPage = () => {
                 </Drawer>
 
                 {/* Main Chatroom */}
-                <Box>
+                {/* <Box> */}
                     <ChatroomComponent onProfileClick={handleProfileClick} /> 
-                </Box>
+                {/* </Box> */}
 
                 {/* AdditionalComponent for larger screens */}
                 <div className="additional-desktop">
