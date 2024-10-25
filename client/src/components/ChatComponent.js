@@ -353,25 +353,26 @@ const handleTouchEnd = (e) => {
                             )}
                             <div className={`d-flex flex-column mb-3 ${isCurrentUser ? 'align-items-end' : 'align-items-start'}`}>
                                 <div className="small text-muted mb-1">
-                                    {/* {msg.user.fullName}  */}
-                                    <span 
-                                        style={{ cursor: 'pointer', textDecoration: '' }}
-                                        onClick={() => handleFullNameClick(msg.user._id)}
-                                    >
-                                        {msg.user.fullName}
-                                    </span>
-                                    {` • ${moment(msg.createdAt).format('hh:mm A')}`}
-                                    {msg.isEdited && <span>(edited)</span>}
+                                     {!isCurrentUser && (
+                                        <span style={{ cursor: 'pointer', textDecoration: '' }} onClick={() => handleFullNameClick(msg.user._id)}>
+                                            {`${msg.user.fullName} • `}
+                                        </span>
+                                    )}
+                                     {/* Timestamp */}
+                                    <span className="timestamp">{`${moment(msg.createdAt).format('hh:mm A')}`}</span>
+
+                                    {msg.isEdited && <span className='edited'>(edited)</span>}
                                     
                                     {msg.replyTo && msg.replyTo.user && (
-                                        <div className="small text-muted mb-1">
-                                            Replying to: {msg.replyTo.user.fullName}
+                                        <div className="custom-reply-info">
+                                            Replying to: <strong>{msg.replyTo.user.fullName}</strong>
                                         </div>
                                     )}
+
                                 </div>
                                 <div className="message-wrapper">
                                     {msg.replyTo && (
-                                        <div className={`reply-to-wrapper small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
+                                        <div className={`reply-to-wrapper small border ${theme === "dark" ? "text-light" : "text-dark"}`}>
                                             {msg.replyTo.message}
                                         </div>
                                     )}
@@ -399,12 +400,13 @@ const handleTouchEnd = (e) => {
                                         </div>
                                     ) : (
                                         <div
-                                            className={`message-box p-2 rounded text-white ${isCurrentUser ? 'bg-primary' : 'bg-success'}`}
+                                            className={`message-box p-2  text-white ${isCurrentUser ? 'bg-primary' : 'bg-success'}`}
                                             onTouchStart={(e) => handleLongPressStart(e, msg._id)} // Start long press and track swipe
                                             onTouchMove={(e) => handleTouchMove(e, msg, isCurrentUser)} // Detect swipe for reply
                                             onTouchEnd={handleTouchEnd} // Handle end of the touch, clear timeouts
                                         >
                                             {msg.message}
+                                            
                                             <div className="dropdown" style={{ marginRight: 'auto' }}>
                                                 <button
                                                     // className={` dropdown-toggle ${theme === 'dark' ? 'text-light' : 'text-dark'}`}
@@ -463,7 +465,7 @@ const handleTouchEnd = (e) => {
             </div>
             <form onSubmit={handleSendMessage} className="msg-chese-space">
                 {replyToMessage && (
-                    <div className={`reply-to-container text-muted small p-2 rounded border ${theme === "dark" ? "text-light" : "text-dark"}`}>
+                    <div className={`reply-to-container text-muted small p-2  border ${theme === "dark" ? "text-light" : "text-dark"}`}>
                         <span>
                             Replying to: <strong>{replyToMessage.fullName}</strong> - {replyToMessage.message}
                         </span>

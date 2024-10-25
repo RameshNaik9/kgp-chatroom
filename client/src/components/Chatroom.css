@@ -148,18 +148,33 @@
     position: relative;
     display: inline-block;
     padding: 10px;
-    border-radius: 5px;
+    padding-bottom: 25px;
+    border-radius: 15px;
     color: white;
     word-wrap: break-word;
     max-width: 80vw;
-    /* Adjust this value based on your needs */
     white-space: pre-wrap;
     overflow-wrap: break-word;
-    /* Corrected the use of quotes */
     width: auto;
     height: auto;
     box-sizing: border-box;
-    /* Ensure padding is included in the width calculation */
+}
+
+.timestamp {
+    position: absolute;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.edited {
+    position: absolute;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.custom-reply-info {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .dropdown-toggle {
@@ -213,8 +228,8 @@
     max-width: 80%;
     /* margin-bottom: 0.5rem; */
     background-color: rgba(0, 0, 0, 0.1);
-    padding: 5px;
-    border-radius: 5px;
+    padding: 10px;
+    border-radius: 12px;
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-wrap: break-word;
