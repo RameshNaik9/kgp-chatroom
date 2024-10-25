@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment';
 import { getDateLabel } from './DateUtility'; // Ensure correct path
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const socket = io(process.env.REACT_APP_SOCKET_URL) || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://kgp-chatroom-endhbra6fje5gxe8.southindia-01.azurewebsites.net';
@@ -405,7 +406,12 @@ const handleTouchEnd = (e) => {
                                             onTouchMove={(e) => handleTouchMove(e, msg, isCurrentUser)} // Detect swipe for reply
                                             onTouchEnd={handleTouchEnd} // Handle end of the touch, clear timeouts
                                         >
-                                            {msg.message}
+                                            <span>{msg.message}</span>
+
+                                              {/* Menu Icon (down arrow) */}
+                                                <div className="menu-icon" data-bs-toggle="dropdown">
+                                                    <KeyboardArrowDownIcon/>
+                                                </div>
                                             
                                             <div className="dropdown" style={{ marginRight: 'auto' }}>
                                                 <button
@@ -420,35 +426,15 @@ const handleTouchEnd = (e) => {
                                                 <ul className="dropdown-menu dropdown-menu-end p-0" aria-labelledby={`dropdownMenuButton-${msg._id}`}>
                                                     {isCurrentUser ? (
                                                         <>
-                                                            <li>
-                                                                <button className="dropdown-item" href="#" onClick={() => handleEditMessageClick(msg._id, msg.message)}>
-                                                                    Edit
-                                                                </button>
-                                                            </li>
-                                                            <li>
-                                                                <button className="dropdown-item" href="#" onClick={() => handleDeleteMessage(msg._id)}>
-                                                                    Delete
-                                                                </button>
-                                                            </li>
-                                                            <li>
-                                                            <button className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
-                                                                Reply
-                                                            </button>
-                                                        </li>
+                                                            <li><button className="dropdown-item" onClick={() => handleEditMessageClick(msg._id, msg.message)}>Edit</button></li>
+                                                            <li><button className="dropdown-item" onClick={() => handleDeleteMessage(msg._id)}>Delete</button></li>
+                                                            <li><button className="dropdown-item" onClick={() => handleReplyClick(msg)}>Reply</button></li>
                                                         </>
                                                         ) : (
                                                         <>
-                                                            <li>
-                                                                <button className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>
-                                                                    Reply
-                                                                </button>
-                                                            </li>
+                                                            <li><button className="dropdown-item" href="#" onClick={() => handleReplyClick(msg)}>Reply</button></li>
                                                             {localStorage.getItem('fullName') === 'Admin' && (
-                                                                <li>
-                                                                    <button className="dropdown-item" href="#" onClick={() => handleDeleteMessage(msg._id)}>
-                                                                        Delete
-                                                                    </button>
-                                                                </li>
+                                                                <li><button className="dropdown-item" href="#" onClick={() => handleDeleteMessage(msg._id)}>Delete</button></li>
                                                             )}
                                                         </>
                                                     )}
