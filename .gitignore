@@ -16,6 +16,7 @@ server/.env
 # /build
 
 # misc
+.cache_ggshield
 .DS_Store
 .env.local
 .env.development.local

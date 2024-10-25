@@ -32,7 +32,7 @@ const Conversation = () => {
 
     const [copiedMessageId, setCopiedMessageId] = useState(null);  // Track copied message
 
-    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'http://localhost:8080';
+    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'https://chatkgp-ai.azurewebsites.net';
 
 
     // Function to handle copy

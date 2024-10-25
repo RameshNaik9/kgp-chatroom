@@ -36,7 +36,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const [longPress, setLongPress] = useState(false); // New state for long press
     let pressTimer;
 
-        const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'http://localhost:8080';
+    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'https://chatkgp-ai.azurewebsites.net';
 
 
     useEffect(() => {

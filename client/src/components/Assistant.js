@@ -11,7 +11,7 @@ const Assistant = ({ onNewConversation }) => {
     const [userMessage, setUserMessage] = useState(''); 
     const [assistantMessage, setAssistantMessage] = useState(''); 
     const navigate = useNavigate();
-    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'http://localhost:8080';
+    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'https://chatkgp-ai.azurewebsites.net';
 
 
     const handleSendMessage = async (message) => {

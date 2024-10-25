@@ -23,8 +23,7 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
     const rollNumber = localStorage.getItem('rollNumber');
     const department = localStorage.getItem('department');
     const isVerified = localStorage.getItem('isVerified') === 'true';
-    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'http://localhost:8080';
-
+    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'https://chatkgp-ai.azurewebsites.net';
 
     const handleLogout = () => {
         localStorage.clear();
