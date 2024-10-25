@@ -169,7 +169,10 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Career Assistant */}
                 <ListItemButton className={`assistant-item ${careerOpen ? 'open' : ''}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     <ListItemText primary="Career" sx={{ color: 'white' }} />
-                    <IconButton onClick={() => navigate('/career-assistant')} sx={{ color: 'white', visibility: longPress || careerOpen ? 'visible' : 'hidden' }}>
+                    <IconButton onClick={() => {navigate('/career-assistant');
+                                                setSelectedConversation('');
+                                                }} 
+                        sx={{ color: 'white', visibility: longPress || careerOpen ? 'visible' : 'hidden' }}>
                         <AddIcon />
                     </IconButton>
                     <IconButton onClick={handleCareerArrowClick} sx={{ color: 'white' }}>
@@ -194,7 +197,9 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Academics Assistant */}
                 <ListItemButton className={`assistant-item ${academicsOpen ? 'open' : ''}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     <ListItemText primary="Academics" sx={{ color: 'white' }} />
-                    <IconButton onClick={() => navigate('/academics-assistant')} sx={{ color: 'white', visibility: longPress || academicsOpen ? 'visible' : 'hidden' }}>
+                    <IconButton onClick={() => {navigate('/academics-assistant');
+                        setSelectedConversation('');}} 
+                        sx={{ color: 'white', visibility: longPress || academicsOpen ? 'visible' : 'hidden' }}>
                         <AddIcon />
                     </IconButton>
                     <IconButton onClick={handleAcademicsArrowClick} sx={{ color: 'white' }}>
@@ -219,7 +224,9 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Gymkhana Assistant */}
                 <ListItemButton className={`assistant-item ${generalOpen ? 'open' : ''}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     <ListItemText primary="Gymkhana" sx={{ color: 'white' }} />
-                    <IconButton onClick={() => navigate('/gymkhana-assistant')} sx={{ color: 'white', visibility: longPress || generalOpen ? 'visible' : 'hidden' }}>
+                    <IconButton onClick={() => {navigate('/gymkhana-assistant');
+                        setSelectedConversation('');}} 
+                        sx={{ color: 'white', visibility: longPress || generalOpen ? 'visible' : 'hidden' }}>
                         <AddIcon />
                     </IconButton>
                     <IconButton onClick={handleGeneralArrowClick} sx={{ color: 'white' }}>
@@ -244,7 +251,9 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Bhaat Assistant */}
                 <ListItemButton className={`assistant-item ${generalOpen ? 'open' : ''}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     <ListItemText primary="Bhaat" sx={{ color: 'white' }} />
-                    <IconButton onClick={() => navigate('/bhaat-assistant')} sx={{ color: 'white', visibility: longPress || generalOpen ? 'visible' : 'hidden' }}>
+                    <IconButton onClick={() => {navigate('/bhaat-assistant');
+                        setSelectedConversation('');}} 
+                        sx={{ color: 'white', visibility: longPress || generalOpen ? 'visible' : 'hidden' }}>
                         <AddIcon />
                     </IconButton>
                     <IconButton onClick={handleGeneralArrowClick} sx={{ color: 'white' }}>

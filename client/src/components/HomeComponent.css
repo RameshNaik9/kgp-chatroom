@@ -251,7 +251,7 @@ main {
   100% { background-position: 0 0; }
 }
 
-h2 {
+.smoke {
   background-image: url(https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif);
   background-size: cover;
   color: transparent;
