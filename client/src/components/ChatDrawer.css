@@ -147,3 +147,28 @@
     visibility: visible;
     opacity: 1;
 }
+
+/* Hide action icons by default */
+.assistant-item .MuiIconButton-root {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.2s ease, opacity 0.2s ease;
+}
+
+/* Show the icons when the item is hovered (for desktop) */
+.assistant-item:hover .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Show the icons when the list item is long-pressed (for mobile) */
+.assistant-item.long-press .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Keep the icons visible when the item is open */
+.assistant-item.open .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}

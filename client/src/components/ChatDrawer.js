@@ -32,6 +32,9 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentConversationId, setCurrentConversationId] = useState(null); // Track the clicked conversation
     const open = Boolean(anchorEl);
+    
+    const [longPress, setLongPress] = useState(false); // New state for long press
+    let pressTimer;
 
     useEffect(() => {
         const fetchAllConversations = async () => {
@@ -77,6 +80,16 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     // Filter conversations based on selected assistant
     const filteredConversations = (profile) =>
         allConversations.filter(conversation => conversation.chat_profile === profile);
+    
+    // Handle long press for mobile devices
+    const handleTouchStart = () => {
+        pressTimer = setTimeout(() => setLongPress(true), 600); // Trigger long press after 600ms
+    };
+
+    const handleTouchEnd = () => {
+        clearTimeout(pressTimer); // Clear timer if touch ends early
+        setLongPress(false); // Reset long press state
+    };
 
     // Toggle history visibility for Career Assistant
     const handleCareerArrowClick = (event) => {
@@ -147,22 +160,16 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 {/* Horizontal line to separate Group Chat and Assistants */}
                 <Divider sx={{ marginY: 1, backgroundColor: 'grey' }} />
 
-                {/* <ListItemText primary="Assistants" sx={{ color: 'white', textAlign: 'center', marginY: 1 }} /> */}
+                {/* Assistants Header */}
                 <ListItem disablePadding>
-                        <AssistantIcon sx={{ color: 'white', marginRight: 1 ,  marginLeft: 2 }} />
-                        <ListItemText primary="Assistants" sx={{ color: 'white' }} />
+                    <AssistantIcon sx={{ color: 'white', marginRight: 1, marginLeft: 2 }} />
+                    <ListItemText primary="Assistants" sx={{ color: 'white' }} />
                 </ListItem>
 
                 {/* Career Assistant */}
-                <ListItemButton className={`assistant-item ${careerOpen ? 'open' : ''}`}>
+                <ListItemButton className={`assistant-item ${careerOpen ? 'open' : ''}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     <ListItemText primary="Career" sx={{ color: 'white' }} />
-                    <IconButton
-                    onClick={() => {
-                        setSelectedConversation(''); // Reset the active conversation
-                        navigate('/career-assistant');
-                    }}
-                        sx={{ color: 'white' }}
-                    >
+                    <IconButton onClick={() => navigate('/career-assistant')} sx={{ color: 'white', visibility: longPress || careerOpen ? 'visible' : 'hidden' }}>
                         <AddIcon />
                     </IconButton>
                     <IconButton onClick={handleCareerArrowClick} sx={{ color: 'white' }}>
@@ -172,28 +179,10 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 <Collapse in={careerOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="history-list">
                         {filteredConversations('Career').map(conversation => (
-                            <ListItem
-                                key={conversation._id}
-                                disablePadding
-                                sx={{ pl: 4 }}
-                                className={selectedConversation === conversation._id ? 'active-item' : ''}
-                            >
+                            <ListItem key={conversation._id} disablePadding sx={{ pl: 4 }} className={selectedConversation === conversation._id ? 'active-item' : ''}>
                                 <ListItemButton onClick={() => handleConversationClick('career-assistant', conversation._id)}>
-                                    <ListItemText
-                                        primary={conversation.chat_title}
-                                        sx={{
-                                            color: 'white',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis'
-                                        }}
-                                    />
-                                    <IconButton
-                                        size="small"
-                                        onClick={(e) => handleMenuClick(e, conversation._id)}
-                                        aria-label="more"
-                                        sx={{ color: 'white' }}
-                                    >
+                                    <ListItemText primary={conversation.chat_title} sx={{ color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} />
+                                    <IconButton size="small" onClick={(e) => handleMenuClick(e, conversation._id)} aria-label="more" sx={{ color: 'white', visibility: longPress ? 'visible' : 'hidden' }}>
                                         <MoreVertIcon />
                                     </IconButton>
                                 </ListItemButton>
@@ -203,46 +192,22 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 </Collapse>
 
                 {/* Academics Assistant */}
-                    <ListItemButton className={`assistant-item ${academicsOpen ? 'open' : ''}`}>
-                        <ListItemText primary="Academics" sx={{ color: 'white' }} />
-                        <IconButton
-                            onClick={() => {
-                            setSelectedConversation(''); // Reset the active conversation
-                            navigate('/academics-assistant');
-                        }}
-                            sx={{ color: 'white' }}
-                        >
-                            <AddIcon />
-                        </IconButton>
-                        <IconButton onClick={handleAcademicsArrowClick} sx={{ color: 'white' }}>
-                            {academicsOpen ? <ExpandLess /> : <ExpandMore />}
-                        </IconButton>
-                    </ListItemButton>
+                <ListItemButton className={`assistant-item ${academicsOpen ? 'open' : ''}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+                    <ListItemText primary="Academics" sx={{ color: 'white' }} />
+                    <IconButton onClick={() => navigate('/academics-assistant')} sx={{ color: 'white', visibility: longPress || academicsOpen ? 'visible' : 'hidden' }}>
+                        <AddIcon />
+                    </IconButton>
+                    <IconButton onClick={handleAcademicsArrowClick} sx={{ color: 'white' }}>
+                        {academicsOpen ? <ExpandLess /> : <ExpandMore />}
+                    </IconButton>
+                </ListItemButton>
                 <Collapse in={academicsOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="history-list">
                         {filteredConversations('Academics').map(conversation => (
-                            <ListItem
-                                key={conversation._id}
-                                disablePadding
-                                sx={{ pl: 4 }}
-                                className={selectedConversation === conversation._id ? 'active-item' : ''}
-                            >
+                            <ListItem key={conversation._id} disablePadding sx={{ pl: 4 }} className={selectedConversation === conversation._id ? 'active-item' : ''}>
                                 <ListItemButton onClick={() => handleConversationClick('academics-assistant', conversation._id)}>
-                                    <ListItemText
-                                        primary={conversation.chat_title}
-                                        sx={{
-                                            color: 'white',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis'
-                                        }}
-                                    />
-                                    <IconButton
-                                        size="small"
-                                        onClick={(e) => handleMenuClick(e, conversation._id)}
-                                        aria-label="more"
-                                        sx={{ color: 'white' }}
-                                    >
+                                    <ListItemText primary={conversation.chat_title} sx={{ color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} />
+                                    <IconButton size="small" onClick={(e) => handleMenuClick(e, conversation._id)} aria-label="more" sx={{ color: 'white', visibility: longPress ? 'visible' : 'hidden' }}>
                                         <MoreVertIcon />
                                     </IconButton>
                                 </ListItemButton>
@@ -252,46 +217,22 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 </Collapse>
 
                 {/* Gymkhana Assistant */}
-                    <ListItemButton className={`assistant-item ${generalOpen ? 'open' : ''}`}>
-                        <ListItemText primary="Gymkhana" sx={{ color: 'white' }} />
-                        <IconButton
-                            onClick={() => {
-                            setSelectedConversation(''); // Reset the active conversation
-                            navigate('/gymkhana-assistant');
-                        }}
-                            sx={{ color: 'white' }}
-                        >
-                            <AddIcon />
-                        </IconButton>
-                        <IconButton onClick={handleGeneralArrowClick} sx={{ color: 'white' }}>
-                            {generalOpen ? <ExpandLess /> : <ExpandMore />}
-                        </IconButton>
-                    </ListItemButton>
+                <ListItemButton className={`assistant-item ${generalOpen ? 'open' : ''}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+                    <ListItemText primary="Gymkhana" sx={{ color: 'white' }} />
+                    <IconButton onClick={() => navigate('/gymkhana-assistant')} sx={{ color: 'white', visibility: longPress || generalOpen ? 'visible' : 'hidden' }}>
+                        <AddIcon />
+                    </IconButton>
+                    <IconButton onClick={handleGeneralArrowClick} sx={{ color: 'white' }}>
+                        {generalOpen ? <ExpandLess /> : <ExpandMore />}
+                    </IconButton>
+                </ListItemButton>
                 <Collapse in={generalOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="history-list">
                         {filteredConversations('Gymkhana').map(conversation => (
-                            <ListItem
-                                key={conversation._id}
-                                disablePadding
-                                sx={{ pl: 4 }}
-                                className={selectedConversation === conversation._id ? 'active-item' : ''}
-                            >
+                            <ListItem key={conversation._id} disablePadding sx={{ pl: 4 }} className={selectedConversation === conversation._id ? 'active-item' : ''}>
                                 <ListItemButton onClick={() => handleConversationClick('gymkhana-assistant', conversation._id)}>
-                                    <ListItemText
-                                        primary={conversation.chat_title}
-                                        sx={{
-                                            color: 'white',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis'
-                                        }}
-                                    />
-                                    <IconButton
-                                        size="small"
-                                        onClick={(e) => handleMenuClick(e, conversation._id)}
-                                        aria-label="more"
-                                        sx={{ color: 'white' }}
-                                    >
+                                    <ListItemText primary={conversation.chat_title} sx={{ color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} />
+                                    <IconButton size="small" onClick={(e) => handleMenuClick(e, conversation._id)} aria-label="more" sx={{ color: 'white', visibility: longPress ? 'visible' : 'hidden' }}>
                                         <MoreVertIcon />
                                     </IconButton>
                                 </ListItemButton>
@@ -300,54 +241,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                     </List>
                 </Collapse>
 
-                {/* Bhaat Assistant */}
-                    <ListItemButton className={`assistant-item ${generalOpen ? 'open' : ''}`}>
-                        <ListItemText primary="Bhaat" sx={{ color: 'white' }} />
-                        <IconButton
-                            onClick={() => {
-                            setSelectedConversation(''); // Reset the active conversation
-                            navigate('/bhaat-assistant');
-                        }}
-                            sx={{ color: 'white' }}
-                        >
-                            <AddIcon />
-                        </IconButton>
-                        <IconButton onClick={handleGeneralArrowClick} sx={{ color: 'white' }}>
-                            {generalOpen ? <ExpandLess /> : <ExpandMore />}
-                        </IconButton>
-                    </ListItemButton>
-                <Collapse in={generalOpen} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding className="history-list">
-                        {filteredConversations('Bhaat').map(conversation => (
-                            <ListItem
-                                key={conversation._id}
-                                disablePadding
-                                sx={{ pl: 4 }}
-                                className={selectedConversation === conversation._id ? 'active-item' : ''}
-                            >
-                                <ListItemButton onClick={() => handleConversationClick('bhaat-assistant', conversation._id)}>
-                                    <ListItemText
-                                        primary={conversation.chat_title}
-                                        sx={{
-                                            color: 'white',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis'
-                                        }}
-                                    />
-                                    <IconButton
-                                        size="small"
-                                        onClick={(e) => handleMenuClick(e, conversation._id)}
-                                        aria-label="more"
-                                        sx={{ color: 'white' }}
-                                    >
-                                        <MoreVertIcon />
-                                    </IconButton>
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Collapse>
+                
 
                 {/* Divider and Bottom List Items */}
                 <Divider sx={{ marginY: 1, backgroundColor: 'grey' }} />
