@@ -33,6 +33,27 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
     let swipeElement = null; // Store the reference to the message element
     let currentTranslateX = 0; // Track the current X translation of the message
 
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        // Function to check if the screen width is mobile
+        const checkMobile = () => {
+            if (window.innerWidth <= 768) { // You can adjust the width breakpoint as needed
+                setIsMobile(true);
+            } else {
+                setIsMobile(false);
+            }
+        };
+
+        // Check on initial load
+        checkMobile();
+
+        // Add an event listener to handle window resize
+        window.addEventListener('resize', checkMobile);
+
+        // Clean up the event listener
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
 
 
@@ -106,7 +127,6 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
                 console.error('Error fetching user profile:', error);
             });
     };
-
 // Handle long press detection
 const handleLongPressStart = (e, messageId) => {
     e.preventDefault(); // Prevent default actions
@@ -118,19 +138,15 @@ const handleLongPressStart = (e, messageId) => {
         document.getElementById(`dropdownMenuButton-${messageId}`).click(); // Trigger dropdown on long press
     }, longPressDuration);
 };
-
 // Handle touch move to detect swipe gesture
 const handleTouchMove = (e, msg, isCurrentUser) => {
     const touchCurrentX = e.touches[0].clientX;
     const touchDeltaX = touchCurrentX - touchStartX;
-
     // Get the message box element and store it in swipeElement
     swipeElement = e.currentTarget;
-    
     // Move the message box with the swipe, but limit it to a percentage of the screen
     currentTranslateX = Math.min(Math.max(touchDeltaX, -window.innerWidth * 0.4), window.innerWidth * 0.4);
     swipeElement.style.transform = `translateX(${currentTranslateX}px)`;
-
     // If the user swipes right (for other users) or left (for current user), trigger reply
     if (isCurrentUser && touchDeltaX < -50) {
         // Swiping left for current user's messages
@@ -139,11 +155,9 @@ const handleTouchMove = (e, msg, isCurrentUser) => {
         // Swiping right for other users' messages
         setReplyToMessage(msg); // Trigger reply
     }
-
     // If user moves, cancel the long press action
     clearTimeout(e.currentTarget.longPressTimeout);
 };
-
 // Clear the long press detection and swipe if the touch ends
 const handleTouchEnd = (e) => {
     // Reset the translation to zero when the touch ends
@@ -151,9 +165,7 @@ const handleTouchEnd = (e) => {
         swipeElement.style.transition = 'transform 0.3s ease'; // Smooth transition back to original position
         swipeElement.style.transform = 'translateX(0)';
     }
-
     clearTimeout(e.currentTarget.longPressTimeout);
-
     // If the long press was triggered, avoid triggering other actions
     if (isLongPress) {
         isLongPress = false;
@@ -395,7 +407,8 @@ const handleTouchEnd = (e) => {
                                             {msg.message}
                                             <div className="dropdown" style={{ marginRight: 'auto' }}>
                                                 <button
-                                                    className={` dropdown-toggle ${theme === 'dark' ? 'text-light' : 'text-dark'}`}
+                                                    // className={` dropdown-toggle ${theme === 'dark' ? 'text-light' : 'text-dark'}`}
+                                                    className={`dropdown-toggle ${theme === 'dark' ? (isMobile ? 'text-dark' : 'text-light') : (isMobile ? 'text-light' : 'text-dark')}`}
                                                     type="button"
                                                     id={`dropdownMenuButton-${msg._id}`}
                                                     data-bs-toggle="dropdown"
