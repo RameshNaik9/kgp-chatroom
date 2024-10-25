@@ -23,7 +23,7 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
     const rollNumber = localStorage.getItem('rollNumber');
     const department = localStorage.getItem('department');
     const isVerified = localStorage.getItem('isVerified') === 'true';
-    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'https://chatkgp-ai.azurewebsites.net';
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://chatkgp.azurewebsites.net';
 
     const handleLogout = () => {
         localStorage.clear();
@@ -72,7 +72,7 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
                 try {
                     const token = localStorage.getItem('token');
                     const response = await axios.get(
-                        `${fastApiBaseUrl}/api/assistant/conversation/${conversationId}`,
+                        `${apiBaseUrl}/api/assistant/conversation/${conversationId}`,
                         {headers: { Authorization: `Bearer ${token}` }}
                     );
                     const { chat_title, createdAt } = response.data;

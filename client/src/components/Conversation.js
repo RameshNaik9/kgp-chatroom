@@ -32,7 +32,7 @@ const Conversation = () => {
 
     const [copiedMessageId, setCopiedMessageId] = useState(null);  // Track copied message
 
-    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'https://chatkgp-ai.azurewebsites.net';
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://chatkgp.azurewebsites.net';
 
 
     // Function to handle copy
@@ -66,7 +66,7 @@ const Conversation = () => {
             // If not cached, fetch from the backend
             try {
                 const response = await axios.get(
-                     `${fastApiBaseUrl}/api/assistant/conversation/${conversation_id}`,
+                     `${apiBaseUrl}/api/assistant/conversation/${conversation_id}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
 
@@ -124,14 +124,14 @@ const Conversation = () => {
         try {
             // Send HTTP request to process the user message and get final response
             const postResponse = await axios.post(
-                 `${fastApiBaseUrl}/api/assistant/${conversation_id}`,
+                 `${apiBaseUrl}/api/assistant/${conversation_id}`,
                 { user_message: { content: message } }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
             // Start SSE streaming
             const eventSource = new EventSource(
-                `${fastApiBaseUrl}/api/assistant/stream-response/${conversation_id}?token=${token}`
+                `${apiBaseUrl}/api/assistant/stream-response/${conversation_id}?token=${token}`
             );
             eventSource.onmessage = (event) => {
                 if (event.data.trim()) {
@@ -229,7 +229,7 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
     try {
         setShouldScroll(false); // Disable scrolling when feedback is submitted
         await axios.post(
-            `${fastApiBaseUrl}/api/assistant/feedback`,
+            `${apiBaseUrl}/api/assistant/feedback`,
             { message_id: messageId, feedback: updatedFeedback },
             { headers: { Authorization: `Bearer ${token}` } }
         );

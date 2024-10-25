@@ -36,14 +36,14 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const [longPress, setLongPress] = useState(false); // New state for long press
     let pressTimer;
 
-    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'https://chatkgp-ai.azurewebsites.net';
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://chatkgp.azurewebsites.net';
 
 
     useEffect(() => {
         const fetchAllConversations = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get( `${fastApiBaseUrl}/api/assistant/conversations`, {
+                const response = await axios.get( `${apiBaseUrl}/api/assistant/conversations`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setAllConversations(response.data.reverse()); // Reverse to have the latest at the top
@@ -137,7 +137,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`${fastApiBaseUrl}/api/assistant/conversation/${currentConversationId}`,{
+            await axios.delete(`${apiBaseUrl}/api/assistant/conversation/${currentConversationId}`,{
                 headers: { Authorization: `Bearer ${token}` }
             });
 

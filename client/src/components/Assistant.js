@@ -11,7 +11,7 @@ const Assistant = ({ onNewConversation }) => {
     const [userMessage, setUserMessage] = useState(''); 
     const [assistantMessage, setAssistantMessage] = useState(''); 
     const navigate = useNavigate();
-    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'https://chatkgp-ai.azurewebsites.net';
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://chatkgp.azurewebsites.net';
 
 
     const handleSendMessage = async (message) => {
@@ -25,7 +25,7 @@ const Assistant = ({ onNewConversation }) => {
         try {
             // Start a new conversation
             const response = await axios.post(
-                `${fastApiBaseUrl}/api/assistant/new-conversation?userId=${userId}`,
+                `${apiBaseUrl}/api/assistant/new-conversation?userId=${userId}`,
                 { chat_profile: 'Career' },
                 {
                     headers: { Authorization: `Bearer ${token}` }
@@ -36,7 +36,7 @@ const Assistant = ({ onNewConversation }) => {
 
             // Send the initial message to trigger the assistant response
             const assistantResponse = await axios.post(
-                `${fastApiBaseUrl}/api/assistant/${conversation_id}`,
+                `${apiBaseUrl}/api/assistant/${conversation_id}`,
                 { user_message: { content: message } }, // Send the initial message as payload
                 { headers: { Authorization: `Bearer ${token}` } }
             );

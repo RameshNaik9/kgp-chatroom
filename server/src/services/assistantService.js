@@ -2,6 +2,8 @@ const Conversation = require('../models/conversation');
 const Message = require('../models/message');
 const axios = require('axios');
 
+    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'https://chatkgp-ai.azurewebsites.net';
+
 // Create a new conversation in the database
 const createConversationInDB = async (userId, chatProfile) => {
   try {
@@ -62,7 +64,7 @@ const saveUserMessageService = async (conversationId, userId, userMessageContent
 const getAssistantResponseService = async (conversationId, messageId, userMessage, chatProfile) => {
   try {
     // Send request to FastAPI microservice
-    const response = await axios.post('http://127.0.0.1:8000/chat/conversation_id', {
+    const response = await axios.post(`${fastApiBaseUrl}/chat/conversation_id`, {
       conversation_id: conversationId,
       user_message: userMessage,
       chat_profile: chatProfile,
