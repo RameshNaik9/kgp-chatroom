@@ -1,50 +1,50 @@
-# name: Build and deploy Node.js app to Azure Web App kgp-chatroom-app
+name: Build and deploy to Azure Web App chatkgp
 
-# on:
-#   push:
-#     branches:
-#       - ramesh/push-notify
+on:
+  push:
+    branches:
+      - beta-version
 
-# jobs:
-#   build-and-deploy:
-#     runs-on: ubuntu-latest
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: "20"
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
 
-#       - name: Install client dependencies
-#         run: |
-#           cd client
-#           npm install
+      - name: Install client dependencies
+        run: |
+          cd client
+          npm install
 
-#       - name: Install server dependencies
-#         run: |
-#           cd server
-#           npm install
+      - name: Install server dependencies
+        run: |
+          cd server
+          npm install
 
-#       - name: Build client
-#         env:
-#           CI: false
-#         run: |
-#           cd client
-#           npm run build
+      - name: Build client
+        env:
+          CI: false
+        run: |
+          cd client
+          npm run build
 
-#       - name: Prepare ReleaseGAA Artifact Structure
-#         run: |
-#           mkdir -p releaseGAA/client
-#           mkdir -p releaseGAA/server
-#           cp -r client/build releaseGAA/client/
-#           cp -r server/* releaseGAA/server/
+      - name: Prepare Release Artifact Structure
+        run: |
+          mkdir -p releaseGAA/client
+          mkdir -p releaseGAA/server
+          cp -r client/build releaseGAA/client/
+          cp -r server/* releaseGAA/server/
 
-#       - name: Deploy to Azure Web App
-#         uses: azure/webapps-deploy@v2
-#         with:
-#           app-name: "kgp-chatroom"
-#           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-#           package: releaseGAA/
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "chatkgp"
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: releaseGAA/
