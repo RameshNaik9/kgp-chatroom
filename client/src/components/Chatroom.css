@@ -1,9 +1,9 @@
 .chatroom-container {
-    max-width: 900px;
+    max-width: 800px;
     margin: auto;
     border: 1px solid #ddd;
     border-radius: 5px;
-    height: 90vh;
+    /* height: 90vh; */
     display: flex;
     flex-direction: column;
     position: relative;

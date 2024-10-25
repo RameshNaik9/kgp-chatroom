@@ -3,8 +3,15 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import './Conversation.css';
+import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
+import { FaRegThumbsUp, FaRegThumbsDown, FaRegCopy, FaSyncAlt, FaThumbsUp, FaThumbsDown, FaCheck } from 'react-icons/fa';  // Import FaCheck for tick
+
+
+// Cache for storing conversation data
+const conversationCache = new Map();
 
 const Conversation = () => {
+    const isMobile = useMediaQuery('(max-width: 576px)'); // Check if it's mobile screen
     const { conversation_id } = useParams();
     const [messages, setMessages] = useState([]);
     const [chatTitle, setChatTitle] = useState('');
@@ -13,26 +20,63 @@ const Conversation = () => {
     const [loading, setLoading] = useState(false);
     const [userMessage, setUserMessage] = useState('');
     const [error, setError] = useState('');
+    const [lastRecommendedQuestions, setLastRecommendedQuestions] = useState([]); // Store recommended questions for the latest response
+    const [isQuestionsVisible, setIsQuestionsVisible] = useState(!isMobile);  // Toggle for recommended questions
+    const [isStreaming, setIsStreaming] = useState(false); // Track if streaming is happening
+    const [shouldScroll, setShouldScroll] = useState(true); // Control when to scroll
     const messagesEndRef = useRef(null);
     const textAreaRef = useRef(null); // Ref for textarea
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const fullName = localStorage.getItem('fullName') || 'there';
 
-    // Fetch conversation history on component mount
+    const [copiedMessageId, setCopiedMessageId] = useState(null);  // Track copied message
+
+    // Function to handle copy
+    const handleCopy = (messageId, text) => {
+        navigator.clipboard.writeText(text).then(() => {
+            setCopiedMessageId(messageId);  // Set the copied message ID
+            setTimeout(() => {
+                setCopiedMessageId(null);  // Reset after 2 seconds
+            }, 2000);  // Show tick for 2 seconds
+        });
+    };
+
+    // Fetch conversation history on component mount or cache hit
     useEffect(() => {
         const fetchConversationHistory = async () => {
             setLoading(true);
             setError(''); // Clear any existing errors
+
+            // Check if the conversation is already cached
+            if (conversationCache.has(conversation_id)) {
+                const cachedConversation = conversationCache.get(conversation_id);
+                setMessages(cachedConversation.messages);
+                setChatTitle(cachedConversation.chat_title);
+                setChatProfile(cachedConversation.chat_profile);
+                setCreatedAt(cachedConversation.createdAt);
+                setLastRecommendedQuestions(cachedConversation.recommended_questions || []);
+                setLoading(false);
+                return;
+            }
+
+            // If not cached, fetch from the backend
             try {
                 const response = await axios.get(
                     `http://localhost:8080/api/assistant/conversation/${conversation_id}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
-                setMessages(response.data.messages); // Load conversation messages
-                setChatTitle(response.data.chat_title); // Set the chat title
-                setChatProfile(response.data.chat_profile); // Set the chat profile (Career, Academics, General)
-                setCreatedAt(response.data.createdAt); // Set the createdAt (conversation start date)
+
+                // Store the conversation in cache
+                conversationCache.set(conversation_id, response.data);
+
+                // Update state with fetched data
+                setMessages(response.data.messages);
+                setChatTitle(response.data.chat_title);
+                setChatProfile(response.data.chat_profile);
+                setCreatedAt(response.data.createdAt);
+                setLastRecommendedQuestions(response.data.recommended_questions || []);
+
             } catch (error) {
                 setError('Failed to fetch conversation history');
                 console.error('Error fetching conversation history:', error);
@@ -45,10 +89,10 @@ const Conversation = () => {
     }, [conversation_id, token]);
 
     useEffect(() => {
-        if (messagesEndRef.current) {
+        if (shouldScroll && messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [messages]);
+    }, [messages, shouldScroll]);
 
     const formatDate = (dateString) => {
         if (!dateString) return '';
@@ -57,27 +101,28 @@ const Conversation = () => {
         return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options);
     };
 
-    const sendMessage = async () => {
-        if (!userMessage.trim()) return;
+
+    const sendMessage = async (message) => {
+        if (!message.trim()) return;
 
         const newMessage = {
             message_id: 'temp-' + new Date().getTime(),
             user: userId, 
-            user_message: { content: userMessage },
+            user_message: { content: message },
             assistant_response: null
         };
 
         setMessages((prev) => [...prev, newMessage]);
         setUserMessage('');
         setLoading(true);
+        setIsStreaming(true); // Set streaming to true when message is sent
+        setShouldScroll(true); // Enable scrolling for new messages
 
         try {
-            console.log('Sending user message to the backend:', userMessage);
-
             // Send HTTP request to process the user message and get final response
             const postResponse = await axios.post(
                 `http://localhost:8080/api/assistant/${conversation_id}`,
-                { user_message: { content: userMessage } }, 
+                { user_message: { content: message } }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
@@ -117,20 +162,33 @@ const Conversation = () => {
                         msg.message_id === newMessage.message_id
                             ? {
                                 ...msg,
+                                message_id: postResponse.data.message_id,  // Replace with the actual message ID
                                 assistant_response: {
-                                    content: postResponse.data.assistant_response.content // Replace with final response content
-                                }
+                                    content: postResponse.data.assistant_response.content, // Replace with final response content
+                                },
+                                recommended_questions: postResponse.data.recommended_questions // Set recommended questions for last message
                             }
                             : msg
                     );
                 });
 
-                setLoading(false); // Stop the loading state after replacement
+                // Set the recommended questions for the last message
+                setLastRecommendedQuestions(postResponse.data.recommended_questions || []);
+                setIsStreaming(false); // Stop streaming once the final response is set
+                setLoading(false);
+                setShouldScroll(true); // Re-enable scrolling for the next message
+
+                // Update the cache with new messages
+                conversationCache.set(conversation_id, {
+                    ...conversationCache.get(conversation_id),
+                    messages: [...messages, newMessage], // Append new message to cached messages
+                });
             });
 
         } catch (error) {
             console.error('Error sending message:', error);
             setError('Message sending failed');
+            setIsStreaming(false);
             setLoading(false);
             if (textAreaRef.current) {
                 textAreaRef.current.style.height = 'auto'; // Reset height
@@ -138,14 +196,49 @@ const Conversation = () => {
         }
     };
 
+    // Handle recommended question click
+    const handleQuestionClick = (question) => {
+        setUserMessage(question);
+        sendMessage(question); // Send the recommended question as a message
+    };
+
+    const toggleQuestions = () => {
+        setIsQuestionsVisible(!isQuestionsVisible); // Toggle visibility of recommended questions
+    };
 
     const handleKeyDown = (event) => {
         // Prevent form submission when pressing Enter without Shift
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
-            sendMessage(); // Send message on Enter
+            sendMessage(userMessage); // Send message on Enter
         }
     };
+
+const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
+    // Prevent feedback for temporary messages
+    if (messageId.startsWith('temp-')) {
+        alert('Cannot submit feedback for unsaved messages.');
+        return;
+    }
+
+    const updatedFeedback = currentFeedback === newFeedback ? 2.5 : newFeedback; // Toggle feedback
+    try {
+        setShouldScroll(false); // Disable scrolling when feedback is submitted
+        await axios.post(
+            'http://localhost:8080/api/assistant/feedback',
+            { message_id: messageId, feedback: updatedFeedback },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setMessages(prevMessages => prevMessages.map(msg =>
+            msg.message_id === messageId ? { ...msg, feedback: updatedFeedback } : msg
+        ));
+    } catch (error) {
+        console.error('Error submitting feedback:', error);
+    } finally {
+        setShouldScroll(false); // Re-enable scrolling after feedback is handled
+    }
+};
+
 
     const getPlaceholderText = () => {
         switch (chatProfile) {
@@ -163,6 +256,7 @@ const Conversation = () => {
     };
 
     const assistantLogo = '/icons/img1-icon.png';
+    // const assistantLogo = '/icons/kgp-chatroom.png';
 
     // Function to dynamically adjust the textarea height
     const adjustTextareaHeight = () => {
@@ -174,15 +268,15 @@ const Conversation = () => {
 
     return (
         <div className="conversation-container">
-            <h2 className='convo-title'>
+            {/* <h2 className='convo-title'>
                 {chatTitle || 'Conversation'}
                 <span className="conversation-date">
                     {createdAt && ` - ${formatDate(createdAt)}`}
                 </span>
-            </h2>
+            </h2> */}
 
             <div className="messages-list">
-                {messages.map((msg) => (
+                {messages.map((msg, index) => (
                     <div key={msg.message_id} className="message-block">
                         <div className="message-item user-message">
                             {msg.user_message.content}
@@ -190,9 +284,49 @@ const Conversation = () => {
                         {msg.assistant_response ? (
                             <div className="message-item assistant-message">
                                 <div className="assistant-response-container">
-                                    <img src={assistantLogo} alt="Assistant Logo" className="assistant-logo" />
+                                    <img 
+                                        src={assistantLogo} 
+                                        alt="Assistant Logo" 
+                                        className={`assistant-logo ${isStreaming ? 'loading' : ''}`} 
+                                    />
+
                                     <div className="assistant-response-content">
                                         <ReactMarkdown>{msg.assistant_response.content}</ReactMarkdown>
+
+                                        {/* Action buttons */}
+                                        {!isStreaming && (
+                                            <div className="action-buttons">
+                                                {copiedMessageId === msg.message_id
+                                                    ? <FaCheck color="grey" />  // Show tick icon if copied
+                                                    : <FaRegCopy onClick={() => handleCopy(msg.message_id, msg.assistant_response.content)} />
+                                                }
+                                                {msg.feedback === 5
+                                                    ? <FaThumbsUp color="grey" onClick={() => toggleFeedback(msg.message_id, msg.feedback, 5)} />
+                                                    : <FaRegThumbsUp onClick={() => toggleFeedback(msg.message_id, msg.feedback, 5)} />
+                                                }
+                                                {msg.feedback === 1
+                                                    ? <FaThumbsDown color="grey" onClick={() => toggleFeedback(msg.message_id, msg.feedback, 1)} />
+                                                    : <FaRegThumbsDown onClick={() => toggleFeedback(msg.message_id, msg.feedback, 1)} />
+                                                }
+                                                {/* <FaSyncAlt /> */}
+                                            </div>
+                                        )}
+
+                                        {/* Recommended Questions - only for the latest response and after streaming ends */}
+                                        {!isStreaming && index === messages.length - 1 && lastRecommendedQuestions.length > 0 && (
+                                            <div className="recommended-questions">
+                                                <button onClick={toggleQuestions}>Related  +  </button>
+                                                {isQuestionsVisible && (
+                                                    <ul className="questions-list">
+                                                        {lastRecommendedQuestions.map((question, idx) => (
+                                                            <li key={idx} onClick={() => handleQuestionClick(question)}>
+                                                                {question}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -228,7 +362,7 @@ const Conversation = () => {
                         maxHeight: '200px' // Maximum height to avoid overly large textareas
                     }} // Ensure no scrollbars are shown
                 />
-                <button onClick={sendMessage} disabled={loading}>Send</button>
+                <button onClick={() => sendMessage(userMessage)} disabled={loading}>Send</button>
             </div>
         </div>
     );

@@ -1,6 +1,5 @@
-/* ChatDrawer.css */
 .drawer-container {
-    top: 67.2px;
+    top: 68px;
     width: 250px;
     box-sizing: border-box;
     overflow-y: auto;
@@ -14,7 +13,9 @@
     background-color: var(--color-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    padding-bottom: 30px;
 }
+
 .MuiListItemButton-root {
     display: flex;
     justify-content: space-between;
@@ -32,33 +33,56 @@
 }
 
 
-/* History Section */
 .history-title {
     margin-top: 16px;
-    /* color: #000000; */
     padding-left: 16px;
-    /* white-space: nowrap; */
-    /* overflow: hidden; */
-    /* text-overflow: ellipsis; */
+
 }
-/* Limit height of history section */
 .history-list {
-    max-height: 200px; /* Adjust this height as needed */
+    max-height: 250px;
+    /* Set a fixed height for the scrollable area */
     overflow-y: auto;
-    overflow-x: auto; /* Add horizontal scrolling */
+    /* Enable vertical scrolling */
+    scrollbar-width: thin;
+    /* Thin scrollbar for Firefox */
+    scrollbar-color: #007bff transparent;
+    /* Blue scrollbar for Firefox */
 }
 
-/* Active Item Background */
+/* Custom scrollbar styles for WebKit-based browsers (Chrome, Safari) */
+.history-list::-webkit-scrollbar {
+    width: 5px;
+    /* Thin scrollbar width */
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    /* Blue color for the scrollbar */
+    border-radius: 4px;
+    /* Rounded corners for smooth look */
+    min-height: 5px;
+    /* The minimum height of the scroll thumb */
+}
+
+.history-list::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
+    /* Track with subtle color for contrast */
+    border-radius: 4px;
+    margin-top: 5px;
+    /* Small margin at the top of the track */
+    margin-bottom: 5px;
+    /* Small margin at the bottom of the track */
+}
 .active-item {
     background-color: #343a40;
     color: black;
-    border-left: 4px solid #007bff; /* Keep your border as needed */
+    border-left: 4px solid #007bff;
     font-weight: bold;
     transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease;
 }
 .active-item:hover {
-    background-color: #495057; /* Change hover effect on active items */
-    color: #000000; /* Ensure text color remains clear */
+    background-color: #495057;
+    color: #000000;
     font-weight: bold;
 }
 .active-item .MuiListItemText-root {
@@ -66,26 +90,85 @@
     font-weight: bold;
 }
 
-/* Style for the icon (if any) when the item is active */
 .active-item .MuiSvgIcon-root {
     fill: #007bff;
-    /* Change the color of any icons (if present) */
-}
-/* Hover effect for inactive list items */
-/* .MuiListItemButton-root:hover {
-    background-color: #495057;
-    color: #ffffff;
+} 
+
+/* Hide action icons by default */
+.assistant-item .MuiIconButton-root {
+    visibility: hidden;
+    /* Hide icons initially */
+    transition: visibility 0.2s ease, opacity 0.2s ease;
+    opacity: 0;
 }
 
-.MuiListItemButton-root:hover .MuiListItemText-root {
-    color: #ffffff;
+/* Show the icons when the item is hovered */
+.assistant-item:hover .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
 }
 
-.MuiListItemButton-root:hover .MuiSvgIcon-root {
-    fill: #ffffff;
+/* When history is open, keep the icons visible */
+.assistant-item.open .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}
+/* Hide the three dots by default */
+.history-list .MuiIconButton-root {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.2s ease, opacity 0.2s ease;
 }
 
-.MuiIconButton-root {
-    padding: 5px;
-    color: white;
-} */
+/* Show the three dots only when the specific history item is hovered */
+.history-list .MuiListItemButton-root:hover .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* Keep the three dots visible when the IconButton or the Menu is focused */
+.history-list .MuiIconButton-root,
+.history-list .MuiIconButton-root:focus,
+.history-list .MuiIconButton-root:active {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Hide the three dots by default */
+.history-list .MuiIconButton-root {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.2s ease, opacity 0.2s ease;
+}
+
+/* Show the three dots when the list item is hovered */
+.history-list .MuiListItemButton-root:hover .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Hide action icons by default */
+.assistant-item .MuiIconButton-root {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.2s ease, opacity 0.2s ease;
+}
+
+/* Show the icons when the item is hovered (for desktop) */
+.assistant-item:hover .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Show the icons when the list item is long-pressed (for mobile) */
+.assistant-item.long-press .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Keep the icons visible when the item is open */
+.assistant-item.open .MuiIconButton-root {
+    visibility: visible;
+    opacity: 1;
+}

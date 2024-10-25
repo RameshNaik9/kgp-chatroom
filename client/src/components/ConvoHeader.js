@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../media/kgp-chatroom.png';
-import './Header.css';
+import logo from '../media/iit-kgp-logo.png';
+import './Header.css'; // Reuse the existing header styles
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/MenuOpen';
+// import CloseIcon from '@mui/icons-material/Close';
 import Avatar from '@mui/material/Avatar';
 import CardContent from '@mui/material/CardContent';
+import axios from 'axios';
 
-const Header = ({ toggleDrawer, isDrawerOpen }) => {
+const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
     const navigate = useNavigate();
     const [profileOpen, setProfileOpen] = useState(false);
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);  // Track window width for mobile
+    const [chatTitle, setChatTitle] = useState('');
+    const [createdAt, setCreatedAt] = useState('');
     const profileCardRef = useRef(null);
 
     const fullName = localStorage.getItem('fullName');
@@ -35,6 +39,13 @@ const Header = ({ toggleDrawer, isDrawerOpen }) => {
         }
     };
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const parsedDate = new Date(dateString);
+        return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options);
+    };
+
     useEffect(() => {
         if (profileOpen) {
             document.addEventListener('mousedown', handleClickOutside);
@@ -53,6 +64,26 @@ const Header = ({ toggleDrawer, isDrawerOpen }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Fetch conversation details dynamically if conversationId is provided
+    useEffect(() => {
+        if (conversationId) {
+            const fetchConversationDetails = async () => {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await axios.get(`http://localhost:8080/api/assistant/conversation/${conversationId}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const { chat_title, createdAt } = response.data;
+                    setChatTitle(chat_title);
+                    setCreatedAt(createdAt);
+                } catch (error) {
+                    console.error('Error fetching conversation details:', error);
+                }
+            };
+            fetchConversationDetails();
+        }
+    }, [conversationId]);
+
     return (
         <header className="header-class">
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -62,16 +93,21 @@ const Header = ({ toggleDrawer, isDrawerOpen }) => {
                         color="inherit"
                         aria-label="menu"
                         onClick={toggleDrawer}
-                        className="menu-icon"
                     >
-                        {/* Toggle between MenuIcon and CloseIcon based on the state of the drawer */}
                         {isDrawerOpen ? <CloseIcon /> : <MenuIcon />}
                     </IconButton>
 
-                    <Link to="#" className="navbar-brand">
-                        <img src={logo} alt="KGP Chatroom Logo" className="logo" />
-                        <span>KGP Chatroom</span>
-                    </Link>
+                    {/* Display dynamic chat title and date here */}
+                    {conversationId && (
+                        <div className="chat-info">
+                            <h2 className="convo-title">
+                                {chatTitle || 'Conversation'}
+                                <span className="conversation-date">
+                                    {createdAt && ` - ${formatDate(createdAt)}`}
+                                </span>
+                            </h2>
+                        </div>
+                    )}
 
                     <div className="d-flex align-items-center">
                         <Avatar 
@@ -79,7 +115,7 @@ const Header = ({ toggleDrawer, isDrawerOpen }) => {
                             onClick={toggleProfileOpen} 
                             className="avatar"
                         />
-                        {/* Logout button is hidden on mobile, shown on larger screens */}
+                        {/* Conditionally render logout button based on screen size */}
                         {!isMobile && (
                             <button className="logout-btn" onClick={handleLogout}>Logout</button>
                         )}
@@ -95,6 +131,7 @@ const Header = ({ toggleDrawer, isDrawerOpen }) => {
                         <p>{rollNumber}</p>
                         <p>{department} Department</p>
                         <p><strong>Verified:</strong> {isVerified ? 'Yes' : 'No'}</p>
+                        {/* Render logout button inside profile card for mobile screens */}
                         {isMobile && (
                             <button className="logout-btn logout-btn-mobile" onClick={handleLogout}>Logout</button>
                         )}
@@ -106,4 +143,4 @@ const Header = ({ toggleDrawer, isDrawerOpen }) => {
     );
 };
 
-export default Header;
+export default ConvoHeader;

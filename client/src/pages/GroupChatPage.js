@@ -36,7 +36,8 @@ const GroupChatPage = () => {
 
     return (
         <div className="group-chat-page">
-            <Header toggleDrawer={toggleDrawer} />
+            {/* Pass `drawerOpen` as `isDrawerOpen` prop to Header */}
+            <Header toggleDrawer={toggleDrawer} isDrawerOpen={drawerOpen} />
             <div className="group-chat-container">
                 {/* Left Drawer (ChatDrawer) */}
                 <Drawer
@@ -76,9 +77,9 @@ const GroupChatPage = () => {
                     variant="temporary"
                     sx={{
                         display: { xs: 'block', sm: 'none' },
-                        width: 300,
+                        width: 250,
                         '& .MuiDrawer-paper': {
-                            width: 300,
+                            width: 250,
                             top: '68px',
                             backgroundColor: 'transparent', // Same as desktop
                         },
