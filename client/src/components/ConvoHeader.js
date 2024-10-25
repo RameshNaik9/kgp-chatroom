@@ -23,6 +23,8 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
     const rollNumber = localStorage.getItem('rollNumber');
     const department = localStorage.getItem('department');
     const isVerified = localStorage.getItem('isVerified') === 'true';
+    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'http://localhost:8080';
+
 
     const handleLogout = () => {
         localStorage.clear();
@@ -70,9 +72,10 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
             const fetchConversationDetails = async () => {
                 try {
                     const token = localStorage.getItem('token');
-                    const response = await axios.get(`http://localhost:8080/api/assistant/conversation/${conversationId}`, {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
+                    const response = await axios.get(
+                        `${fastApiBaseUrl}/api/assistant/conversation/${conversationId}`,
+                        {headers: { Authorization: `Bearer ${token}` }}
+                    );
                     const { chat_title, createdAt } = response.data;
                     setChatTitle(chat_title);
                     setCreatedAt(createdAt);

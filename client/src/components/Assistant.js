@@ -11,6 +11,8 @@ const Assistant = ({ onNewConversation }) => {
     const [userMessage, setUserMessage] = useState(''); 
     const [assistantMessage, setAssistantMessage] = useState(''); 
     const navigate = useNavigate();
+    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'http://localhost:8080';
+
 
     const handleSendMessage = async (message) => {
         if (loading) return; // Prevent multiple sends while loading
@@ -23,7 +25,7 @@ const Assistant = ({ onNewConversation }) => {
         try {
             // Start a new conversation
             const response = await axios.post(
-                `http://localhost:8080/api/assistant/new-conversation?userId=${userId}`,
+                `${fastApiBaseUrl}/api/assistant/new-conversation?userId=${userId}`,
                 { chat_profile: 'Career' },
                 {
                     headers: { Authorization: `Bearer ${token}` }
@@ -34,7 +36,7 @@ const Assistant = ({ onNewConversation }) => {
 
             // Send the initial message to trigger the assistant response
             const assistantResponse = await axios.post(
-                `http://localhost:8080/api/assistant/${conversation_id}`,
+                `${fastApiBaseUrl}/api/assistant/${conversation_id}`,
                 { user_message: { content: message } }, // Send the initial message as payload
                 { headers: { Authorization: `Bearer ${token}` } }
             );

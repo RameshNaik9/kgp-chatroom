@@ -32,6 +32,9 @@ const Conversation = () => {
 
     const [copiedMessageId, setCopiedMessageId] = useState(null);  // Track copied message
 
+    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'http://localhost:8080';
+
+
     // Function to handle copy
     const handleCopy = (messageId, text) => {
         navigator.clipboard.writeText(text).then(() => {
@@ -63,7 +66,7 @@ const Conversation = () => {
             // If not cached, fetch from the backend
             try {
                 const response = await axios.get(
-                    `http://localhost:8080/api/assistant/conversation/${conversation_id}`,
+                     `${fastApiBaseUrl}/api/assistant/conversation/${conversation_id}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
 
@@ -121,14 +124,15 @@ const Conversation = () => {
         try {
             // Send HTTP request to process the user message and get final response
             const postResponse = await axios.post(
-                `http://localhost:8080/api/assistant/${conversation_id}`,
+                 `${fastApiBaseUrl}/api/assistant/${conversation_id}`,
                 { user_message: { content: message } }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
             // Start SSE streaming
-            const eventSource = new EventSource(`http://localhost:8080/api/assistant/stream-response/${conversation_id}?token=${token}`);
-
+            const eventSource = new EventSource(
+                `${fastApiBaseUrl}/api/assistant/stream-response/${conversation_id}?token=${token}`
+            );
             eventSource.onmessage = (event) => {
                 if (event.data.trim()) {
                     setMessages((prevMessages) => {
@@ -225,7 +229,7 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
     try {
         setShouldScroll(false); // Disable scrolling when feedback is submitted
         await axios.post(
-            'http://localhost:8080/api/assistant/feedback',
+            `${fastApiBaseUrl}/api/assistant/feedback`,
             { message_id: messageId, feedback: updatedFeedback },
             { headers: { Authorization: `Bearer ${token}` } }
         );

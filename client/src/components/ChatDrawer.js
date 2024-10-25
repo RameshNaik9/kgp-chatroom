@@ -36,11 +36,14 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const [longPress, setLongPress] = useState(false); // New state for long press
     let pressTimer;
 
+        const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'http://localhost:8080';
+
+
     useEffect(() => {
         const fetchAllConversations = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:8080/api/assistant/conversations`, {
+                const response = await axios.get( `${fastApiBaseUrl}/api/assistant/conversations`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setAllConversations(response.data.reverse()); // Reverse to have the latest at the top
@@ -134,7 +137,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:8080/api/assistant/conversation/${currentConversationId}`, {
+            await axios.delete(`${fastApiBaseUrl}/api/assistant/conversation/${currentConversationId}`,{
                 headers: { Authorization: `Bearer ${token}` }
             });
 
