@@ -2,28 +2,261 @@
 .landing-page-container {
     display: flex;
     justify-content: center;
-    height:fit-content;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-    background-color: black; /* Background color */
+    height: fit-content;
+    overflow-x: hidden;
+    background-color: black;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
-
+/* Row styling */
 .row {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
-   height:fit-content;
     justify-content: center;
     box-sizing: border-box;
-    overflow-wrap: wrap;
 }
-
 
 .landingpage-comp1 {
-    flex: 0 0 80%; 
+    flex: 0 1 80%;
+    max-width: 100%;
+    padding: 20px;
     height: fit-content;
-    overflow-y: auto; /* Allow vertical scrolling */
-    padding-left: 20px;
+    overflow-y: auto;
     box-sizing: border-box;
-    overflow-wrap: wrap;
 }
 
+/* Top section styling */
+.top {
+    color: #ffffff;
+    text-align: center;
+    margin-top: 10px;
+    padding: 0 20px;
+    height:100vh;
+}
+
+.top-description {
+    position: relative;
+    text-align: center;
+}
+
+.top-description h1 {
+    font-weight: 900;
+    font-size: 4em;
+    margin: 0;
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gold {
+    color: #fdc65d;
+}
+
+.top-description p, .grey {
+    color: #aeaead;
+}
+
+/* Sign-in form styling */
+.sign-in {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.sign-in h1 {
+    font-size: 2em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.form input {
+    width: 100%;
+    padding: 0.75em 1em;
+    color: #0a0a09;
+    background-color: #424242;
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 1em;
+}
+
+.form button {
+    width: 100%;
+    padding: 0.75em 1em;
+    color: #010101;
+    background-color: #fdc65d;
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form button:hover {
+    background-color: #e6b056;
+}
+
+/* Applicant card styling */
+.applicant {
+    width: 40%;
+    max-width: 400px;
+    padding: 1em;
+    background-color: #0a0a09;
+    border-radius: 15px;
+    margin-bottom: 1em;
+}
+
+.image-holder {
+    width: 80px;
+    height: 80px;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    border-radius: 50%;
+}
+
+.applicant h3 {
+    font-size: 14px;
+    padding-top: 4em;
+    margin: 0;
+}
+
+.applicant p {
+    font-size: 12px;
+    margin: 0;
+    color: #aeaead;
+    padding-bottom: 1em;
+}
+
+/* Button styles */
+.btn {
+    width: 100%;
+    max-width: 150px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+@media (max-width: 1100px) {
+
+    .top-description h1 {
+        font-size: 2.5em;
+        white-space: normal;
+        word-wrap: wrap; /* Allows text to wrap */
+    }
+    .top-description p {
+        display: none; /* Hides description on mobile */
+    }
+    .sign-in h1 {
+        font-size: 1.8em;
+    }
+    .form input, .form button {
+        width: 95%;
+    }
+    .btn {
+        font-size: 16px;
+    }
+
+    .applicant {
+        width: 50%; 
+    }
+
+}
+@media (max-width: 795px) {
+
+    .top-description h1 {
+        font-size: 2em;
+        white-space: normal;
+        word-wrap: wrap; /* Allows text to wrap */
+    }
+    .top-description p {
+        display: none; /* Hides description on mobile */
+    }
+    .sign-in h1 {
+        font-size: 1.5em;
+    }
+    .form input, .form button {
+        width: 90%;
+    }
+    .btn {
+        font-size: 14px;
+    }
+
+    .applicant {
+        width: 50%; /* Full width for easier viewing */
+    }
+
+    /* Adjustments for static layout */
+    .landing-page-container, .landingpage-comp1, .row {
+        display: block;
+        width: 100%;
+    }
+}
+
+
+/* Smaller devices */
+@media (max-width: 480px) {
+    .top-description h1 {
+        font-size: 2em;
+    }
+    .sign-in h1 {
+        font-size: 1.2em;
+    }
+    .form input, .form button {
+        width: 85%;
+    }
+}
+@media (max-width:1300px)
+{
+    .top-description h1 {
+        font-size: 3.6em;
+    }
+}
+@media(max-width:375px){
+    .top-description h1 {
+        font-size: 1em;
+    }
+    .sign-in h1 {
+        font-size: 1em;
+    }
+    .form input, .form button {
+        width: 80%;
+    }
+}
+@media(max-width:414px){
+    .top-description h1 {
+        font-size: 1.1em;
+        
+    }
+    .sign-in h1 {
+        font-size: 1.1em;
+    }
+    .form input, .form button {
+        width: 82%;
+    }
+}
+@media(max-width:430px){
+    .top-description h1 {
+        font-size: 1.1em;
+        
+    }
+    .sign-in h1 {
+        font-size: 1.1em;
+    }
+    .form input, .form button {
+        width: 82%;
+    }
+}

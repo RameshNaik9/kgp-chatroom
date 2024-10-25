@@ -54,9 +54,6 @@ const Landingpage_comp1 = () => {
       <section className="bottom" id="pin" data-scroll-section>
         <div className="container">
           <div className="sign-in">
-            <h1>
-              Go to <span className="gold">Web Chat</span>
-            </h1>
             <Landingpage_comp2 />
           </div>
 
@@ -140,20 +137,7 @@ const applicantData = [
     scrollDirection: 'horizontal',
     scrollSpeed: '-3'
   },
-  {
-    imgSrc: 'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
-    name: 'Josh Helewud',
-    title: 'Web Developer',
-    scrollDirection: 'horizontal',
-    scrollSpeed: '3'
-  },
-  {
-    imgSrc: 'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
-    name: 'Bolu Michael',
-    title: 'UI/UX Designer',
-    scrollDirection: 'horizontal',
-    scrollSpeed: '-3'
-  },
+  
 ];
 
 export default Landingpage_comp1;

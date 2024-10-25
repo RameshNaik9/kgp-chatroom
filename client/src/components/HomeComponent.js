@@ -26,7 +26,7 @@ const HomeComponent = () => {
             <img src={img2} alt="" style={{borderRadius:'0px'}}/>
           </div>
           <div className="article__info">
-            <h2  className="smoke">Get guidance on career planning and job searches</h2>
+            <h2>Get guidance on career planning and job searches</h2>
             <Link to="/career-assistant">
           <button className="glow-on-hover" type="button">Career Assistant</button>
         </Link>
@@ -38,7 +38,7 @@ const HomeComponent = () => {
             <img src={img3} alt="" style={{borderRadius:'0px'}}/>
           </div>
           <div className="article__info">
-            <h2  className="smoke">Find resources and help for your academic queries</h2>
+            <h2>Find resources and help for your academic queries</h2>
             <Link to="/acads-assistant">
           <button className="glow-on-hover">Acads Assistant</button>
         </Link>
@@ -50,7 +50,7 @@ const HomeComponent = () => {
             <img src={img4} alt="" style={{borderRadius:'0px'}} />
           </div>
           <div className="article__info">
-            <h2  className="smoke">Assistance with general inquiries and more...</h2>
+            <h2>Assistance with general inquiries and more...</h2>
             <Link to="/general-assistant">
           <button className="glow-on-hover">General Assistant</button>
         </Link>
