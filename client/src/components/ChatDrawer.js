@@ -241,6 +241,31 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                     </List>
                 </Collapse>
 
+                {/* Bhaat Assistant */}
+                <ListItemButton className={`assistant-item ${generalOpen ? 'open' : ''}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+                    <ListItemText primary="Bhaat" sx={{ color: 'white' }} />
+                    <IconButton onClick={() => navigate('/bhaat-assistant')} sx={{ color: 'white', visibility: longPress || generalOpen ? 'visible' : 'hidden' }}>
+                        <AddIcon />
+                    </IconButton>
+                    <IconButton onClick={handleGeneralArrowClick} sx={{ color: 'white' }}>
+                        {generalOpen ? <ExpandLess /> : <ExpandMore />}
+                    </IconButton>
+                </ListItemButton>
+                <Collapse in={generalOpen} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding className="history-list">
+                        {filteredConversations('Bhaat').map(conversation => (
+                            <ListItem key={conversation._id} disablePadding sx={{ pl: 4 }} className={selectedConversation === conversation._id ? 'active-item' : ''}>
+                                <ListItemButton onClick={() => handleConversationClick('bhaat-assistant', conversation._id)}>
+                                    <ListItemText primary={conversation.chat_title} sx={{ color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} />
+                                    <IconButton size="small" onClick={(e) => handleMenuClick(e, conversation._id)} aria-label="more" sx={{ color: 'white', visibility: longPress ? 'visible' : 'hidden' }}>
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Collapse>
+
                 
 
                 {/* Divider and Bottom List Items */}
