@@ -139,9 +139,9 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     };
 
     const handleMenuClick = (event, conversationId) => {
-        event.stopPropagation(); // Stop the propagation to prevent triggering the conversation click
+        event.stopPropagation();
         setAnchorEl(event.currentTarget);
-        setCurrentConversationId(conversationId);
+        setCurrentConversationId(conversationId);  // Set the conversation ID being archived
     };
 
     const handleMenuClose = () => {
@@ -163,6 +163,30 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
             handleMenuClose();
         }
     };
+
+    const handleArchiveConversation = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        await axios.patch(`${apiBaseUrl}/api/assistant/conversation/${currentConversationId}`, {
+            status: 'archived'
+        }, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        // Update the UI to move the conversation to archived
+        setAllConversations(prevConversations => prevConversations.filter(c => c._id !== currentConversationId));
+        setArchivedConversations(prevConversations => [
+            ...prevConversations,
+            allConversations.find(c => c._id === currentConversationId)
+        ]);
+
+    } catch (error) {
+        console.error('Error archiving conversation:', error);
+    } finally {
+        handleMenuClose();
+    }
+};
+
 
     return (
         <Box className="drawer-container" role="presentation">
@@ -334,7 +358,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
 
             <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
                 <MenuItem onClick={() => console.log('Rename clicked')}>Rename</MenuItem>
-                <MenuItem onClick={() => console.log('Archive clicked')}>Archive</MenuItem>
+                <MenuItem onClick={handleArchiveConversation}>Archive</MenuItem>
                 <MenuItem onClick={handleDelete}>Delete</MenuItem>
             </Menu>
         </Box>

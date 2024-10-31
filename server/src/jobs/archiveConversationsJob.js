@@ -1,4 +1,4 @@
-//server/src/jobs/archiveConversationsJob.js
+// server/src/jobs/archiveConversationsJob.js
 
 const cron = require('node-cron');
 const Conversation = require('../models/conversation');
@@ -24,8 +24,13 @@ const archiveInactiveConversations = async () => {
   }
 };
 
+// Immediately archive inactive conversations on server startup
+archiveInactiveConversations();
+
 // Schedule the task to run daily at midnight
 cron.schedule('0 0 * * *', () => {
   console.log('Running daily archiving job for inactive conversations...');
   archiveInactiveConversations();
 });
+
+module.exports = { archiveInactiveConversations };

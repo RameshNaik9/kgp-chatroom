@@ -5,6 +5,8 @@ const Message = require('../models/message'); // Ensure the correct path to the 
 const { getConversationMessages } = require('../services/assistantService');
 const { getAllConversationsForUserService } = require('../services/assistantService');
 const { updateMessageFeedbackService } = require('../services/assistantService');
+const { archiveConversationService } = require('../services/assistantService');
+
 
 
 
@@ -225,6 +227,25 @@ const submitFeedback = async (req, res) => {
   }
 };
 
+// Controller to archive a conversation
+const archiveConversation = async (req, res) => {
+    try {
+        const { conversation_id } = req.params;
 
-module.exports = { createNewConversation, sendMessage, getConversation,getAllConversationsForUser, deleteConversation, submitFeedback };
+        // Call service to archive the conversation
+        const archivedConversation = await archiveConversationService(conversation_id);
+
+        if (!archivedConversation) {
+            return res.status(404).json({ message: 'Conversation not found' });
+        }
+
+        return res.status(200).json({ message: 'Conversation archived successfully' });
+    } catch (error) {
+        console.error('Error archiving conversation:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
+module.exports = { createNewConversation, sendMessage, getConversation,getAllConversationsForUser, deleteConversation, submitFeedback, archiveConversation };
 

@@ -166,6 +166,22 @@ const updateMessageFeedbackService = async (messageId, feedbackRating) => {
   }
 };
 
+// Service to archive a conversation
+const archiveConversationService = async (conversationId) => {
+    try {
+        const archivedConversation = await Conversation.findByIdAndUpdate(
+            conversationId,
+            { status: 'archived' },
+            { new: true }  // Return the updated document
+        );
 
-module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService, getConversationMessages, getAllConversationsForUserService, updateMessageFeedbackService };
+        return archivedConversation;
+    } catch (error) {
+        console.error('Error archiving conversation:', error);
+        throw new Error('Database operation failed');
+    }
+};
+
+
+module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService, getConversationMessages, getAllConversationsForUserService, updateMessageFeedbackService, archiveConversationService };
 
