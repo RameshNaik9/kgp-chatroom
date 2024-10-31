@@ -152,3 +152,15 @@
         padding: 8px;
     }
 }
+
+
+.archive-info-message {
+    font-size: 14px;
+    color: #777;
+    /* Light gray color for subtlety */
+    margin-bottom: 8px;
+    text-align: center;
+    /* Center align the message */
+    font-style: italic;
+    /* Optional for emphasis */
+}

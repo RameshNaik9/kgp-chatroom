@@ -32,6 +32,8 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentConversationId, setCurrentConversationId] = useState(null); // Track the clicked conversation
     const open = Boolean(anchorEl);
+    const [archivedConversations, setArchivedConversations] = useState([]); // Define state for archived conversations
+
     
     const [longPress, setLongPress] = useState(false); // New state for long press
     let pressTimer;
@@ -43,10 +45,17 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
         const fetchAllConversations = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get( `${apiBaseUrl}/api/assistant/conversations`, {
+                const response = await axios.get(`${apiBaseUrl}/api/assistant/conversations`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                setAllConversations(response.data.reverse()); // Reverse to have the latest at the top
+
+                // Separate archived conversations from others
+                const allConversations = response.data.reverse(); // Reverse to have the latest at the top
+                const activeConversations = allConversations.filter(convo => convo.status === "active");
+                const archivedConversations = allConversations.filter(convo => convo.status === "archived");
+
+                setAllConversations(activeConversations); // Set only active conversations here
+                setArchivedConversations(archivedConversations); // Set archived conversations separately
             } catch (error) {
                 console.error('Error fetching conversations:', error);
             }
@@ -112,9 +121,15 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
         setGymkhanaOpen(prevOpen => !prevOpen);
     };
 
-    const handleConversationClick = (category, conversationId) => {
+    const handleConversationClick = (category, conversationId, isArchived = false) => {
         setSelectedConversation(conversationId); // Set the active conversation
-        navigate(`/${category}/${conversationId}`);
+        
+        // Redirect based on whether the conversation is archived
+        if (isArchived) {
+            navigate(`/${category}/archived/${conversationId}`);
+        } else {
+            navigate(`/${category}/${conversationId}`);
+        }
     };
 
     // Toggle history visibility for Archived Chats
@@ -294,7 +309,18 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                     </ListItemButton>
                 </ListItem>
                 <Collapse in={archivedOpen} timeout="auto" unmountOnExit>
-                    {/* Add chat history for Archived Chats here */}
+                    <List component="div" disablePadding className="history-list">
+                        {archivedConversations.map(conversation => (
+                            <ListItem key={conversation._id} disablePadding sx={{ pl: 4 }}>
+                                <ListItemButton onClick={() => handleConversationClick('career-assistant', conversation._id, true)}>
+                                    <ListItemText primary={conversation.chat_title} sx={{ color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} />
+                                    <IconButton size="small" onClick={(e) => handleMenuClick(e, conversation._id)} aria-label="more" sx={{ color: 'white', visibility: longPress ? 'visible' : 'hidden' }}>
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
                 </Collapse>
 
                 {/* Private Rooms */}

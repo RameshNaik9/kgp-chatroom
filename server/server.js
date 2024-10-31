@@ -8,6 +8,8 @@ const connectDB = require('./src/db/db');
 const routes = require('./src/routes');
 const { errorHandler } = require('./src/middleware/errorHandler');
 const { handleNewMessage } = require('./src/controllers/chatController');
+// Import the archive conversations job
+require('./src/jobs/archiveConversationsJob');
 
 const app = express();
 const server = http.createServer(app);

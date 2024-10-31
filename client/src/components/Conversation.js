@@ -29,9 +29,8 @@ const Conversation = () => {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const fullName = localStorage.getItem('fullName') || 'there';
-
     const [copiedMessageId, setCopiedMessageId] = useState(null);  // Track copied message
-
+     const [isArchived, setIsArchived] = useState(false); // State to track if conversation is archived
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://chatkgp.azurewebsites.net';
 
 
@@ -47,6 +46,9 @@ const Conversation = () => {
 
     // Fetch conversation history on component mount or cache hit
     useEffect(() => {
+        // Check if the current URL contains "/archived/" to set the isArchived state
+        setIsArchived(window.location.pathname.includes('/archived/'));
+
         const fetchConversationHistory = async () => {
             setLoading(true);
             setError(''); // Clear any existing errors
@@ -97,12 +99,12 @@ const Conversation = () => {
         }
     }, [messages, shouldScroll]);
 
-    const formatDate = (dateString) => {
-        if (!dateString) return '';
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const parsedDate = new Date(dateString);
-        return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options);
-    };
+    // const formatDate = (dateString) => {
+    //     if (!dateString) return '';
+    //     const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    //     const parsedDate = new Date(dateString);
+    //     return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options);
+    // };
 
 
     const sendMessage = async (message) => {
@@ -244,7 +246,12 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
 };
 
 
+    // Function to get placeholder text based on chat profile or archived status
     const getPlaceholderText = () => {
+        if (isArchived) {
+            return 'You cannot continue or extend this conversation as it has been archived due to inactivity.';
+        }
+
         switch (chatProfile) {
             case 'Career':
                 return `Hi ${fullName}, Confused about CDC Internships or Off campus placements? Drop your questions!`;
@@ -347,28 +354,34 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
 
             {error && <p className="error-message">{error}</p>}
 
+            {/* Conditionally render input box */}
+        <div className="message-input-container">
+            {/* Information message about archiving */}
+            {isArchived && (
+            <div className="archive-info-message">
+                <p>The conversation will be archived because it was inactive for two days.</p>
+            </div>
+            )}
+
             <div className="message-input">
-                <textarea 
-                    ref={textAreaRef} // Add ref to textarea
-                    value={userMessage} 
-                    onChange={(e) => {
-                        setUserMessage(e.target.value);
-                        adjustTextareaHeight(); // Adjust height on change
-                    }} 
-                    onKeyDown={handleKeyDown} 
-                    placeholder={getPlaceholderText()} 
-                    rows="1" // Start with one row
-                    disabled={loading} 
+                <textarea
+                    ref={textAreaRef}
+                    value={userMessage}
+                    onChange={(e) => setUserMessage(e.target.value)}
+                    placeholder={getPlaceholderText()}
+                    rows="1"
+                    disabled={isArchived || loading}  // Disable if archived or loading
                     className="textarea-input"
-                    style={{ 
+                    style={{
                         overflow: 'auto',
-                        height: 'auto',  // Let the height adjust automatically
-                        maxHeight: '200px' // Maximum height to avoid overly large textareas
-                    }} // Ensure no scrollbars are shown
+                        height: 'auto',
+                        maxHeight: '200px'
+                    }}
                 />
-                <button onClick={() => sendMessage(userMessage)} disabled={loading}>Send</button>
+                <button onClick={() => sendMessage(userMessage)} disabled={isArchived || loading}>Send</button>
             </div>
         </div>
+    </div>
     );
 };
 

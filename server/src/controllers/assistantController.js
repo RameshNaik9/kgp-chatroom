@@ -166,19 +166,24 @@ const deleteConversation = async (req, res) => {
     try {
         const { conversation_id } = req.params;
 
-        // Delete the conversation by ID
-        const deletedConversation = await Conversation.findByIdAndDelete(conversation_id);
+        // Update the conversation's status to 'closed' instead of deleting
+        const updatedConversation = await Conversation.findByIdAndUpdate(
+            conversation_id,
+            { status: 'closed' },
+            { new: true } // Return the updated document
+        );
 
-        if (!deletedConversation) {
+        if (!updatedConversation) {
             return res.status(404).json({ message: 'Conversation not found' });
         }
 
-        return res.status(200).json({ message: 'Conversation deleted successfully' });
+        return res.status(200).json({ message: 'Conversation closed successfully' });
     } catch (error) {
-        console.error('Error deleting conversation:', error);
+        console.error('Error closing conversation:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
+
 const submitFeedback = async (req, res) => {
   try {
     const { message_id, feedback } = req.body;

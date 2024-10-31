@@ -1,3 +1,4 @@
+//server/src/models/conversation.js
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 

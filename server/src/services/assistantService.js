@@ -138,8 +138,8 @@ const getConversationMessages = async (conversationId) => {
 // Service to fetch all conversations for a specific user
 const getAllConversationsForUserService = async (userId) => {
     try {
-        // Query the database for all conversations that match the userId
-        const conversations = await Conversation.find({ user: userId });
+        // Query the database for all conversations that match the userId and are not closed
+        const conversations = await Conversation.find({ user: userId, status: { $ne: 'closed' } });
         return conversations;
     } catch (error) {
         console.error('Error fetching conversations from the database:', error);
