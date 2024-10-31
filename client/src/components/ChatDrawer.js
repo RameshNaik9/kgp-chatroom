@@ -152,11 +152,17 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`${apiBaseUrl}/api/assistant/conversation/${currentConversationId}`,{
+            await axios.delete(`${apiBaseUrl}/api/assistant/conversation/${currentConversationId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            setAllConversations(prevConversations => prevConversations.filter(c => c._id !== currentConversationId));
+            // Update both active and archived lists to immediately remove the deleted conversation
+            setAllConversations(prevConversations => 
+                prevConversations.filter(c => c._id !== currentConversationId)
+            );
+            setArchivedConversations(prevConversations => 
+                prevConversations.filter(c => c._id !== currentConversationId)
+            );
         } catch (error) {
             console.error('Error deleting conversation:', error);
         } finally {
