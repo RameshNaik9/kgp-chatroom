@@ -340,19 +340,25 @@ const handleTouchEnd = (e) => {
     };
 
 const handleChatroomTap = (e) => {
-    // Capture Y position of the tap event relative to the chat container
     const chatContainer = e.currentTarget;
     const containerHeight = chatContainer.clientHeight;
-    const tapY = e.touches && e.touches[0] 
-        ? e.touches[0].clientY - chatContainer.getBoundingClientRect().top 
-        : e.clientY - chatContainer.getBoundingClientRect().top;
+
+    let tapY = 0;
+
+    if (e.changedTouches && e.changedTouches[0]) {
+        // Use changedTouches to get the touch point that ended
+        tapY = e.changedTouches[0].clientY - chatContainer.getBoundingClientRect().top;
+    } else if (e.clientY) {
+        tapY = e.clientY - chatContainer.getBoundingClientRect().top;
+    } else {
+        // If we can't get the Y coordinate, exit the function
+        return;
+    }
 
     if (doubleTapTimeoutRef.current) {
-        // Confirm a double-tap if the timeout already exists
         clearTimeout(doubleTapTimeoutRef.current);
         doubleTapTimeoutRef.current = null;
 
-        // Check if the double-tap was in the upper or lower half
         if (tapY < containerHeight / 2) {
             // Double-tap in the upper half, scroll to the top
             chatContainer.scrollTo({ top: 0, behavior: "smooth" });
@@ -367,6 +373,7 @@ const handleChatroomTap = (e) => {
         }, 300);
     }
 };
+
 
     return (
         <div className={`chatroom-container bg-${theme}`} style={{ width: '100%' }}>
@@ -402,7 +409,7 @@ const handleChatroomTap = (e) => {
                     <p className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`} >Connecting to server...</p>
                 </div>
             </div>
-            <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} onScroll={handleScroll} onDoubleClick={handleChatroomDoubleClick} onTouchEnd={handleChatroomTap}>
+            <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} onScroll={handleScroll} onDoubleClick={handleChatroomDoubleClick} onClick={handleChatroomTap}>
                 {filteredMessages.map((msg, index) => {
                     const isCurrentUser = msg.user._id === userId;
                     const isEditing = editingMessageId === msg._id;
