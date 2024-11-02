@@ -190,6 +190,10 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
         }
     };
 
+    const currentConversation = allConversations.find(
+    (c) => c._id === currentConversationId
+    ) || archivedConversations.find((c) => c._id === currentConversationId);
+
     const handleArchiveConversation = async () => {
     try {
         const token = localStorage.getItem('token');
@@ -398,11 +402,13 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 </ListItem>
             </List>
 
-            <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
-                <MenuItem onClick={() => console.log('Rename clicked')}>Rename</MenuItem>
-                <MenuItem onClick={handleArchiveConversation}>Archive</MenuItem>
-                <MenuItem onClick={handleDelete}>Delete</MenuItem>
-            </Menu>
+    <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
+        <MenuItem onClick={() => console.log('Rename clicked')}>Rename</MenuItem>
+        {currentConversation && currentConversation.status !== 'archived' && (
+            <MenuItem onClick={handleArchiveConversation}>Archive</MenuItem>
+        )}
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+    </Menu>
         </Box>
     );
 };
