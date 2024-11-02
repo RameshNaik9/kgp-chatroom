@@ -33,6 +33,10 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
     let isLongPress = false;
     let swipeElement = null; // Store the reference to the message element
     let currentTranslateX = 0; // Track the current X translation of the message
+    const [isScrolledUp, setIsScrolledUp] = useState(false);
+    const [lastTap, setLastTap] = useState(0);
+
+
 
     const [isMobile, setIsMobile] = useState(false);
 
@@ -118,6 +122,12 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
             messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
         }, 0);
     };
+
+    const handleScroll = (e) => {
+        const { scrollTop, scrollHeight, clientHeight } = e.target;
+        setIsScrolledUp(scrollTop < scrollHeight - clientHeight);
+    };
+
 
         const handleFullNameClick = (userId) => {
         axios.get(`${apiBaseUrl}/api/profile/get-profile-info/${userId}`)
@@ -303,11 +313,42 @@ const handleTouchEnd = (e) => {
         msg.user.fullName.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const handleGroupChatDoubleClick = () => {
+        if (isScrolledUp) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    // Mobile double-tap fallback
+    const handleGroupChatDoubleTap = () => {
+        const currentTime = Date.now();
+        const tapGap = currentTime - lastTap;
+
+        if (tapGap < 300 && tapGap > 0) {
+            // Detected as a double-tap
+            handleGroupChatDoubleClick();
+        }
+
+        setLastTap(currentTime);
+    };
+
     return (
         <div className={`chatroom-container bg-${theme}`} style={{ width: '100%' }}>
             <ToastContainer /> 
             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
-                <strong><h2 style={{fontSize:'18px',}} className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2></strong>
+                {/* <strong><h2 style={{fontSize:'18px',}} className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2></strong> */}
+                <strong>
+                    <h2
+                        style={{ fontSize: '18px' }}
+                        className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}
+                        onDoubleClick={handleGroupChatDoubleClick}    // Desktop double-click
+                        onTouchEnd={handleGroupChatDoubleTap}         // Mobile double-tap fallback
+                    >
+                        Group Chat
+                    </h2>
+                </strong>
                 <div className=" fs-6 d-flex align-items-center">
                     <input
                         style={{borderRadius:'20px'}}
@@ -337,7 +378,7 @@ const handleTouchEnd = (e) => {
                     <p className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`} >Connecting to server...</p>
                 </div>
             </div>
-            <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} >
+            <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} onScroll={handleScroll}>
                 {filteredMessages.map((msg, index) => {
                     const isCurrentUser = msg.user._id === userId;
                     const isEditing = editingMessageId === msg._id;
