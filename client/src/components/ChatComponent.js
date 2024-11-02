@@ -34,7 +34,11 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
     let swipeElement = null; // Store the reference to the message element
     let currentTranslateX = 0; // Track the current X translation of the message
     const [isScrolledUp, setIsScrolledUp] = useState(false);
-    const [lastTap, setLastTap] = useState(0);
+    const [lastTapTime, setLastTapTime] = useState(0);
+    const [lastTapY, setLastTapY] = useState(0);
+    const doubleTapTimeoutRef = useRef(null);
+
+
 
 
 
@@ -59,6 +63,15 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
         // Clean up the event listener
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
+
+
+    useEffect(() => {
+    return () => {
+        if (doubleTapTimeoutRef.current) {
+            clearTimeout(doubleTapTimeoutRef.current);
+        }
+    };
+}, []);
 
 
 
@@ -313,42 +326,53 @@ const handleTouchEnd = (e) => {
         msg.user.fullName.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleGroupChatDoubleClick = () => {
-        if (isScrolledUp) {
-            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    const handleChatroomDoubleClick = (e) => {
+        const chatContainer = e.currentTarget;
+        const clickY = e.clientY - chatContainer.getBoundingClientRect().top;
+        const containerHeight = chatContainer.clientHeight;
+        if (clickY < containerHeight / 2) {
+            // Double-clicked in the upper half, scroll to the top
+            chatContainer.scrollTo({ top: 0, behavior: "smooth" });
         } else {
-            messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Double-clicked in the lower half, scroll to the bottom
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     };
 
-    // Mobile double-tap fallback
-    const handleGroupChatDoubleTap = () => {
-        const currentTime = Date.now();
-        const tapGap = currentTime - lastTap;
+const handleChatroomTap = (e) => {
+    // Capture Y position of the tap event relative to the chat container
+    const chatContainer = e.currentTarget;
+    const containerHeight = chatContainer.clientHeight;
+    const tapY = e.touches && e.touches[0] 
+        ? e.touches[0].clientY - chatContainer.getBoundingClientRect().top 
+        : e.clientY - chatContainer.getBoundingClientRect().top;
 
-        if (tapGap < 300 && tapGap > 0) {
-            // Detected as a double-tap
-            handleGroupChatDoubleClick();
+    if (doubleTapTimeoutRef.current) {
+        // Confirm a double-tap if the timeout already exists
+        clearTimeout(doubleTapTimeoutRef.current);
+        doubleTapTimeoutRef.current = null;
+
+        // Check if the double-tap was in the upper or lower half
+        if (tapY < containerHeight / 2) {
+            // Double-tap in the upper half, scroll to the top
+            chatContainer.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+            // Double-tap in the lower half, scroll to the bottom
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
-
-        setLastTap(currentTime);
-    };
+    } else {
+        // Set a timeout to detect double-tap within 300ms
+        doubleTapTimeoutRef.current = setTimeout(() => {
+            doubleTapTimeoutRef.current = null;
+        }, 300);
+    }
+};
 
     return (
         <div className={`chatroom-container bg-${theme}`} style={{ width: '100%' }}>
             <ToastContainer /> 
             <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
-                {/* <strong><h2 style={{fontSize:'18px',}} className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2></strong> */}
-                <strong>
-                    <h2
-                        style={{ fontSize: '18px' }}
-                        className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}
-                        onDoubleClick={handleGroupChatDoubleClick}    // Desktop double-click
-                        onTouchEnd={handleGroupChatDoubleTap}         // Mobile double-tap fallback
-                    >
-                        Group Chat
-                    </h2>
-                </strong>
+                <strong><h2 style={{fontSize:'18px',}} className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Group Chat</h2></strong>
                 <div className=" fs-6 d-flex align-items-center">
                     <input
                         style={{borderRadius:'20px'}}
@@ -378,7 +402,7 @@ const handleTouchEnd = (e) => {
                     <p className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`} >Connecting to server...</p>
                 </div>
             </div>
-            <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} onScroll={handleScroll}>
+            <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} onScroll={handleScroll} onDoubleClick={handleChatroomDoubleClick} onTouchEnd={handleChatroomTap}>
                 {filteredMessages.map((msg, index) => {
                     const isCurrentUser = msg.user._id === userId;
                     const isEditing = editingMessageId === msg._id;
