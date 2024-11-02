@@ -215,6 +215,31 @@
     cursor: pointer;
 }
 
+@media (max-width: 576px) {
+
+    /* Stack logo and response vertically on mobile */
+    .assistant-response-container {
+        flex-direction: column;
+    }
+
+    .assistant-logo {
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+}
+
+@media (min-width: 577px) {
+
+    /* Side-by-side layout for larger screens */
+    .assistant-response-container {
+        flex-direction: row;
+    }
+
+    .assistant-logo {
+        margin-right: 8px;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .conversation-container {
@@ -262,7 +287,7 @@
         border-radius: 15px;
         text-align: left;
         align-self: flex-end;
-        max-width: 70%;
+        max-width: 85%;
     }
 
     .convo-title {
@@ -271,58 +296,3 @@
         font-size: 1.2rem;
     }
 }
-
-
-/* Styling for headings (e.g., # Heading) */
-/* .assistant-response-content h1,
-.assistant-response-content h2,
-.assistant-response-content h3 {
-    color: #007bff;
-    font-weight: bold;
-    border-bottom: 2px solid #007bff;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-} */
-
-/* Styling for bold text (e.g., **bold text**) */
-/* .assistant-response-content strong {
-    color: #ff6347;
-    font-weight: bold;
-} */
-
-/* Styling for bullet points (e.g., * Item 1) */
-/* .assistant-response-content ul {
-    list-style-type: disc;
-    margin-left: 20px;
-    color: #555;
-}
-
-.assistant-response-content ul li {
-    margin-bottom: 8px;
-} */
-
-/* Styling for numbered lists (e.g., 1. Item 1) */
-/* .assistant-response-content ol {
-    list-style-type: decimal;
-    margin-left: 20px;
-    color: #555;
-}
-
-.assistant-response-content ol li {
-    margin-bottom: 8px;
-} */
-
-/* Styling for links (e.g., [link text](http://example.com)) */
-/* .assistant-response-content a {
-    color: #007bff;
-    text-decoration: underline;
-} */
-
-/* Styling for code blocks (e.g., `code`) */
-/* .assistant-response-content code {
-    background-color: #f5f5f5;
-    padding: 2px 4px;
-    border-radius: 3px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-} */

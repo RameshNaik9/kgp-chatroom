@@ -77,7 +77,11 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
         if (pathSegments.length >= 3) {
             const category = pathSegments[1];
             const conversationId = pathSegments[2];
-            // setSelectedConversation(conversationId);
+
+            // Set selected conversation if not set yet (i.e., on initial load)
+            if (!selectedConversation) {
+                setSelectedConversation(conversationId);
+            }
 
             // Open the correct assistant history based on URL category
             if (category === 'career-assistant') {
@@ -86,9 +90,13 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 setAcademicsOpen(true);
             } else if (category === 'general-assistant') {
                 setGymkhanaOpen(true);
+            } else if (category === 'archived') {
+                setArchivedOpen(true); // Keep archived chats open if URL indicates an archived chat
             }
         }
-    }, [location.pathname]);
+    }, [location.pathname, selectedConversation]);
+
+
 
     // Filter conversations based on selected assistant
     const filteredConversations = (profile) =>
@@ -123,10 +131,20 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     };
 
     const handleConversationClick = (category, conversationId, isArchived = false) => {
-        // Set the active conversation ID immediately
         setSelectedConversation(conversationId);
-        
-        // Perform navigation and ensure highlighting updates after navigation
+
+        // Maintain the correct toggle state based on category
+        if (category === 'career-assistant') {
+            setCareerOpen(true);
+        } else if (category === 'academics-assistant') {
+            setAcademicsOpen(true);
+        } else if (category === 'general-assistant') {
+            setGymkhanaOpen(true);
+        } else if (isArchived) {
+            setArchivedOpen(true); // Ensure archived chats remain open
+        }
+
+        // Navigate to the selected conversation
         if (isArchived) {
             navigate(`/${category}/archived/${conversationId}`, { replace: true });
         } else {
@@ -171,6 +189,10 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
             handleMenuClose();
         }
     };
+
+    const currentConversation = allConversations.find(
+    (c) => c._id === currentConversationId
+    ) || archivedConversations.find((c) => c._id === currentConversationId);
 
     const handleArchiveConversation = async () => {
     try {
@@ -380,11 +402,13 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 </ListItem>
             </List>
 
-            <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
-                <MenuItem onClick={() => console.log('Rename clicked')}>Rename</MenuItem>
-                <MenuItem onClick={handleArchiveConversation}>Archive</MenuItem>
-                <MenuItem onClick={handleDelete}>Delete</MenuItem>
-            </Menu>
+    <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
+        <MenuItem onClick={() => console.log('Rename clicked')}>Rename</MenuItem>
+        {currentConversation && currentConversation.status !== 'archived' && (
+            <MenuItem onClick={handleArchiveConversation}>Archive</MenuItem>
+        )}
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+    </Menu>
         </Box>
     );
 };

@@ -33,6 +33,14 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
     let isLongPress = false;
     let swipeElement = null; // Store the reference to the message element
     let currentTranslateX = 0; // Track the current X translation of the message
+    const [isScrolledUp, setIsScrolledUp] = useState(false);
+    const [lastTapTime, setLastTapTime] = useState(0);
+    const [lastTapY, setLastTapY] = useState(0);
+    const doubleTapTimeoutRef = useRef(null);
+
+
+
+
 
     const [isMobile, setIsMobile] = useState(false);
 
@@ -55,6 +63,15 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
         // Clean up the event listener
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
+
+
+    useEffect(() => {
+    return () => {
+        if (doubleTapTimeoutRef.current) {
+            clearTimeout(doubleTapTimeoutRef.current);
+        }
+    };
+}, []);
 
 
 
@@ -118,6 +135,12 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
             messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
         }, 0);
     };
+
+    const handleScroll = (e) => {
+        const { scrollTop, scrollHeight, clientHeight } = e.target;
+        setIsScrolledUp(scrollTop < scrollHeight - clientHeight);
+    };
+
 
         const handleFullNameClick = (userId) => {
         axios.get(`${apiBaseUrl}/api/profile/get-profile-info/${userId}`)
@@ -303,6 +326,55 @@ const handleTouchEnd = (e) => {
         msg.user.fullName.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const handleChatroomDoubleClick = (e) => {
+        const chatContainer = e.currentTarget;
+        const clickY = e.clientY - chatContainer.getBoundingClientRect().top;
+        const containerHeight = chatContainer.clientHeight;
+        if (clickY < containerHeight / 2) {
+            // Double-clicked in the upper half, scroll to the top
+            chatContainer.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+            // Double-clicked in the lower half, scroll to the bottom
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
+const handleChatroomTap = (e) => {
+    const chatContainer = e.currentTarget;
+    const containerHeight = chatContainer.clientHeight;
+
+    let tapY = 0;
+
+    if (e.changedTouches && e.changedTouches[0]) {
+        // Use changedTouches to get the touch point that ended
+        tapY = e.changedTouches[0].clientY - chatContainer.getBoundingClientRect().top;
+    } else if (e.clientY) {
+        tapY = e.clientY - chatContainer.getBoundingClientRect().top;
+    } else {
+        // If we can't get the Y coordinate, exit the function
+        return;
+    }
+
+    if (doubleTapTimeoutRef.current) {
+        clearTimeout(doubleTapTimeoutRef.current);
+        doubleTapTimeoutRef.current = null;
+
+        if (tapY < containerHeight / 2) {
+            // Double-tap in the upper half, scroll to the top
+            chatContainer.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+            // Double-tap in the lower half, scroll to the bottom
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    } else {
+        // Set a timeout to detect double-tap within 300ms
+        doubleTapTimeoutRef.current = setTimeout(() => {
+            doubleTapTimeoutRef.current = null;
+        }, 300);
+    }
+};
+
+
     return (
         <div className={`chatroom-container bg-${theme}`} style={{ width: '100%' }}>
             <ToastContainer /> 
@@ -337,7 +409,7 @@ const handleTouchEnd = (e) => {
                     <p className={`m-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`} >Connecting to server...</p>
                 </div>
             </div>
-            <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} >
+            <div className={`messages p-3 ${isLoading ? 'blur' : ''}`} onScroll={handleScroll} onDoubleClick={handleChatroomDoubleClick} onClick={handleChatroomTap}>
                 {filteredMessages.map((msg, index) => {
                     const isCurrentUser = msg.user._id === userId;
                     const isEditing = editingMessageId === msg._id;
@@ -360,7 +432,7 @@ const handleTouchEnd = (e) => {
                                         </span>
                                     )}
                                      {/* Timestamp */}
-                                    <span className="timestamp">{`${moment(msg.createdAt).format('hh:mm A')}`}</span>
+                                    <span className={`timestamp ${theme === "dark" ? "text-light" : "text-dark"}`}>{`${moment(msg.createdAt).format('hh:mm A')}`}</span>
 
                                     {msg.isEdited && <span className='edited'>(edited)</span>}
                                     
@@ -413,7 +485,7 @@ const handleTouchEnd = (e) => {
                                                     <KeyboardArrowDownIcon/>
                                                 </div>
                                             
-                                            <div className="dropdown" style={{ marginRight: 'auto' }}>
+                                            <div className="dropdown" style={{ marginRight: 'auto',marginLeft: 'auto' }}>
                                                 <button
                                                     // className={` dropdown-toggle ${theme === 'dark' ? 'text-light' : 'text-dark'}`}
                                                     className={`dropdown-toggle ${theme === 'dark' ? (isMobile ? 'text-dark' : 'text-light') : (isMobile ? 'text-light' : 'text-dark')}`}
@@ -423,7 +495,10 @@ const handleTouchEnd = (e) => {
                                                     aria-expanded="false"
                                                 >
                                                 </button>
-                                                <ul className="dropdown-menu dropdown-menu-end p-0" aria-labelledby={`dropdownMenuButton-${msg._id}`}>
+                                                <ul
+                                                    className={`dropdown-menu p-0 ${!isCurrentUser ? 'dropdown-menu-start' : 'dropdown-menu-end'}`}
+                                                    aria-labelledby={`dropdownMenuButton-${msg._id}`}
+                                                >
                                                     {isCurrentUser ? (
                                                         <>
                                                             <li><button className="dropdown-item" onClick={() => handleEditMessageClick(msg._id, msg.message)}>Edit</button></li>
