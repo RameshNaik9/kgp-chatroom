@@ -138,8 +138,8 @@ const getConversationMessages = async (conversationId) => {
 // Service to fetch all conversations for a specific user
 const getAllConversationsForUserService = async (userId) => {
     try {
-        // Query the database for all conversations that match the userId
-        const conversations = await Conversation.find({ user: userId });
+        // Query the database for all conversations that match the userId and are not closed
+        const conversations = await Conversation.find({ user: userId, status: { $ne: 'closed' } });
         return conversations;
     } catch (error) {
         console.error('Error fetching conversations from the database:', error);
@@ -166,6 +166,22 @@ const updateMessageFeedbackService = async (messageId, feedbackRating) => {
   }
 };
 
+// Service to archive a conversation
+const archiveConversationService = async (conversationId) => {
+    try {
+        const archivedConversation = await Conversation.findByIdAndUpdate(
+            conversationId,
+            { status: 'archived' },
+            { new: true }  // Return the updated document
+        );
 
-module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService, getConversationMessages, getAllConversationsForUserService, updateMessageFeedbackService };
+        return archivedConversation;
+    } catch (error) {
+        console.error('Error archiving conversation:', error);
+        throw new Error('Database operation failed');
+    }
+};
+
+
+module.exports = { createConversationInDB, saveUserMessageService, getAssistantResponseService, getConversationMessages, getAllConversationsForUserService, updateMessageFeedbackService, archiveConversationService };
 

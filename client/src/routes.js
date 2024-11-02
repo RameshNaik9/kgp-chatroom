@@ -16,8 +16,15 @@ function RoutesConfig() {
                 <Route path="/group-chat" element={<GroupChatPage />} />
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/home" element={<HomePage />} />
+                
+                {/* Routes for Career Assistant */}
                 <Route path="/career-assistant" element={<CareerAssistantPage />} />
                 <Route path="/career-assistant/:conversation_id" element={<CareerAssistantPage />} />
+
+                {/* Archived Route for Career Assistant */}
+                <Route path="/career-assistant/archived/:conversation_id" element={<CareerAssistantPage />} />
+                
+                {/* Add similar routes for other assistants if needed */}
             </Routes>
         </Router>
     );

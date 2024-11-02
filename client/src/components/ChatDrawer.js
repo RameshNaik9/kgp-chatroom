@@ -18,9 +18,10 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add'; // Add icon for the plus button
 import Divider from '@mui/material/Divider'; // Divider for horizontal line
 import ArchiveIcon from '@mui/icons-material/Archive';
-import image3 from '../media/image3.png'; // Import the image for Group Chat
+// import image3 from '../media/image3.png'; // Import the image for Group Chat
 
 const ChatDrawer = ({ toggleDrawer, newConversation }) => {
+    const image3 = `${process.env.PUBLIC_URL}/media/image3.png`;
     const navigate = useNavigate();
     const location = useLocation(); // Get current location (URL)
     const [allConversations, setAllConversations] = useState([]);
@@ -32,6 +33,8 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentConversationId, setCurrentConversationId] = useState(null); // Track the clicked conversation
     const open = Boolean(anchorEl);
+    const [archivedConversations, setArchivedConversations] = useState([]); // Define state for archived conversations
+
     
     const [longPress, setLongPress] = useState(false); // New state for long press
     let pressTimer;
@@ -43,16 +46,23 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
         const fetchAllConversations = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get( `${apiBaseUrl}/api/assistant/conversations`, {
+                const response = await axios.get(`${apiBaseUrl}/api/assistant/conversations`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                setAllConversations(response.data.reverse()); // Reverse to have the latest at the top
+
+                // Separate archived conversations from others
+                const allConversations = response.data.reverse(); // Reverse to have the latest at the top
+                const activeConversations = allConversations.filter(convo => convo.status === "active");
+                const archivedConversations = allConversations.filter(convo => convo.status === "archived");
+
+                setAllConversations(activeConversations); // Set only active conversations here
+                setArchivedConversations(archivedConversations); // Set archived conversations separately
             } catch (error) {
                 console.error('Error fetching conversations:', error);
             }
         };
         fetchAllConversations();
-    }, []);
+    }, [apiBaseUrl]);
 
     useEffect(() => {
         if (newConversation) {
@@ -112,9 +122,15 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
         setGymkhanaOpen(prevOpen => !prevOpen);
     };
 
-    const handleConversationClick = (category, conversationId) => {
+    const handleConversationClick = (category, conversationId, isArchived = false) => {
         setSelectedConversation(conversationId); // Set the active conversation
-        navigate(`/${category}/${conversationId}`);
+        
+        // Redirect based on whether the conversation is archived
+        if (isArchived) {
+            navigate(`/${category}/archived/${conversationId}`);
+        } else {
+            navigate(`/${category}/${conversationId}`);
+        }
     };
 
     // Toggle history visibility for Archived Chats
@@ -124,9 +140,9 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     };
 
     const handleMenuClick = (event, conversationId) => {
-        event.stopPropagation(); // Stop the propagation to prevent triggering the conversation click
+        event.stopPropagation();
         setAnchorEl(event.currentTarget);
-        setCurrentConversationId(conversationId);
+        setCurrentConversationId(conversationId);  // Set the conversation ID being archived
     };
 
     const handleMenuClose = () => {
@@ -137,17 +153,47 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`${apiBaseUrl}/api/assistant/conversation/${currentConversationId}`,{
+            await axios.delete(`${apiBaseUrl}/api/assistant/conversation/${currentConversationId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            setAllConversations(prevConversations => prevConversations.filter(c => c._id !== currentConversationId));
+            // Update both active and archived lists to immediately remove the deleted conversation
+            setAllConversations(prevConversations => 
+                prevConversations.filter(c => c._id !== currentConversationId)
+            );
+            setArchivedConversations(prevConversations => 
+                prevConversations.filter(c => c._id !== currentConversationId)
+            );
         } catch (error) {
             console.error('Error deleting conversation:', error);
         } finally {
             handleMenuClose();
         }
     };
+
+    const handleArchiveConversation = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        await axios.patch(`${apiBaseUrl}/api/assistant/conversation/${currentConversationId}`, {
+            status: 'archived'
+        }, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        // Update the UI to move the conversation to archived
+        setAllConversations(prevConversations => prevConversations.filter(c => c._id !== currentConversationId));
+        setArchivedConversations(prevConversations => [
+            ...prevConversations,
+            allConversations.find(c => c._id === currentConversationId)
+        ]);
+
+    } catch (error) {
+        console.error('Error archiving conversation:', error);
+    } finally {
+        handleMenuClose();
+    }
+};
+
 
     return (
         <Box className="drawer-container" role="presentation">
@@ -294,7 +340,18 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                     </ListItemButton>
                 </ListItem>
                 <Collapse in={archivedOpen} timeout="auto" unmountOnExit>
-                    {/* Add chat history for Archived Chats here */}
+                    <List component="div" disablePadding className="history-list">
+                        {archivedConversations.map(conversation => (
+                            <ListItem key={conversation._id} disablePadding sx={{ pl: 4 }}>
+                                <ListItemButton onClick={() => handleConversationClick('career-assistant', conversation._id, true)}>
+                                    <ListItemText primary={conversation.chat_title} sx={{ color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} />
+                                    <IconButton size="small" onClick={(e) => handleMenuClick(e, conversation._id)} aria-label="more" sx={{ color: 'white', visibility: longPress ? 'visible' : 'hidden' }}>
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
                 </Collapse>
 
                 {/* Private Rooms */}
@@ -308,7 +365,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
 
             <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
                 <MenuItem onClick={() => console.log('Rename clicked')}>Rename</MenuItem>
-                <MenuItem onClick={() => console.log('Archive clicked')}>Archive</MenuItem>
+                <MenuItem onClick={handleArchiveConversation}>Archive</MenuItem>
                 <MenuItem onClick={handleDelete}>Delete</MenuItem>
             </Menu>
         </Box>

@@ -1,5 +1,5 @@
 const express = require('express');
-const { createNewConversation, sendMessage, getConversation, getAllConversationsForUser, deleteConversation, submitFeedback } = require('../controllers/assistantController');
+const { createNewConversation, sendMessage, getConversation, getAllConversationsForUser, deleteConversation, submitFeedback, archiveConversation } = require('../controllers/assistantController');
 const { streamAssistantResponse } = require('../controllers/assistantSSEController'); // Import SSE controller
 const authMiddleware = require('../middleware/auth');
 
@@ -26,5 +26,7 @@ router.get('/stream-response/:conversation_id', authMiddleware, streamAssistantR
 // DELETE route to delete a conversation
 router.delete('/conversation/:conversation_id', authMiddleware, deleteConversation);
 
+// Add route for archiving a conversation
+router.patch('/conversation/:conversation_id', authMiddleware, archiveConversation);
 
 module.exports = router;
