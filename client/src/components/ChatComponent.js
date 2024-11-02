@@ -360,7 +360,7 @@ const handleTouchEnd = (e) => {
                                         </span>
                                     )}
                                      {/* Timestamp */}
-                                    <span className="timestamp">{`${moment(msg.createdAt).format('hh:mm A')}`}</span>
+                                    <span className={`timestamp ${theme === "dark" ? "text-light" : "text-dark"}`}>{`${moment(msg.createdAt).format('hh:mm A')}`}</span>
 
                                     {msg.isEdited && <span className='edited'>(edited)</span>}
                                     
@@ -413,7 +413,7 @@ const handleTouchEnd = (e) => {
                                                     <KeyboardArrowDownIcon/>
                                                 </div>
                                             
-                                            <div className="dropdown" style={{ marginRight: 'auto' }}>
+                                            <div className="dropdown" style={{ marginRight: 'auto',marginLeft: 'auto' }}>
                                                 <button
                                                     // className={` dropdown-toggle ${theme === 'dark' ? 'text-light' : 'text-dark'}`}
                                                     className={`dropdown-toggle ${theme === 'dark' ? (isMobile ? 'text-dark' : 'text-light') : (isMobile ? 'text-light' : 'text-dark')}`}
@@ -423,7 +423,10 @@ const handleTouchEnd = (e) => {
                                                     aria-expanded="false"
                                                 >
                                                 </button>
-                                                <ul className="dropdown-menu dropdown-menu-end p-0" aria-labelledby={`dropdownMenuButton-${msg._id}`}>
+                                                <ul
+                                                    className={`dropdown-menu p-0 ${!isCurrentUser ? 'dropdown-menu-start' : 'dropdown-menu-end'}`}
+                                                    aria-labelledby={`dropdownMenuButton-${msg._id}`}
+                                                >
                                                     {isCurrentUser ? (
                                                         <>
                                                             <li><button className="dropdown-item" onClick={() => handleEditMessageClick(msg._id, msg.message)}>Edit</button></li>
