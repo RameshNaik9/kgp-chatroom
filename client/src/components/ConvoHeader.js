@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import logo from '../media/iit-kgp-logo.png';
-import './Header.css'; // Reuse the existing header styles
+import {  useNavigate } from 'react-router-dom';
+import './Header.css';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/MenuOpen';
@@ -84,7 +83,7 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
             };
             fetchConversationDetails();
         }
-    }, [conversationId]);
+    }, [conversationId,apiBaseUrl]);
 
     return (
         <header className="header-class">

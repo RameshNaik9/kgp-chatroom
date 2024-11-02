@@ -41,5 +41,5 @@ body {
     background-color: var(--color-bg);
     color: var(--color-white);
     line-height: 1.7;
-    background-image: url(./media/bg-texture.png);
+    /* background-image: url(./media/bg-texture.png); */
 }

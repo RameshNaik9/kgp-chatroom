@@ -43,16 +43,6 @@ app.get('/api/health-check', (req, res) => {
 // Error Handling Middleware
 app.use(errorHandler);
 
-// // Socket.IO connection
-// io.on('connection', (socket) => {
-//     console.log('New client connected');
-//     handleNewMessage(socket, io);
-
-//     socket.on('disconnect', () => {
-//         console.log('Client disconnected');
-//     });
-// });
-
 const onlineUsers = new Map(); // Track connected users
 
 // Socket.IO connection

@@ -18,9 +18,10 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add'; // Add icon for the plus button
 import Divider from '@mui/material/Divider'; // Divider for horizontal line
 import ArchiveIcon from '@mui/icons-material/Archive';
-import image3 from '../media/image3.png'; // Import the image for Group Chat
+// import image3 from '../media/image3.png'; // Import the image for Group Chat
 
 const ChatDrawer = ({ toggleDrawer, newConversation }) => {
+    const image3 = `${process.env.PUBLIC_URL}/media/image3.png`;
     const navigate = useNavigate();
     const location = useLocation(); // Get current location (URL)
     const [allConversations, setAllConversations] = useState([]);
@@ -61,7 +62,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
             }
         };
         fetchAllConversations();
-    }, []);
+    }, [apiBaseUrl]);
 
     useEffect(() => {
         if (newConversation) {
