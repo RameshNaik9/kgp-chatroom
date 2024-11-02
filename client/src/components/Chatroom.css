@@ -322,6 +322,14 @@
 }
 
 @media (max-width: 767px) {
+
+        .chatroom-container {
+                margin: auto;
+                height: calc(100vh - 68px);
+                display: flex;
+                flex-direction: column;
+                position: relative;
+            }
     .btn2 {
         font-size: 0.8rem;
         /* padding: 0.4rem 0.8rem; */
@@ -364,6 +372,31 @@
                     z-index: -100000;
                     display: none;
                 }
+
+                                /* Enforce consistent layout for mobile landscape mode */
+                                @media (orientation: landscape) and (max-width: 767px) {
+                                    .chatroom-container {
+                                        margin: 0 auto;
+                                        height: calc(100vh - 68px);
+                                        display: flex;
+                                        flex-direction: column;
+                                        position: relative;
+                                    }
+                
+                                    .message-box {
+                                        max-width: 90vw;
+                                        /* Adjust to fit the wider landscape screen */
+                                    }
+                
+                                    .form-control {
+                                        font-size: 14px;
+                                        padding: 8px;
+                                    }
+                
+                                    .send-button {
+                                        padding: 8px 15px;
+                                    }
+                                }
 }
 @media (min-width: 768px) {
     .message-box {
