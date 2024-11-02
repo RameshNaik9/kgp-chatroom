@@ -77,7 +77,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
         if (pathSegments.length >= 3) {
             const category = pathSegments[1];
             const conversationId = pathSegments[2];
-            setSelectedConversation(conversationId);
+            // setSelectedConversation(conversationId);
 
             // Open the correct assistant history based on URL category
             if (category === 'career-assistant') {
@@ -123,13 +123,14 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     };
 
     const handleConversationClick = (category, conversationId, isArchived = false) => {
-        setSelectedConversation(conversationId); // Set the active conversation
+        // Set the active conversation ID immediately
+        setSelectedConversation(conversationId);
         
-        // Redirect based on whether the conversation is archived
+        // Perform navigation and ensure highlighting updates after navigation
         if (isArchived) {
-            navigate(`/${category}/archived/${conversationId}`);
+            navigate(`/${category}/archived/${conversationId}`, { replace: true });
         } else {
-            navigate(`/${category}/${conversationId}`);
+            navigate(`/${category}/${conversationId}`, { replace: true });
         }
     };
 
@@ -342,10 +343,26 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 <Collapse in={archivedOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="history-list">
                         {archivedConversations.map(conversation => (
-                            <ListItem key={conversation._id} disablePadding sx={{ pl: 4 }}>
-                                <ListItemButton onClick={() => handleConversationClick('career-assistant', conversation._id, true)}>
-                                    <ListItemText primary={conversation.chat_title} sx={{ color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} />
-                                    <IconButton size="small" onClick={(e) => handleMenuClick(e, conversation._id)} aria-label="more" sx={{ color: 'white', visibility: longPress ? 'visible' : 'hidden' }}>
+                            <ListItem
+                                key={conversation._id}
+                                disablePadding
+                                sx={{ pl: 4 }}
+                                className={selectedConversation === conversation._id ? 'active-item' : ''}
+                            >
+                                <ListItemButton
+                                    onClick={() => handleConversationClick('career-assistant', conversation._id, true)}
+                                    className={selectedConversation === conversation._id ? 'active-item' : ''}
+                                >
+                                    <ListItemText
+                                        primary={conversation.chat_title}
+                                        sx={{ color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                    />
+                                    <IconButton
+                                        size="small"
+                                        onClick={(e) => handleMenuClick(e, conversation._id)}
+                                        aria-label="more"
+                                        sx={{ color: 'white', visibility: longPress ? 'visible' : 'hidden' }}
+                                    >
                                         <MoreVertIcon />
                                     </IconButton>
                                 </ListItemButton>

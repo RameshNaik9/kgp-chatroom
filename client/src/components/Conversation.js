@@ -202,11 +202,15 @@ const Conversation = () => {
         }
     };
 
-    // Handle recommended question click
-    const handleQuestionClick = (question) => {
-        setUserMessage(question);
-        sendMessage(question); // Send the recommended question as a message
-    };
+// Handle recommended question click
+const handleQuestionClick = (question) => {
+    if (isArchived) {
+        // alert("This conversation is archived. You cannot continue or extend it.");
+        return;
+    }
+    setUserMessage(question);
+    sendMessage(question); // Send the recommended question as a message
+};
 
     const toggleQuestions = () => {
         setIsQuestionsVisible(!isQuestionsVisible); // Toggle visibility of recommended questions
