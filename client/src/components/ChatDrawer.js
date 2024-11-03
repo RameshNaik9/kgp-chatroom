@@ -13,6 +13,7 @@ import Collapse from '@mui/material/Collapse';
 import './ChatDrawer.css';
 import { useNavigate, useLocation } from 'react-router-dom'; // Use useLocation to track URL
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add'; // Add icon for the plus button
@@ -59,6 +60,7 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
                 setArchivedConversations(archivedConversations); // Set archived conversations separately
             } catch (error) {
                 console.error('Error fetching conversations:', error);
+                toast.error('Session expired. Login again');
             }
         };
         fetchAllConversations();

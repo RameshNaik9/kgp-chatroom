@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import './Conversation.css';
 import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
 import { FaRegThumbsUp, FaRegThumbsDown, FaRegCopy, FaSyncAlt, FaThumbsUp, FaThumbsDown, FaCheck } from 'react-icons/fa';  // Import FaCheck for tick
+import { ToastContainer, toast } from 'react-toastify';
 
 
 // Cache for storing conversation data
@@ -85,6 +86,7 @@ const Conversation = () => {
             } catch (error) {
                 setError('Failed to fetch conversation history');
                 console.error('Error fetching conversation history:', error);
+                toast.error('Session expired. Login again');
             } finally {
                 setLoading(false);
             }
