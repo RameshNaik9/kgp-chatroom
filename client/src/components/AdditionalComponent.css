@@ -34,6 +34,38 @@
 .others-profile-card p {
     margin: 5px 0;
     color: var(--color-light);
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+/* Default font size */
+.others-profile-card p {
+    font-size: 16px;
+}
+
+/* Adjust font size for tablets */
+@media (max-width: 768px) {
+    .others-profile-card p {
+        font-size: 14px;
+    }
+}
+
+/* Adjust font size for mobile devices */
+@media (max-width: 576px) {
+    .others-profile-card p {
+        font-size: 12px;
+    }
+}
+.others-profile-card {
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.email-address {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .close-btn {

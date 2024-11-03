@@ -19,9 +19,9 @@ const AdditionalComponent = ({ profileData, onCloseProfileCard }) => {
                         &times;
                     </span>
                     <h5>{profileData.fullName}</h5>
-                    <p>{profileData.email}</p>
+                    <p className="email-address">{profileData.email}</p>
                     <p>{profileData.rollNumber}</p>
-                    <p>{profileData.department} Department</p>
+                    <p>{profileData.department}</p>
                     <p><strong>Verified:</strong> {profileData.isVerified ? 'Yes' : 'No'}</p>
                 </div>
             )}
