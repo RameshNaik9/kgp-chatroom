@@ -39,14 +39,14 @@ const OnlineUsersComponent = () => {
         <div className="online-users-component">
             <div className="header" onClick={toggleDropdown}>
                 <span className="green-dot"></span>
-                <h3 className="active-users-heading">Active Users ({onlineUsers.length + 1})</h3>
+                <h3 className="active-users-heading">Active Users ({onlineUsers.length })</h3>
                 <span className={`dropdown-icon ${isExpanded ? 'expanded' : ''}`}>&#9660;</span> {/* Triangle icon */}
             </div>
 
             {isExpanded && (
                 <ul className="users-list">
                     <li key="you">
-                        <span className="user-dot"></span> {/* Green dot */}
+                        <span className="user-dot-you"></span>
                         You
                     </li>
                     {onlineUsers.map((user, index) => (

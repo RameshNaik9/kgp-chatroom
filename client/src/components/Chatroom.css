@@ -187,7 +187,6 @@
     padding: 10px;
     padding-bottom: 25px;
     border-radius: 15px;
-    
     color: white;
     word-wrap: break-word;
     max-width: 80vw;
@@ -196,6 +195,10 @@
     width: auto;
     height: auto;
     box-sizing: border-box;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 .timestamp {
@@ -205,9 +208,10 @@
 }
 
 .edited {
-    position: absolute;
     font-size: 10px;
     color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+    margin-left: 2px;
 }
 
 .custom-reply-info {
@@ -298,15 +302,29 @@
 .reply-to-container .cancel-button {
     align-self: flex-end;
     margin-top: 5px;
+
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 0.425rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
 }
 
-.reply-to-container .cancel-button button {
+.reply-to-container .cancel-button  {
     white-space: nowrap;
 }
 
 .align-items-end .reply-to-wrapper {
     align-self: flex-end;
     text-align: left;
+}
+
+
+.logout-btn:hover {
+    background-color: #0056b3;
 }
 
 

@@ -34,9 +34,11 @@ const ChatroomComponent = ({ onProfileClick }) => {  // Pass function to parent
     let swipeElement = null; // Store the reference to the message element
     let currentTranslateX = 0; // Track the current X translation of the message
     const [isScrolledUp, setIsScrolledUp] = useState(false);
-    const [lastTapTime, setLastTapTime] = useState(0);
-    const [lastTapY, setLastTapY] = useState(0);
+    // const [lastTapTime, setLastTapTime] = useState(0);
+    // const [lastTapY, setLastTapY] = useState(0);
     const doubleTapTimeoutRef = useRef(null);
+    const threshold = window.innerWidth * 0.4; // 40% of the screen width
+
 
 
 
@@ -166,39 +168,62 @@ const handleLongPressStart = (e, messageId) => {
 const handleTouchMove = (e, msg, isCurrentUser) => {
     const touchCurrentX = e.touches[0].clientX;
     const touchDeltaX = touchCurrentX - touchStartX;
-    // Get the message box element and store it in swipeElement
     swipeElement = e.currentTarget;
-    // Move the message box with the swipe, but limit it to a percentage of the screen
-    currentTranslateX = Math.min(Math.max(touchDeltaX, -window.innerWidth * 0.4), window.innerWidth * 0.4);
+
+    // Set the threshold for triggering reply (e.g., 40% of screen width)
+    const threshold = window.innerWidth * 0.4; // 40% of the screen width
+
+    // Determine if the swipe direction is allowed and calculate translation
+    if (isCurrentUser && touchDeltaX < 0) {
+        // Current user swiping left is allowed
+        // Limit the translation to negative values up to -40% of screen width
+        currentTranslateX = Math.max(touchDeltaX, -threshold);
+    } else if (!isCurrentUser && touchDeltaX > 0) {
+        // Other users swiping right is allowed
+        // Limit the translation to positive values up to 40% of screen width
+        currentTranslateX = Math.min(touchDeltaX, threshold);
+    } else {
+        // Disallow movement in the other direction
+        currentTranslateX = 0;
+    }
+
+    // Apply the translation to the message box
     swipeElement.style.transform = `translateX(${currentTranslateX}px)`;
-    // If the user swipes right (for other users) or left (for current user), trigger reply
-    if (isCurrentUser && touchDeltaX < -50) {
+
+    // Check if the swipe has crossed the threshold to trigger reply
+    if (isCurrentUser && currentTranslateX <= -threshold) {
         // Swiping left for current user's messages
         setReplyToMessage(msg); // Trigger reply
-    } else if (!isCurrentUser && touchDeltaX > 50) {
+        handleTouchEnd(e); // Reset the swipe
+    } else if (!isCurrentUser && currentTranslateX >= threshold) {
         // Swiping right for other users' messages
         setReplyToMessage(msg); // Trigger reply
+        handleTouchEnd(e); // Reset the swipe
     }
+
     // If user moves, cancel the long press action
     clearTimeout(e.currentTarget.longPressTimeout);
 };
+
 // Clear the long press detection and swipe if the touch ends
 const handleTouchEnd = (e) => {
-    // Reset the translation to zero when the touch ends
     if (swipeElement) {
         swipeElement.style.transition = 'transform 0.3s ease'; // Smooth transition back to original position
         swipeElement.style.transform = 'translateX(0)';
     }
     clearTimeout(e.currentTarget.longPressTimeout);
+
     // If the long press was triggered, avoid triggering other actions
     if (isLongPress) {
         isLongPress = false;
         return;
     }
+
     // Reset the swipe element and translation
     swipeElement = null;
     currentTranslateX = 0;
 };
+
 
     const subscribeUserToPush = async () => {
         if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -425,24 +450,44 @@ const handleChatroomTap = (e) => {
                                 </div>
                             )}
                             <div className={`d-flex flex-column mb-3 ${isCurrentUser ? 'align-items-end' : 'align-items-start'}`}>
-                                <div className="small text-muted mb-1">
-                                     {!isCurrentUser && (
-                                        <span style={{ cursor: 'pointer', textDecoration: '' }} onClick={() => handleFullNameClick(msg.user._id)}>
+                                <div
+                                    className={`small text-muted mb-1 ${
+                                        isCurrentUser ? 'text-end' : ''
+                                    }`}
+                                >
+                                    {!isCurrentUser && (
+                                        <span
+                                            style={{
+                                                cursor: 'pointer',
+                                                textDecoration: '',
+                                            }}
+                                            onClick={() =>
+                                                handleFullNameClick(msg.user._id)
+                                            }
+                                        >
                                             {`${msg.user.fullName} • `}
                                         </span>
                                     )}
-                                     {/* Timestamp */}
-                                    <span className={`timestamp ${theme === "dark" ? "text-light" : "text-dark"}`}>{`${moment(msg.createdAt).format('hh:mm A')}`}</span>
-
-                                    {msg.isEdited && <span className='edited'>(edited)</span>}
-                                    
+                                    <span
+                                        className={`timestamp ${
+                                            theme === 'dark' ? 'text-light' : 'text-dark'
+                                        }`}
+                                    >
+                                        {`${moment(msg.createdAt).format('hh:mm A')}`}
+                                        {msg.isEdited && (
+                                            <span className="edited"> (edited)</span>
+                                        )}
+                                    </span>
                                     {msg.replyTo && msg.replyTo.user && (
                                         <div className="custom-reply-info">
-                                            Replying to: <strong>{msg.replyTo.user.fullName}</strong>
+                                            Replying to:{' '}
+                                            <strong>
+                                                {msg.replyTo.user.fullName}
+                                            </strong>
                                         </div>
                                     )}
-
                                 </div>
+
                                 <div className="message-wrapper">
                                     {msg.replyTo && (
                                         <div className={`reply-to-wrapper small border ${theme === "dark" ? "text-light" : "text-dark"}`}>
@@ -481,9 +526,12 @@ const handleChatroomTap = (e) => {
                                             <span>{msg.message}</span>
 
                                               {/* Menu Icon (down arrow) */}
-                                                <div className="menu-icon" data-bs-toggle="dropdown">
-                                                    <KeyboardArrowDownIcon/>
-                                                </div>
+                                                {!isMobile && (
+                                                    <div className="menu-icon" data-bs-toggle="dropdown">
+                                                        <KeyboardArrowDownIcon/>
+                                                    </div>
+                                                )}
+
                                             
                                             <div className="dropdown" style={{ marginRight: 'auto',marginLeft: 'auto' }}>
                                                 <button
@@ -530,12 +578,13 @@ const handleChatroomTap = (e) => {
                         <span>
                             Replying to: <strong>{replyToMessage.fullName}</strong> - {replyToMessage.message}
                         </span>
-                        <div className="cancel-button">
+                        <div className="cancel-button" onClick={() => setReplyToMessage(null)}>
                             <button
-                                className="btn1 btn-sm"
-                                onClick={() => setReplyToMessage(null)}>
-                                Cancel
+                                className=" btn-sm"
+                                // onClick={() => setReplyToMessage(null)}
+                                >
                         </button>
+                        Cancel
                         </div>
                     </div>
                 )}

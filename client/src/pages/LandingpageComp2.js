@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
 // import HomePage from "./HomePage";
-import '../components/Landingpage_comp2.css';
+import '../components/LandingpageComp2.css';
 // import axios from 'axios';
 // import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://chatkgp.azurewebsites.net';
 
-const Landingpage_comp2 = () => {
+const LandingpageComp2 = () => {
   const [activeForm, setActiveForm] = useState(null);
   // const [isConnected, setIsConnected] = useState(false);
   // const navigate = useNavigate();
@@ -94,4 +94,4 @@ const Landingpage_comp2 = () => {
   );
 };
 
-export default Landingpage_comp2;
+export default LandingpageComp2;
