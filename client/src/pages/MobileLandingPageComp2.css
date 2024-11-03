@@ -1,0 +1,119 @@
+/* MobileLandingPageComp2.css */
+
+/* Container for the authentication section */
+.mobile-auth-container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Button styles */
+.mobile-auth-button {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 1em;
+    color: #fff;
+    background-color: #111;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Button glow effect */
+.mobile-auth-button::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    background-size: 400%;
+    filter: blur(5px);
+    z-index: -1;
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
+.mobile-auth-button:hover::before {
+    opacity: 1;
+}
+
+@keyframes glowing {
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 400% 0;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
+}
+
+/* Form card */
+.mobile-card {
+    width: 100%;
+    padding: 20px;
+    margin: 20px 0;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.mobile-card h5 {
+    font-size: 1.5em;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Input fields */
+.mobile-card input {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 1em;
+    color: #fff;
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Submit button */
+.mobile-card button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #fdc65d;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.mobile-card button:hover {
+    background-color: #e6b056;
+}
+
+/* Adjustments for small screens */
+@media (max-width: 480px) {
+
+    .mobile-auth-button,
+    .mobile-card button {
+        font-size: 0.9em;
+    }
+
+    .mobile-card h5 {
+        font-size: 1.3em;
+    }
+}

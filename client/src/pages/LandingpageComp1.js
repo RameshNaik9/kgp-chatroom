@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import LocomotiveScroll from 'locomotive-scroll';
-import '../components/Landingpage_comp1.css'; // Shooting stars and styles for this component
-import Landingpage_comp2 from './Landingpage_comp2'; // Import the second component
-import '../components/Landingpage_comp2.css';
+import '../components/LandingpageComp1.css'; // Shooting stars and styles for this component
+import LandingpageComp2 from './LandingpageComp2'; // Import the second component
+import '../components/LandingpageComp2.css';
 
-const Landingpage_comp1 = () => {
+const LandingpageComp1 = () => {
 
   useEffect(() => {
     const scroller = new LocomotiveScroll({
@@ -54,7 +54,7 @@ const Landingpage_comp1 = () => {
       <section className="bottom" id="pin" data-scroll-section>
         <div className="container">
           <div className="sign-in">
-            <Landingpage_comp2 />
+            <LandingpageComp2 />
           </div>
 
           <div className="hires">
@@ -140,4 +140,4 @@ const applicantData = [
   
 ];
 
-export default Landingpage_comp1;
+export default LandingpageComp1;
