@@ -33,6 +33,7 @@
 
 .disappear {
     opacity: 0;
+    font-size: smaller;
     transition: opacity 1s ease-in-out;
 }
 
