@@ -1,23 +1,34 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './components/Login';
-import Signup from './components/Signup';
+// import Login from './components/Login';
+// import Signup from './components/Signup';
 import GroupChatPage from './pages/GroupChatPage';
 import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
 import CareerAssistantPage from './pages/CareerAssistantPage'; 
+import PrivateRoute from './PrivateRoute'; // Import PrivateRoute
 
 function RoutesConfig() {
     return (
         <Router>
             <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/group-chat" element={<GroupChatPage />} />
+                {/* Public Routes */}
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/home" element={<HomePage />} />
-                <Route path="/career-assistant" element={<CareerAssistantPage />} />
-                <Route path="/career-assistant/:conversation_id" element={<CareerAssistantPage />} />
+                {/* <Route path="/login" element={<Login />} /> */}
+                {/* <Route path="/signup" element={<Signup />} /> */}
+
+                {/* Protected Routes */}
+                <Route element={<PrivateRoute />}>
+                    <Route path="/home" element={<HomePage />} />
+                    <Route path="/group-chat" element={<GroupChatPage />} />
+                    
+                    {/* Routes for Career Assistant */}
+                    <Route path="/career-assistant" element={<CareerAssistantPage />} />
+                    <Route path="/career-assistant/:conversation_id" element={<CareerAssistantPage />} />
+                    <Route path="/career-assistant/archived/:conversation_id" element={<CareerAssistantPage />} />
+
+                    {/* Add similar protected routes for other assistants if needed */}
+                </Route>
             </Routes>
         </Router>
     );

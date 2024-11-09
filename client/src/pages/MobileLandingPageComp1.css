@@ -1,0 +1,176 @@
+/* MobileLandingPageComp1.css */
+
+/* Container for the entire mobile landing page */
+.mobile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: #000;
+    /* Black background to match the theme */
+    overflow-x: hidden;
+}
+
+/* Header section */
+.mobile-header {
+    width: 100%;
+    padding: 40px 20px 20px;
+    text-align: center;
+    background-color: #000;
+}
+
+.mobile-header h1 {
+    font-size: 2em;
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+}
+
+.mobile-header .gold {
+    color: #fdc65d;
+}
+
+/* Main content section */
+.mobile-main {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #000;
+}
+
+/* Footer section (optional) */
+.mobile-footer {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: #000;
+    color: #fff;
+}
+
+/* General text styles */
+.mobile-main p {
+    color: #aeaead;
+    font-size: 1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* Button styles */
+.mobile-button {
+    width: 90%;
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 1em;
+    color: #fff;
+    background-color: #111;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Button glow effect */
+.mobile-button::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    background-size: 400%;
+    filter: blur(5px);
+    z-index: -1;
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
+.mobile-button:hover::before {
+    opacity: 1;
+}
+
+@keyframes glowing {
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 400% 0;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
+}
+
+/* Adjusting headings */
+.mobile-main h2 {
+    font-size: 1.5em;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Form container */
+.mobile-auth-form {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+}
+
+/* Input fields */
+.mobile-auth-form input {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 1em;
+    color: #fff;
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Submit button */
+.mobile-auth-form button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #fdc65d;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.mobile-auth-form button:hover {
+    background-color: #e6b056;
+}
+
+/* Optional: Hide scrollbar */
+.mobile-container {
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.mobile-container::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 480px) {
+    .mobile-header h1 {
+        font-size: 1.8em;
+    }
+
+    .mobile-main h2 {
+        font-size: 1.4em;
+    }
+}

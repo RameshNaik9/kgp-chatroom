@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import './Conversation.css';
 import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
 import { FaRegThumbsUp, FaRegThumbsDown, FaRegCopy, FaSyncAlt, FaThumbsUp, FaThumbsDown, FaCheck } from 'react-icons/fa';  // Import FaCheck for tick
+import { ToastContainer, toast } from 'react-toastify';
 
 
 // Cache for storing conversation data
@@ -29,10 +30,9 @@ const Conversation = () => {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const fullName = localStorage.getItem('fullName') || 'there';
-
     const [copiedMessageId, setCopiedMessageId] = useState(null);  // Track copied message
-
-    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'https://chatkgp-ai.azurewebsites.net';
+     const [isArchived, setIsArchived] = useState(false); // State to track if conversation is archived
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://chatkgp.azurewebsites.net';
 
 
     // Function to handle copy
@@ -47,6 +47,9 @@ const Conversation = () => {
 
     // Fetch conversation history on component mount or cache hit
     useEffect(() => {
+        // Check if the current URL contains "/archived/" to set the isArchived state
+        setIsArchived(window.location.pathname.includes('/archived/'));
+
         const fetchConversationHistory = async () => {
             setLoading(true);
             setError(''); // Clear any existing errors
@@ -66,10 +69,11 @@ const Conversation = () => {
             // If not cached, fetch from the backend
             try {
                 const response = await axios.get(
-                     `${fastApiBaseUrl}/api/assistant/conversation/${conversation_id}`,
+                     `${apiBaseUrl}/api/assistant/conversation/${conversation_id}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
 
+                
                 // Store the conversation in cache
                 conversationCache.set(conversation_id, response.data);
 
@@ -83,6 +87,7 @@ const Conversation = () => {
             } catch (error) {
                 setError('Failed to fetch conversation history');
                 console.error('Error fetching conversation history:', error);
+                toast.error('Session expired. Login again');
             } finally {
                 setLoading(false);
             }
@@ -97,12 +102,12 @@ const Conversation = () => {
         }
     }, [messages, shouldScroll]);
 
-    const formatDate = (dateString) => {
-        if (!dateString) return '';
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const parsedDate = new Date(dateString);
-        return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options);
-    };
+    // const formatDate = (dateString) => {
+    //     if (!dateString) return '';
+    //     const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    //     const parsedDate = new Date(dateString);
+    //     return isNaN(parsedDate.getTime()) ? '' : parsedDate.toLocaleDateString(undefined, options);
+    // };
 
 
     const sendMessage = async (message) => {
@@ -124,14 +129,14 @@ const Conversation = () => {
         try {
             // Send HTTP request to process the user message and get final response
             const postResponse = await axios.post(
-                 `${fastApiBaseUrl}/api/assistant/${conversation_id}`,
+                 `${apiBaseUrl}/api/assistant/${conversation_id}`,
                 { user_message: { content: message } }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
             // Start SSE streaming
             const eventSource = new EventSource(
-                `${fastApiBaseUrl}/api/assistant/stream-response/${conversation_id}?token=${token}`
+                `${apiBaseUrl}/api/assistant/stream-response/${conversation_id}?token=${token}`
             );
             eventSource.onmessage = (event) => {
                 if (event.data.trim()) {
@@ -200,11 +205,15 @@ const Conversation = () => {
         }
     };
 
-    // Handle recommended question click
-    const handleQuestionClick = (question) => {
-        setUserMessage(question);
-        sendMessage(question); // Send the recommended question as a message
-    };
+// Handle recommended question click
+const handleQuestionClick = (question) => {
+    if (isArchived) {
+        // alert("This conversation is archived. You cannot continue or extend it.");
+        return;
+    }
+    setUserMessage(question);
+    sendMessage(question); // Send the recommended question as a message
+};
 
     const toggleQuestions = () => {
         setIsQuestionsVisible(!isQuestionsVisible); // Toggle visibility of recommended questions
@@ -229,7 +238,7 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
     try {
         setShouldScroll(false); // Disable scrolling when feedback is submitted
         await axios.post(
-            `${fastApiBaseUrl}/api/assistant/feedback`,
+            `${apiBaseUrl}/api/assistant/feedback`,
             { message_id: messageId, feedback: updatedFeedback },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -244,7 +253,12 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
 };
 
 
+    // Function to get placeholder text based on chat profile or archived status
     const getPlaceholderText = () => {
+        if (isArchived) {
+            return 'You cannot continue or extend this conversation as it has been archived due to inactivity.';
+        }
+
         switch (chatProfile) {
             case 'Career':
                 return `Hi ${fullName}, Confused about CDC Internships or Off campus placements? Drop your questions!`;
@@ -347,28 +361,34 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
 
             {error && <p className="error-message">{error}</p>}
 
+            {/* Conditionally render input box */}
+        <div className="message-input-container">
+            {/* Information message about archiving */}
+            {isArchived && (
+            <div className="archive-info-message">
+                <p>The conversation will be archived because it was inactive for two days.</p>
+            </div>
+            )}
+
             <div className="message-input">
-                <textarea 
-                    ref={textAreaRef} // Add ref to textarea
-                    value={userMessage} 
-                    onChange={(e) => {
-                        setUserMessage(e.target.value);
-                        adjustTextareaHeight(); // Adjust height on change
-                    }} 
-                    onKeyDown={handleKeyDown} 
-                    placeholder={getPlaceholderText()} 
-                    rows="1" // Start with one row
-                    disabled={loading} 
+                <textarea
+                    ref={textAreaRef}
+                    value={userMessage}
+                    onChange={(e) => setUserMessage(e.target.value)}
+                    placeholder={getPlaceholderText()}
+                    rows="1"
+                    disabled={isArchived || loading}  // Disable if archived or loading
                     className="textarea-input"
-                    style={{ 
+                    style={{
                         overflow: 'auto',
-                        height: 'auto',  // Let the height adjust automatically
-                        maxHeight: '200px' // Maximum height to avoid overly large textareas
-                    }} // Ensure no scrollbars are shown
+                        height: 'auto',
+                        maxHeight: '200px'
+                    }}
                 />
-                <button onClick={() => sendMessage(userMessage)} disabled={loading}>Send</button>
+                <button onClick={() => sendMessage(userMessage)} disabled={isArchived || loading}>Send</button>
             </div>
         </div>
+    </div>
     );
 };
 

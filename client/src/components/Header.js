@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../media/kgp-chatroom.png';
+// import logo from '../media/kgp-chatroom.png';
 import './Header.css';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -9,6 +9,7 @@ import Avatar from '@mui/material/Avatar';
 import CardContent from '@mui/material/CardContent';
 
 const Header = ({ toggleDrawer, isDrawerOpen }) => {
+    const logo = `${process.env.PUBLIC_URL}/media/kgp-chatroom.png`;
     const navigate = useNavigate();
     const [profileOpen, setProfileOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);

@@ -2,22 +2,35 @@
 .login-container,
 .signup-container {
     max-width: 400px;
-    margin: 0 auto; /* Center the form horizontally */
+    margin: 0 auto;
     padding: 20px;
-    background-color:white;
+    background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Style the form elements */
 .login-container input,
-.signup-container input {
+.signup-container input,
+.signup-container select {
     width: 100%;
     padding: 12px;
     margin: 8px 0;
     border: 1px solid black;
     border-radius: 4px;
     box-sizing: border-box;
+    font-size: 16px;
+    background-color: white;
+    color: #333;
+    /* Regular text color */
+}
+
+/* Style for the default placeholder-like option in select */
+.signup-container select option[value=""][disabled] {
+    color: #999;
+    /* Match this color to input placeholders */
+    font-weight: normal;
+    /* Ensure the font weight is normal */
 }
 
 /* Container for the password input and icon */
@@ -29,7 +42,8 @@
 /* Style the password input to allow space for the icon */
 .mb-4 input[type="password"],
 .mb-4 input[type="text"] {
-    padding-right: 40px; /* Space for the eye icon */
+    padding-right: 40px;
+    /* Space for the eye icon */
 }
 
 /* Style the icon for toggling password visibility */
@@ -41,7 +55,7 @@
     cursor: pointer;
 }
 
-/* Style the submit .but */
+/* Style the submit button */
 .glow-on-hover {
     width: 150px;
     padding: 10px;
@@ -62,7 +76,7 @@
     background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
     position: absolute;
     top: -2px;
-    left:-2px;
+    left: -2px;
     background-size: 400%;
     z-index: -1;
     filter: blur(5px);
@@ -75,7 +89,7 @@
 }
 
 .glow-on-hover:active {
-    color: #000
+    color: #000;
 }
 
 .glow-on-hover:active:after {
@@ -113,6 +127,7 @@
 
     .login-container input,
     .signup-container input,
+    .signup-container select,
     .login-container .but,
     .signup-container .but {
         font-size: 14px;
@@ -121,6 +136,7 @@
 }
 
 @media (max-width: 480px) {
+
     .login-container,
     .signup-container {
         padding: 10px;
@@ -129,9 +145,22 @@
 
     .login-container input,
     .signup-container input,
+    .signup-container select,
     .login-container .but,
     .signup-container .but {
         font-size: 12px;
         padding: 8px;
     }
+}
+
+
+.archive-info-message {
+    font-size: 14px;
+    color: #777;
+    /* Light gray color for subtlety */
+    margin-bottom: 8px;
+    text-align: center;
+    /* Center align the message */
+    font-style: italic;
+    /* Optional for emphasis */
 }

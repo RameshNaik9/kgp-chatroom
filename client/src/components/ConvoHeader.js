@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import logo from '../media/iit-kgp-logo.png';
-import './Header.css'; // Reuse the existing header styles
+import {  useNavigate } from 'react-router-dom';
+import './Header.css';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/MenuOpen';
@@ -23,7 +22,7 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
     const rollNumber = localStorage.getItem('rollNumber');
     const department = localStorage.getItem('department');
     const isVerified = localStorage.getItem('isVerified') === 'true';
-    const fastApiBaseUrl = process.env.REACT_APP_FASTAPI_BASE_URL || 'https://chatkgp-ai.azurewebsites.net';
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://chatkgp.azurewebsites.net';
 
     const handleLogout = () => {
         localStorage.clear();
@@ -72,7 +71,7 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
                 try {
                     const token = localStorage.getItem('token');
                     const response = await axios.get(
-                        `${fastApiBaseUrl}/api/assistant/conversation/${conversationId}`,
+                        `${apiBaseUrl}/api/assistant/conversation/${conversationId}`,
                         {headers: { Authorization: `Bearer ${token}` }}
                     );
                     const { chat_title, createdAt } = response.data;
@@ -84,7 +83,7 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
             };
             fetchConversationDetails();
         }
-    }, [conversationId]);
+    }, [conversationId,apiBaseUrl]);
 
     return (
         <header className="header-class">
