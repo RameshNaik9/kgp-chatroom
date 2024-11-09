@@ -3,7 +3,10 @@ import LocomotiveScroll from 'locomotive-scroll';
 import '../components/Landingpage_comp1.css'; // Shooting stars and styles for this component
 import Landingpage_comp2 from './Landingpage_comp2'; // Import the second component
 import '../components/Landingpage_comp2.css';
-
+import abhiramaImage from '../media/abhirama.jpeg';
+import rameshImage from '../media/ramesh.JPG';
+import koushikImage from '../media/koushik.JPG';
+import chanduImage from '../media/chandu.jpeg';
 const Landingpage_comp1 = () => {
 
   useEffect(() => {
@@ -30,7 +33,7 @@ const Landingpage_comp1 = () => {
           {shootingStars}
         <div className="top-description">
           <h1 data-scroll data-scroll-speed="3">
-            Welcome to <span className="gold">IIT KGP</span> Chatroom!
+            Welcome to <span className="gold">KGPedia</span> 
           </h1>
           <p
             className="disappear"
@@ -38,7 +41,7 @@ const Landingpage_comp1 = () => {
             data-scroll-class="appear"
             data-scroll-repeat="true"
           >
-            except for the texts at least
+            An Open Source Initiative to organise IITKGP's information
           </p>
           <svg width="449" height="157" viewBox="0 0 549 157" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -96,47 +99,46 @@ const Applicant = ({ imgSrc, name, title, scrollDirection, scrollSpeed }) => {
 // Data for applicants
 const applicantData = [
   {
-    imgSrc: 'https://images.unsplash.com/photo-1485921040253-3601b55d50aa?ixlib=rb-1.2.1&auto=format&fit=crop&w=564&q=80',
-    name: 'Nelson Michael',
-    title: 'Front-end Developer',
+    imgSrc: abhiramaImage,
+    name: 'Abhirama',
+    title: 'AI Engineer',
     scrollDirection: 'horizontal',
-    scrollSpeed: '3'
+    scrollSpeed: '4'
   },
-  {
-    imgSrc: 'https://images.unsplash.com/photo-1554780336-390462301acf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-    name: 'Cynthia Rice',
-    title: 'Product Designer',
-    scrollDirection: 'horizontal',
-    scrollSpeed: '-3'
-  },
-  {
-    imgSrc: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
-    name: 'Ahmed Tijani',
-    title: 'Flutter Developer',
-    scrollDirection: 'horizontal',
-    scrollSpeed: '3'
-  },
-  {
-    imgSrc: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-    name: 'Mary Duncan',
-    title: 'UI Designer',
+  {  imgSrc: rameshImage,
+    name: 'Ramesh',
+    title: 'Backend & AI Engineer',
     scrollDirection: 'horizontal',
     scrollSpeed: '-3'
   },
   {
-    imgSrc: 'https://images.unsplash.com/photo-1571442463800-1337d7af9d2f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1052&q=80',
-    name: 'Joyce Jenkins',
-    title: 'Brand Designer',
+    imgSrc: chanduImage,
+    name: 'Chandu',
+    title: 'Full Stack Developer',
     scrollDirection: 'horizontal',
-    scrollSpeed: '3'
+    scrollSpeed: '4'
   },
   {
-    imgSrc: 'https://images.unsplash.com/photo-1506956191951-7a88da4435e5?ixlib=rb-1.2.1&auto=format&fit=crop&w=967&q=80',
-    name: 'Riyah Juhn',
-    title: 'Fullstack Developer',
+    imgSrc: koushikImage,
+    name: 'Koushik',
+    title: 'Data Analyst',
     scrollDirection: 'horizontal',
     scrollSpeed: '-3'
-  },
+  }
+  // {
+  //   imgSrc: 'https://images.unsplash.com/photo-1571442463800-1337d7af9d2f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1052&q=80',
+  //   name: 'Joyce Jenkins',
+  //   title: 'Brand Designer',
+  //   scrollDirection: 'horizontal',
+  //   scrollSpeed: '3'
+  // },
+  // {
+  //   imgSrc: 'https://images.unsplash.com/photo-1506956191951-7a88da4435e5?ixlib=rb-1.2.1&auto=format&fit=crop&w=967&q=80',
+  //   name: 'Riyah Juhn',
+  //   title: 'Fullstack Developer',
+  //   scrollDirection: 'horizontal',
+  //   scrollSpeed: '-3'
+  // },
   
 ];
 

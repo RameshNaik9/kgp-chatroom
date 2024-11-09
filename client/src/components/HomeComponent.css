@@ -36,25 +36,6 @@
   z-index: -1;
 }
 
-
-
-/* nav {
-  position: sticky;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  text-align: left;
-  font-weight: bold;
-  font-size: 1.75rem;
-  display: flex;
-  align-items: center;
-  background: canvasText;
-  color: canvas;
-  padding: 0 1rem;
-  z-index: 3;
-} */
-
 article {
   max-width: 100vw;
   height: 100vh;
@@ -72,12 +53,6 @@ article {
   animation: in-n-out both linear;
   animation-timeline: --article;
 }
-
-/* h2 {
-  text-transform: uppercase;
-  font-size: 2rem;
-  margin: 0;
-} */
 
 article img {
   object-fit: cover;
@@ -124,140 +99,29 @@ main {
 .article__info {
   background: canvas;
 }
+@media (max-width: 780px) {
+  .containerk {
+    padding: 0;
+    gap: 0;
+  }
 
-@media (min-width: 768px) {
   article {
-    width: 100%;
-    display: grid;
-    place-items: start;
-    z-index: calc(var(--count, 10) - var(--index, 0));
-    position: relative;
-    grid-template-rows: unset;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 0;
   }
 
+  .article__img,
   .article__info {
-    background: transparent;
-    height: 100vh;
-    width: 40%;
-    display: grid;
-    place-items: center;
-    padding: 1rem;
-    gap: 1rem;
-    align-content: center;
-  }
-
-  .article__img {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 40%;
-    bottom: 0;
-    height: 100vh;
-    animation: none;
-  }
-
-  .article__img {
-    animation: brighten both linear;
-    animation-timeline: --article;
-    animation-range: entry 0% entry 50%;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
   }
 
   .article__img img {
-    animation: clip-out both linear;
-    animation-timeline: --article;
-    animation-range: exit 0% exit 100%;
-    height: 100%;
+    width: 100%;
+    height: auto;
   }
-}
-
-@keyframes brighten {
-  0% {
-    filter: brightness(2);
-  }
-  100% {
-    filter: brightness(1);
-  }
-}
-
-@keyframes clip-out {
-  0% {
-    clip-path: inset(0 0 0 0);
-  }
-  100% {
-    filter: brightness(0.5);
-    clip-path: inset(100% 0 0 0);
-  }
-}
-/* Style the submit .but */
-.glow-on-hover {
-  width: 150px;
-  padding: 10px;
-  font-size: 16px;
-  height: 50px;
-  border: none;
-  outline: none;
-  color: #fff;
-  background: #111;
-  cursor: pointer;
-  position: relative;
-  z-index: 0;
-  border-radius: 10px;
-}
-
-.glow-on-hover:before {
-  content: '';
-  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-  position: absolute;
-  top: -2px;
-  left:-2px;
-  background-size: 400%;
-  z-index: -1;
-  filter: blur(5px);
-  width: calc(100% + 4px);
-  height: calc(100% + 4px);
-  animation: glowing 20s linear infinite;
-  opacity: 1;
-  transition: opacity .3s ease-in-out;
-  border-radius: 10px;
-}
-
-.glow-on-hover:active {
-  color: #000
-}
-
-.glow-on-hover:active:after {
-  background: transparent;
-}
-
-.glow-on-hover:hover:before {
-  opacity: 1;
-}
-
-.glow-on-hover:after {
-  z-index: -1;
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #111;
-  left: 0;
-  top: 0;
-  border-radius: 10px;
-}
-
-@keyframes glowing {
-  0% { background-position: 0 0; }
-  50% { background-position: 400% 0; }
-  100% { background-position: 0 0; }
-}
-
-.smoke {
-  background-image: url(https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif);
-  background-size: cover;
-  color: transparent;
-  -moz-background-clip: text;
-  -webkit-background-clip: text;
-  text-transform: uppercase;
-  font-size: 2rem;
-  margin: 0px;
 }
