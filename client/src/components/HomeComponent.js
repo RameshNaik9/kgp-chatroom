@@ -2,11 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './HomeComponent.css';
 
+import img1 from '../media/Academics.svg';
+import img2 from '../media/Career.svg';
+import img3 from '../media/Gymkhana.svg';
+import img4 from '../media/placements.jpeg';
+
 const HomeComponent = () => {
-  const img1 = `${process.env.PUBLIC_URL}/media/Academics.svg`;
-  const img2 = `${process.env.PUBLIC_URL}/media/Career.svg`;
-  const img3 = `${process.env.PUBLIC_URL}/media/Gymkhana.svg`;
-  const img4 = `${process.env.PUBLIC_URL}/media/placements.jpeg`;
+  // const img1 = `${process.env.PUBLIC_URL}/media/Academics.svg`;
+  // const img2 = `${process.env.PUBLIC_URL}/media/Career.svg`;
+  // const img3 = `${process.env.PUBLIC_URL}/media/Gymkhana.svg`;
+  // const img4 = `${process.env.PUBLIC_URL}/media/placements.jpeg`;
+
 
   return (
     <div className="containerk">
