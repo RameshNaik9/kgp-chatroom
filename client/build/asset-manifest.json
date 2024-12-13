@@ -1,16 +1,20 @@
 {
   "files": {
-    "main.css": "/static/css/main.6d92203d.css",
-    "main.js": "/static/js/main.7ade4636.js",
-    "static/js/453.699b43af.chunk.js": "/static/js/453.699b43af.chunk.js",
-    "static/media/iit-kgp-logo.png": "/static/media/iit-kgp-logo.d38f06d86dfeeefff95d.png",
+    "main.css": "/static/css/main.f17cfd4e.css",
+    "main.js": "/static/js/main.c8828ab2.js",
+    "static/js/453.1553fe04.chunk.js": "/static/js/453.1553fe04.chunk.js",
+    "static/media/ramesh.JPG": "/static/media/ramesh.1f5bc31714650c329098.JPG",
+    "static/media/Academics.svg": "/static/media/Academics.ca63bf0609eb739fa86eb2f130fe8d7c.svg",
+    "static/media/abhirama.jpeg": "/static/media/abhirama.ca585f720374f042b119.jpeg",
+    "static/media/koushik.JPG": "/static/media/koushik.1437ce9bfe82aacd10f8.JPG",
+    "static/media/chandu.jpeg": "/static/media/chandu.08f7058a4d4fc66f5e39.jpeg",
     "index.html": "/index.html",
-    "main.6d92203d.css.map": "/static/css/main.6d92203d.css.map",
-    "main.7ade4636.js.map": "/static/js/main.7ade4636.js.map",
-    "453.699b43af.chunk.js.map": "/static/js/453.699b43af.chunk.js.map"
+    "main.f17cfd4e.css.map": "/static/css/main.f17cfd4e.css.map",
+    "main.c8828ab2.js.map": "/static/js/main.c8828ab2.js.map",
+    "453.1553fe04.chunk.js.map": "/static/js/453.1553fe04.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6d92203d.css",
-    "static/js/main.7ade4636.js"
+    "static/css/main.f17cfd4e.css",
+    "static/js/main.c8828ab2.js"
   ]
 }

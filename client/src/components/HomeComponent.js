@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import './HomeComponent.css';
 
 import img1 from '../media/Academics.svg';
-import img2 from '../media/Career.svg';
-import img3 from '../media/Gymkhana.svg';
-import img4 from '../media/placements.jpeg';
+import img2 from '../media/ramesh.JPG';
+import img3 from '../media/koushik.JPG';
+import img4 from '../media/chandu.jpeg';
 
 const HomeComponent = () => {
   // const img1 = `${process.env.PUBLIC_URL}/media/Academics.svg`;
