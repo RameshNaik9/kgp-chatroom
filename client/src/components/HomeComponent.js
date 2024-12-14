@@ -54,9 +54,21 @@ const HomeComponent = () => {
             <img src={img4} alt="Placements" style={{borderRadius:'0px'}} />
           </div>
           <div className="article__info">
+            <h2 className="smoke">Assistance with Gymkhana related information</h2>
+            <Link to="/general-assistant">
+              <button className="glow-on-hover">Gymkhana Assistant</button>
+            </Link>
+          </div>
+        </article>
+
+                <article style={{ "--index": 4 }}>
+          <div className="article__img">
+            <img src={img4} alt="Placements" style={{borderRadius:'0px'}} />
+          </div>
+          <div className="article__info">
             <h2 className="smoke">Assistance with general inquiries and more...</h2>
             <Link to="/general-assistant">
-              <button className="glow-on-hover">General Assistant</button>
+              <button className="glow-on-hover">Bhaat Assistant</button>
             </Link>
           </div>
         </article>
