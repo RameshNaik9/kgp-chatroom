@@ -69,8 +69,8 @@ const Header = ({ toggleDrawer, isDrawerOpen }) => {
                     </IconButton>
 
                     <Link to="#" className="navbar-brand">
-                        <img src={logo} alt="KGP Chatroom Logo" className="logo" />
-                        <span>KGP Chatroom</span>
+                        <img src={logo} alt="KGPedia Logo" className="logo" />
+                        <span>KGPedia</span>
                     </Link>
 
                     <div className="d-flex align-items-center">

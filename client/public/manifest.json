@@ -1,9 +1,9 @@
 {
-  "name": "KGP Chat Room App",
-  "short_name": "KGP Chat Room App",
-  "description": "KGP Chatroom is a real-time messaging application designed exclusively for IIT Kharagpur students. It allows users to interact, share ideas, and stay connected within the campus community. The app is integrated with ai-based chat bots for academic support of kgp students.",
+  "name": "KGPedia",
+  "short_name": "KGPedia",
+  "description": "KGPedia is a real-time messaging application designed exclusively for IIT Kharagpur students. It allows users to interact, share ideas, and stay connected within the campus community. The app is integrated with ai-based chat bots for academic support of kgp students.",
   "id": "/",
-  "start_url": "/",
+  "start_url": "/home",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone"],
   "background_color": "#ffffff",

@@ -1,4 +1,4 @@
-const CACHE_NAME = "kgp-chat-room-pwa-cache-v1";
+const CACHE_NAME = "kgpedia-pwa-cache-v1";
 const urlsToCache = [
   "/",
   "/index.html",

@@ -223,6 +223,16 @@ const ChatDrawer = ({ toggleDrawer, newConversation }) => {
     return (
         <Box className="drawer-container" role="presentation">
             <List>
+                {/* Home Header */}
+                <ListItem disablePadding>
+                    <ListItemButton onClick={() => navigate('/home')}>
+                        <ListItemText
+                            sx={{ color: 'white', marginRight: 1, marginLeft: 2 }}
+                            primary="Home"
+                        />
+                    </ListItemButton>
+                </ListItem>
+
                 {/* Group Chat */}
                 <ListItem disablePadding>
                     <ListItemButton onClick={() => navigate('/group-chat')}>
