@@ -2,16 +2,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './HomeComponent.css';
 
-import img1 from '../media/Academics.svg';
-import img2 from '../media/ramesh.JPG';
-import img3 from '../media/koushik.JPG';
-import img4 from '../media/chandu.jpeg';
+// import img1 from '../media/Academics.svg';
+// import img2 from '../media/ramesh.JPG';
+// import img3 from '../media/koushik.JPG';
+// import img4 from '../media/chandu.jpeg';
+
+
 
 const HomeComponent = () => {
   // const img1 = `${process.env.PUBLIC_URL}/media/Academics.svg`;
   // const img2 = `${process.env.PUBLIC_URL}/media/Career.svg`;
   // const img3 = `${process.env.PUBLIC_URL}/media/Gymkhana.svg`;
   // const img4 = `${process.env.PUBLIC_URL}/media/placements.jpeg`;
+  const img1 = '/media/Academics.svg';
+  const img2 = '/media/ramesh.JPG';
+  const img3 = '/media/Gymkhana.svg';
+  const img4 = '/media/placements.jpeg';
 
 
   return (

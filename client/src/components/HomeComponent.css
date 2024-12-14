@@ -7,6 +7,7 @@
 }
 
 .containerk {
+    background-color: #002bff;
   display: grid;
   place-items: center;
   min-height: 100vh;
@@ -154,7 +155,7 @@ main {
   }
 }
 
-@keyframes clip-out {
+/* @keyframes clip-out {
   0% {
     clip-path: inset(0 0 0 0);
   }
@@ -162,6 +163,18 @@ main {
   100% {
     filter: brightness(0.5);
     clip-path: inset(100% 0 0 0);
+  }
+} */
+
+@keyframes clip-out {
+  0% {
+    clip-path: none;
+    opacity: 1;
+  }
+
+  100% {
+    clip-path: none;
+    opacity: 0.5;
   }
 }
 
