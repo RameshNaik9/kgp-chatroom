@@ -5,9 +5,9 @@ import './HomeComponent.css';
 
 const HomeComponent = () => {
   const img1 = '/media/Academics.svg';
-  const img2 = '/media/ramesh.JPG';
-  const img3 = '/media/Gymkhana.svg';
-  const img4 = '/media/placements.jpeg';
+  const img2 = '/media/Career.svg';
+  const img3 = '/media/Academics.svg';
+  const img4 = '/media/Gymkhana.svg';
 
 
   return (
@@ -66,3 +66,4 @@ const HomeComponent = () => {
 };
 
 export default HomeComponent;
+
