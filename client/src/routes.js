@@ -6,19 +6,20 @@ import GroupChatPage from './pages/GroupChatPage';
 import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
 import CareerAssistantPage from './pages/CareerAssistantPage'; 
-import PrivateRoute from './PrivateRoute'; // Import PrivateRoute
+import PrivateRoute from './PrivateRoute';
 
 function RoutesConfig() {
     return (
         <Router>
             <Routes>
                 {/* Public Routes */}
-                <Route path="/" element={<LandingPage />} />
+                <Route path="/landingpage" element={<LandingPage />} />
                 {/* <Route path="/login" element={<Login />} /> */}
                 {/* <Route path="/signup" element={<Signup />} /> */}
 
                 {/* Protected Routes */}
                 <Route element={<PrivateRoute />}>
+                    <Route path="/" element={<HomePage />} />
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/group-chat" element={<GroupChatPage />} />
                     

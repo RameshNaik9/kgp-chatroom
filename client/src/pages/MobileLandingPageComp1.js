@@ -7,7 +7,7 @@ const MobileLandingPageComp1 = () => {
     <div className="mobile-container">
       <header className="mobile-header">
         <h1>
-          Welcome to <span className="gold">IIT KGP</span> Chatroom!
+          Welcome to <span className="gold">KGpedia</span>
         </h1>
       </header>
       <main className="mobile-main">

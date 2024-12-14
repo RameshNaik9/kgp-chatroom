@@ -1,7 +1,7 @@
 {
   "name": "KGPedia",
   "short_name": "KGPedia",
-  "description": "KGPedia is a real-time messaging application designed exclusively for IIT Kharagpur students. It allows users to interact, share ideas, and stay connected within the campus community. The app is integrated with ai-based chat bots for academic support of kgp students.",
+  "description": "KGPedia is an AI powered chat platform designed to streamline your access to things at IIT Kharagpur, KGPedia serves as a comprehensive guide, like a senior to campus life and beyond.",
   "id": "/",
   "start_url": "/home",
   "display": "standalone",
@@ -26,19 +26,6 @@
       "purpose": "maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshots/screenshot1.png",
-      "sizes": "2794x1564",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "/screenshots/screenshot2.png",
-      "sizes": "1650x1240",
-      "type": "image/png"
-    }
-  ],
   "protocol_handlers": [
     {
       "protocol": "web+myapp",
@@ -46,3 +33,4 @@
     }
   ]
 }
+

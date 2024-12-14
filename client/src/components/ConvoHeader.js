@@ -26,7 +26,7 @@ const ConvoHeader = ({ toggleDrawer, isDrawerOpen, conversationId }) => {
 
     const handleLogout = () => {
         localStorage.clear();
-        navigate('/');
+        navigate('/landingpage');
     };
 
     const toggleProfileOpen = () => {

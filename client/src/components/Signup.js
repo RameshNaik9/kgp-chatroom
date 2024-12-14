@@ -95,7 +95,7 @@ function Signup() {
                 setPassword('');
 
                 toast.success('Registration successful!');
-                navigate('/');
+                navigate('/landingpage');
             } else {
                 toast.error('Signup failed. Please try again.');
             }
