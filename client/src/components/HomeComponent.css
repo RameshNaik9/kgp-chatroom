@@ -1,184 +1,104 @@
 @import 'normalize.css';
 @import url('https://fonts.googleapis.com/css?family=Cairo');
+
 *,
-*:after,
-*:before {
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Cairo', sans-serif;
+  /* background: linear-gradient(to bottom right, #001ba6, #002bff); */
+  color: #ffffff;
+}
+
+/* Container that holds everything */
 .containerk {
-    background-color: #002bff;
-  display: grid;
-  place-items: center;
   min-height: 100vh;
-  font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
-    Helvetica, Arial, sans-serif, system-ui;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
-.containerk::before {
-  --size: 45px;
-  --line: color-mix(in lch, canvasText, transparent 70%);
-  content: '';
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  background: linear-gradient(
-        90deg,
-        var(--line) 1px,
-        transparent 1px var(--size)
-      )
-      50% 50% / var(--size) var(--size),
-    linear-gradient(var(--line) 1px, transparent 1px var(--size)) 50% 50% /
-      var(--size) var(--size);
-  mask: linear-gradient(-20deg, transparent 50%, white);
-  top: 0;
-  transform-style: flat;
-  pointer-events: none;
-  z-index: -1;
-}
-
-article {
-  max-width: 100vw;
-  height: 100vh;
-  display: grid;
-  grid-template-rows: calc(100vh - var(--info-size)) var(--info-size);
-  view-timeline: --article;
-}
-
-.article__img {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--info-size);
-  animation: in-n-out both linear;
-  animation-timeline: --article;
-}
-
-article img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  height: calc(100vh - var(--info-size));
-  animation: filter-out both linear;
-  animation-timeline: --article;
-  animation-range: exit 0% cover 100%;
-}
-
-@keyframes filter-out {
-  100% {
-    filter: brightness(2);
-    translate: 0 -60%;
-  }
-}
-
-@keyframes in-n-out {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  10%,
-  60% {
-    opacity: 1;
-  }
-}
-
-.article__info {
-  text-align: center;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 0.5rem;
-  height: var(--info-size);
-}
-
+/* Main wrapper for the articles */
 main {
   width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 3rem;
 }
 
-.article__info {
-  background: canvas;
+/* Each article represents one feature */
+article {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1.5rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease forwards;
 }
+
 @media (min-width: 768px) {
   article {
-    width: 100%;
-    display: grid;
-    place-items: start;
-    z-index: calc(var(--count, 10) - var(--index, 0));
-    position: relative;
-    grid-template-rows: unset;
+    grid-template-columns: 1fr 1fr;
+    text-align: left;
+    align-items: center;
   }
+}
 
+/* Image container */
+.article__img {
+  overflow: hidden;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.article__img img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0;
+  transform: scale(1.05);
+  animation: fadeInImage 1s ease forwards;
+}
+
+.article__img:hover {
+  transform: scale(1.01);
+}
+
+/* Info section with text and button */
+.article__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
   .article__info {
-    background: transparent;
-    height: 100vh;
-    width: 40%;
-    display: grid;
-    place-items: center;
     padding: 1rem;
-    gap: 1rem;
-    align-content: center;
-  }
-
-  .article__img {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 40%;
-    bottom: 0;
-    height: 100vh;
-    animation: none;
-  }
-
-  .article__img {
-    animation: brighten both linear;
-    animation-timeline: --article;
-    animation-range: entry 0% entry 50%;
-  }
-
-  .article__img img {
-    animation: clip-out both linear;
-    animation-timeline: --article;
-    animation-range: exit 0% exit 100%;
-    height: 100%;
   }
 }
 
-@keyframes brighten {
-  0% {
-    filter: brightness(2);
-  }
-
-  100% {
-    filter: brightness(1);
-  }
+/* Smoke text effect */
+.smoke {
+  background-image: url(https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif);
+  background-size: cover;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-transform: uppercase;
+  font-size: 2rem;
+  margin: 0;
 }
 
-/* @keyframes clip-out {
-  0% {
-    clip-path: inset(0 0 0 0);
-  }
-
-  100% {
-    filter: brightness(0.5);
-    clip-path: inset(100% 0 0 0);
-  }
-} */
-
-@keyframes clip-out {
-  0% {
-    clip-path: none;
-    opacity: 1;
-  }
-
-  100% {
-    clip-path: none;
-    opacity: 0.5;
-  }
-}
-
-/* Style the submit .but */
+/* Glow-on-hover button */
 .glow-on-hover {
   width: 150px;
   padding: 10px;
@@ -192,6 +112,7 @@ main {
   position: relative;
   z-index: 0;
   border-radius: 10px;
+  font-family: inherit;
 }
 
 .glow-on-hover:before {
@@ -200,23 +121,14 @@ main {
   position: absolute;
   top: -2px;
   left: -2px;
-  background-size: 400%;
   z-index: -1;
   filter: blur(5px);
   width: calc(100% + 4px);
   height: calc(100% + 4px);
-  animation: glowing 20s linear infinite;
-  opacity: 1;
-  transition: opacity .3s ease-in-out;
   border-radius: 10px;
-}
-
-.glow-on-hover:active {
-  color: #000
-}
-
-.glow-on-hover:active:after {
-  background: transparent;
+  animation: glow 20s linear infinite;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .glow-on-hover:hover:before {
@@ -224,38 +136,45 @@ main {
 }
 
 .glow-on-hover:after {
-  z-index: -1;
   content: '';
   position: absolute;
+  z-index: -1;
+  background: #111;
   width: 100%;
   height: 100%;
-  background: #111;
   left: 0;
   top: 0;
   border-radius: 10px;
 }
 
-@keyframes glowing {
-  0% {
+@keyframes glow {
+  0%, 100% {
     background-position: 0 0;
   }
-
   50% {
     background-position: 400% 0;
   }
+}
 
+/* Animations */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
   100% {
-    background-position: 0 0;
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.smoke {
-  background-image: url(https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif);
-  background-size: cover;
-  color: transparent;
-  -moz-background-clip: text;
-  -webkit-background-clip: text;
-  text-transform: uppercase;
-  font-size: 2rem;
-  margin: 0px;
+@keyframes fadeInImage {
+  0% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
