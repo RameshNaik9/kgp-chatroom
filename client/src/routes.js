@@ -13,13 +13,13 @@ function RoutesConfig() {
         <Router>
             <Routes>
                 {/* Public Routes */}
-                <Route path="/landingpage" element={<LandingPage />} />
+                <Route path="/" element={<LandingPage />} />
                 {/* <Route path="/login" element={<Login />} /> */}
                 {/* <Route path="/signup" element={<Signup />} /> */}
 
                 {/* Protected Routes */}
                 <Route element={<PrivateRoute />}>
-                    <Route path="/" element={<HomePage />} />
+                    {/* <Route path="/" element={<HomePage />} /> */}
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/group-chat" element={<GroupChatPage />} />
                     

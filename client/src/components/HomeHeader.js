@@ -20,7 +20,7 @@ const HomeHeader = ({ toggleDrawer, isDrawerOpen }) => {
 
     const handleLogout = () => {
         localStorage.clear();
-        navigate('/landingpage');
+        navigate('/');
     };
 
     const toggleProfileOpen = () => {

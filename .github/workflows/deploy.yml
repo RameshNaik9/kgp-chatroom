@@ -3,7 +3,7 @@ name: Build and deploy to Azure Web App chatkgp
 on:
   push:
     branches:
-      - beta-version
+      - kgpedia
 
 jobs:
   build-and-deploy:
