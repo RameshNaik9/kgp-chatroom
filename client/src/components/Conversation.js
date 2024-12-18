@@ -269,7 +269,7 @@ const toggleFeedback = async (messageId, currentFeedback, newFeedback) => {
             case 'Bhaat':
                 return `Hi ${fullName}, What's hot on 2.2??`;
             default:
-                return 'Ask ChatKGP';
+                return 'Ask KGPedia';
         }
     };
 
