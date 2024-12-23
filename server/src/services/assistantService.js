@@ -96,15 +96,27 @@ const getAssistantResponseService = async (conversationId, messageId, userMessag
       );
     }
 
-    // Update the conversation with tags and recommended questions from the assistant response
+    // Handle recommended questions logic
+    let finalQuestionsList = questions_list;
+    if (!questions_list || questions_list.length === 0) {
+      // Retrieve existing recommended_questions from the conversation document
+      const conversation = await Conversation.findById(conversationId);
+      if (conversation) {
+        finalQuestionsList = conversation.recommended_questions;
+      }
+    } else {
+      // Update conversation with new recommended questions
+      await Conversation.findByIdAndUpdate(
+        conversationId,
+        { $set: { recommended_questions: questions_list } },
+        { new: true }
+      );
+    }
+
+    // Update tags
     await Conversation.findByIdAndUpdate(
       conversationId,
-      {
-        $set: {
-          tags: tags_list,  // Update the tags in the conversation
-          recommended_questions: questions_list  // Update the recommended questions
-        }
-      },
+      { $set: { tags: tags_list } },
       { new: true }
     );
 
@@ -112,15 +124,13 @@ const getAssistantResponseService = async (conversationId, messageId, userMessag
     return {
       updatedMessage,
       tags: tags_list,
-      recommended_questions: questions_list
+      recommended_questions: finalQuestionsList
     };
   } catch (error) {
     console.error('Error getting assistant response:', error);
     throw new Error('Failed to get assistant response');
   }
 };
-
-
 
 
 // Get all messages for a specific conversation
